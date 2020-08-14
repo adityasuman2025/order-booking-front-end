@@ -26,8 +26,8 @@ class LandingPage extends Component {
 					</div>
 					<br/><br/>
 
-					<CircularButton text="User" style={{ width: 180 }} />
-					<CircularButton text="Admin" style={{ width: 180 }} />
+					<CircularButton text="User" style={{ width: 180 }} onClick={ () => { this.props.history.push( '/user' ) } } />
+					<CircularButton text="Admin" style={{ width: 180 }} onClick={ () => { this.props.history.push( '/admin' ) } } />
 				</div>
 			</div>
 		);
