@@ -6,7 +6,7 @@
     export const cookie_expiration_time = cookie_expiration_tym;
 
 //general variables
-    export const api_url_address = "http://127.0.0.1:8000/";
+    export const api_web_address = "http://127.0.0.1:8000/";
     
     export const pagination_size = 10;
 
