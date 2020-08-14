@@ -8,7 +8,7 @@ class LandingPage extends Component {
 	    };
   	}
 
-  	componentDidMount = async () => {
+  	componentDidMount() {
 	}
 
 //rendering
