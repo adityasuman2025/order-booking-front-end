@@ -9,4 +9,5 @@
     let api_url_address_temp = "http://127.0.0.1:8000/";
 
 //general variables
+    export const project_name = "Order Booking Flow";
     export const encryption_key = "topprs_order_booking_project";
