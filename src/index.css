@@ -33,6 +33,10 @@ code {
   cursor: pointer;
 }
 
+.loadingAnimation {
+  width: 50px;
+}
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
