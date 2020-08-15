@@ -78,6 +78,10 @@ code {
   font-size: 110%;
 }
 
+.coloredTextBtn:hover {
+  color: #EC3D64;
+}
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
