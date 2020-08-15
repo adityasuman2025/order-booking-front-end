@@ -13,8 +13,6 @@ class UserOrder extends Component {
 	    this.state = {
             loading: true,
 
-			baseAPIEndpoint: "get-products-list/?format=json",
-
 			productID: 0,
 
 			snackBarVisible: false,
