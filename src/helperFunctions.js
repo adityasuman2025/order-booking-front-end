@@ -3,8 +3,6 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import CryptoJS from 'crypto-js';
 
-import SnackBar from "./components/SnackBar";
-
 import { api_url_address, encryption_key, cookie_expiration_time } from "./global"
 const cookies = new Cookies();
 
@@ -106,6 +104,56 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 				first_name: first_name,
 				last_name: last_name,
 				phone: phone
+			});
+
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return 1;
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}
+
+//function to fetch all cities
+	export const fetchCities = async () => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "cities/";
+			const response = await axios.get( request_address );
+			
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return resp.resp;
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}
+
+//function to book an order of the user
+	export const BookUserOrder = async ( user_phone_no, product_id, city_id ) => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "orders/";
+			const response = await axios.post( request_address, {
+				user: user_phone_no,
+				product: product_id,
+				city: city_id
 			});
 
 		//getting resp from sent rqst
