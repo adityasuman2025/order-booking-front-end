@@ -3,8 +3,6 @@ import axios from 'axios';
 import Cookies from 'universal-cookie';
 import CryptoJS from 'crypto-js';
 
-import SnackBar from "./components/SnackBar";
-
 import { api_url_address, encryption_key, cookie_expiration_time } from "./global"
 const cookies = new Cookies();
 
