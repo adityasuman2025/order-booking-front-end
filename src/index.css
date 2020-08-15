@@ -33,6 +33,33 @@ code {
   cursor: pointer;
 }
 
+.loadingAnimation {
+  width: 50px;
+}
+
+.paginationContainer {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.defaultBtn {
+  background-color: #e2e2e2;
+  margin: 5px;
+}
+
+.coloredBtn {
+  background: #EC3D64;
+  color: white;
+  margin: 5px;
+}
+
+.pageContent {
+  width: 60%;
+  margin: auto;
+  margin-top: 30px;
+  margin-bottom: 50px;
+}
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
@@ -64,4 +91,35 @@ code {
     font-size: 250%;
     font-weight: 700;
   }
+
 /*--------landing page--------*/
+
+/*--------user home page--------*/
+  .productList {
+    margin: 0px;
+    padding: 0px;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    /* font-size: 110%; */
+
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    box-shadow: 0px 0px 1px grey;
+  }
+
+  .productText {
+    font-weight: 600;
+    font-size: 127%;
+
+    /* background-color: red;; */
+  }
+
+/*media screens*/
+  @media screen and (max-width: 800px) {
+    .pageContent {
+      width: 92%;
+      margin-top: 20px;
+      margin-bottom: 30px;
+    }
+  }
