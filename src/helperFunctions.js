@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import SnackBar from "./components/SnackBar";
 
-import { api_web_address } from "./global"
+import { api_url_address } from "./global"
 
 const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -11,7 +11,7 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
     export const fetchProducts = async ( api_endpoint ) => {
 	//sending rqst to api
 		try {
-			const request_address = api_web_address + api_endpoint;
+			const request_address = api_url_address + api_endpoint;
 			const response = await axios.get( request_address );
 			
 		//getting resp from sent rqst

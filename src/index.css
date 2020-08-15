@@ -37,6 +37,17 @@ code {
   width: 50px;
 }
 
+.defaultBtn {
+  background-color: #e2e2e2;
+  margin: 5px;
+}
+
+.coloredBtn {
+  background: #EC3D64;
+  color: white;
+  margin: 5px;
+}
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
