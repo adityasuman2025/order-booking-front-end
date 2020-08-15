@@ -148,14 +148,14 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 	}
 
 //function to book an order of the user
-	export const createUser = async ( first_name, last_name, phone ) => {
+	export const BookUserOrder = async ( user_phone_no, product_id, city_id ) => {
 	//sending rqst to api
 		try {
-			const request_address = api_url_address + "users/";
+			const request_address = api_url_address + "orders/";
 			const response = await axios.post( request_address, {
-				first_name: first_name,
-				last_name: last_name,
-				phone: phone
+				user: user_phone_no,
+				product: product_id,
+				city: city_id
 			});
 
 		//getting resp from sent rqst

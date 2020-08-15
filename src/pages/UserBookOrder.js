@@ -4,7 +4,7 @@ import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { getDecryptedCookieValue, fetchCities } from "../helperFunctions";
+import { getDecryptedCookieValue, fetchCities, BookUserOrder } from "../helperFunctions";
 
 class UserBookOrder extends Component {
     constructor(){
@@ -107,8 +107,13 @@ class UserBookOrder extends Component {
         }
         
     //all good //sending rqst to api to book an order of the user
+        const response = await BookUserOrder( user_phone_no, product_id, city_id  );
+		if( response ) {
+			await this.makeSnackBar( "Your order successfully booked", "success" );
+		} else {
+			await this.makeSnackBar( "Something went wrong", "error" );
+        }
         
-
         await this.toogleLoadingAnimation(); //hiding loading animation
     }
 //rendering
