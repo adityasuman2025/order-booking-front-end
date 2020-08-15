@@ -37,6 +37,16 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 			return false;
 		}
 	}
+//function to validate name, contact no and email
+	export const validateUsername = ( name ) => {
+		var re = /^[a-zA-Z]*$/;
+		return re.test( name );
+	}
+
+	export const validateContactNo = ( number ) => {
+		var re = /^[0-9]*$/;
+		return re.test( number );
+	}
 
 //function to fetch products according to pagination
     export const fetchProducts = async ( api_endpoint ) => {
@@ -78,6 +88,33 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 					return 1; //user exists with that phone no
 				} else if( error == 1 ) {
 					return 0; //user does not exists
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}
+
+//function to create a user
+    export const createUser = async ( first_name, last_name, phone ) => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "users/";
+			const response = await axios.post( request_address, {
+				first_name: first_name,
+				last_name: last_name,
+				phone: phone
+			});
+
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return 1;
 				}
 			}
 		} catch {
