@@ -4,7 +4,7 @@ import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { validateUsername, validateContactNo, createUser } from "../helperFunctions";
+import { getDecryptedCookieValue, fetchCities } from "../helperFunctions";
 
 class UserBookOrder extends Component {
     constructor(){
@@ -13,20 +13,40 @@ class UserBookOrder extends Component {
 	    this.state = {
             loading: true,
 
-			baseAPIEndpoint: "get-products-list/?format=json",
+            productID: 0,
+            
+            cities: [],
 
 			snackBarVisible: false,
 			snackBarMsg: "",
             snackBarType: "success",
             
-            enteredFirstName: "",
-            enteredSecondName: "",
+            enteredProductName: "",
             enteredPhoneNo: "",
+            selectedCity: 0,
         };
   	}
 
   	componentDidMount = async () => {
-		await this.toogleLoadingAnimation(); //hiding loading animation
+    //getting product name and phone number from cookie
+        const product_id = this.props.match.params.product_id;
+        await this.setState({
+            productID: product_id,
+            enteredProductName: await getDecryptedCookieValue( "order_booking_selected_product_name" ) || "",
+            enteredPhoneNo: await getDecryptedCookieValue( "order_booking_user_phone_no" ) || 0,
+        });
+
+    //fetching all cities list from api
+        const response = await fetchCities();
+		if( response ) {
+			await this.setState({
+                cities: response,
+            });
+		} else {
+			await this.makeSnackBar( "Something went wrong", "error" );
+        }
+        
+        await this.toogleLoadingAnimation(); //hiding loading animation
     }
     
 //function to make a snack-bar
@@ -57,57 +77,40 @@ class UserBookOrder extends Component {
         this.setState({[e.target.name]:e.target.value});
     }
 
-//function to hanlde when create btn is clicked
-    onCreatePressed = async (e) => {
+//function to hanlde when book btn is pressed
+    onBookPressed = async (e) => {
         e.preventDefault();
 
-        await this.toogleLoadingAnimation(); //showing loading animation
-        
-    //verifying if entered data
-        const enteredFirstName  = this.state.enteredFirstName.trim();
-        const enteredSecondName = this.state.enteredSecondName.trim();
-        const enteredPhoneNo    = this.state.enteredPhoneNo.trim();
+        await this.toogleLoadingAnimation(); //displaying loading animation
 
-        if( enteredFirstName != "" && enteredSecondName != "" && enteredPhoneNo != "" ) {
-            if( !validateUsername( enteredFirstName ) ) {
-                await this.makeSnackBar( "First Name cannot contain numbers, symbols and spaces", "error" );
-                await this.toogleLoadingAnimation(); //hiding loading animation
-                return;
-            }
+    //verifying if all input data is correct
+        const user_phone_no = this.state.enteredPhoneNo.trim();
+        const product_id = this.state.productID;
+        const city_id = this.state.selectedCity;
 
-            if( !validateUsername( enteredSecondName ) ) {
-                await this.makeSnackBar( "Second Name cannot contain numbers, symbols and spaces", "error" );
-                await this.toogleLoadingAnimation(); //hiding loading animation
-                return;
-            }
-
-            if( !validateContactNo( enteredPhoneNo ) ) {
-                await this.makeSnackBar( "Contact number can only contain integer", "error" );
-                await this.toogleLoadingAnimation(); //hiding loading animation
-                return;
-            }
-
-            if( enteredPhoneNo.length != 10 ) {
-                await this.makeSnackBar( "Phone number must be 10 digits long", "error" );
-                await this.toogleLoadingAnimation(); //hiding loading animation
-                return;  
-            }
-        
-        //if everything is fine
-            const response = await createUser( enteredFirstName, enteredSecondName, enteredPhoneNo );
-            if( response == 1 ) {
-                await this.makeSnackBar( "User created. You can book orders with your phone number now", "success" );
-                // this.props.history.goBack();
-            } else {
-                await this.makeSnackBar( "This phone number is already taken", "error" );
-            }
-        } else {
-            await this.makeSnackBar( "Please fill all details", "error" );
+        if( city_id == 0 ) {
+            await this.makeSnackBar( "Please select a city", "error" );
+            await this.toogleLoadingAnimation(); //hiding loading animation
+            return;
         }
+
+        if( product_id == 0 ) {
+            await this.makeSnackBar( "Invalid product", "error" );
+            await this.toogleLoadingAnimation(); //hiding loading animation
+            return;
+        }
+
+        if( user_phone_no == "" ) {
+            await this.makeSnackBar( "Invalid Phone Number", "error" );
+            await this.toogleLoadingAnimation(); //hiding loading animation
+            return;
+        }
+        
+    //all good //sending rqst to api to book an order of the user
+        
 
         await this.toogleLoadingAnimation(); //hiding loading animation
     }
-
 //rendering
     render() {
         return (
@@ -115,56 +118,55 @@ class UserBookOrder extends Component {
                 <div className="pageContent center">
                     <br /><br /><br /><br />
                     <h2>
-                        Create User
+                        Book Your Order
                     </h2>
                     <br />
 
-                    <form onSubmit={ this.onCreatePressed }>
+                    <form onSubmit={ this.onBookPressed }>
                         <label className="labelBox">
-                            First Name
+                            Product
                             <br />
-                            <div 
-                                type="text"
-                                required
-                                className="inputBox inputBox2" 
-                                // placeholder="first name" 
-                                name="enteredFirstName" 
-                                value={ this.state.enteredFirstName }
-                                onChange={ this.onChange } />
-                        </label>
-                        <br /><br />
-
-                        <label className="labelBox">
-                            Last Name
-                            <br />
-                            <input 
-                                type="text" 
-                                required
-                                className="inputBox inputBox2" 
-                                // placeholder="second name" 
-                                name="enteredSecondName" 
-                                value={ this.state.enteredSecondName }
-                                onChange={ this.onChange } />
+                            <div className="inputBox inputBox2" >
+                                { this.state.enteredProductName }
+                            </div>
                         </label>
                         <br /><br />
                         
                         <label className="labelBox">
                             Phone Number
                             <br />
-                            <input 
-                                type="number" 
-                                required
-                                className="inputBox inputBox2" 
-                                // placeholder="phone nuber" 
-                                name="enteredPhoneNo" 
-                                value={ this.state.enteredPhoneNo }
-                                onChange={ this.onChange } />
+                            <div className="inputBox inputBox2" >
+                                { this.state.enteredPhoneNo }
+                            </div>
                         </label>
                         <br /><br />
 
-                        <CircularButton text="Create" style={{ width: 180 }} onClick={ this.onCreatePressed }/>
+                        <label className="labelBox">
+                            City
+                            <br />
+                            <select 
+                                type="number" 
+                                className="inputBox inputBox2" 
+                                name="selectedCity" 
+                                value={ this.state.selectedCity }
+                                onChange={ this.onChange } 
+                            >
+                                <option value="0" >select city</option>
+                                {
+                                    this.state.cities.map( (item, idx ) => {
+                                        return (
+                                            <option key={ idx } value={ item.id } >{ item.name }</option>
+                                        )
+                                    })
+                                }
+                            </select>
+                        </label>
+                        <br /><br />
+
+                        <CircularButton text="Book" style={{ width: 180 }} onClick={ this.onBookPressed }/>
                     </form>
                     <br />
+
                     <LoadingAnimation loading={ this.state.loading } />
                 </div>
 

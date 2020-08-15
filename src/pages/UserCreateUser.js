@@ -13,8 +13,6 @@ class UserCreateUser extends Component {
 	    this.state = {
             loading: true,
 
-			baseAPIEndpoint: "get-products-list/?format=json",
-
 			snackBarVisible: false,
 			snackBarMsg: "",
             snackBarType: "success",

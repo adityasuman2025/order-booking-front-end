@@ -123,3 +123,53 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 
 		return null;
 	}
+
+//function to fetch all cities
+	export const fetchCities = async () => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "cities/";
+			const response = await axios.get( request_address );
+			
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return resp.resp;
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}
+
+//function to book an order of the user
+	export const createUser = async ( first_name, last_name, phone ) => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "users/";
+			const response = await axios.post( request_address, {
+				first_name: first_name,
+				last_name: last_name,
+				phone: phone
+			});
+
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return 1;
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}
