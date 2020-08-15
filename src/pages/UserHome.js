@@ -5,7 +5,7 @@ import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
 import { pagination_size } from "../global";
-import { fetchProducts } from "../helperFunctions";
+import { makeEncryptedCookie, fetchProducts } from "../helperFunctions";
 
 class UserHome extends Component {
 	constructor(){
@@ -35,19 +35,19 @@ class UserHome extends Component {
 			const total_items = response.count;
 			const results = response.results;
 
-			this.setState({
+			await this.setState({
 				paginationTotalItems: total_items,
 				products: results
 			});
 			
-			this.setState({
+			await this.setState({
 				paginationVisible: true,
 			});
 		} else {
-			this.makeSnackBar( "something went wrong", "error" );
+			await this.makeSnackBar( "Something went wrong", "error" );
 		}
 
-		this.toogleLoadingAnimation(); //hiding loading animation
+		await this.toogleLoadingAnimation(); //hiding loading animation
 	}
 
 //function to handle when any pagination btn is pressed
@@ -72,7 +72,7 @@ class UserHome extends Component {
 				products: results
 			});
 		} else {
-			this.makeSnackBar( "something went wrong", "error" );
+			this.makeSnackBar( "Something went wrong", "error" );
 		}
 
 		this.toogleLoadingAnimation(); //hiding loading animation
@@ -101,6 +101,16 @@ class UserHome extends Component {
 		});
 	}
 
+//when any product is clicked on
+	handleProductClicked = async ( item ) => {
+		const selected_product_name_cookie = await makeEncryptedCookie( "order_booking_selected_product_name", item.name );
+		if( selected_product_name_cookie ) {
+			this.props.history.push( '/user/order/' + item.id );
+		} else {
+			await this.makeSnackBar( "Something went wrong", "error" );    
+		}
+	}
+
 //rendering
 	render() {
 		return (
@@ -118,7 +128,7 @@ class UserHome extends Component {
 								<div 
 									key={idx} 
 									className="row productList" 
-									onClick={ () => { this.props.history.push( '/user/order/' + item.id ) } } >
+									onClick={ () => this.handleProductClicked( item ) } >
 									<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 productText">
 										{ item.name }
 									</div>
@@ -131,7 +141,6 @@ class UserHome extends Component {
 					}
 
 					<LoadingAnimation loading={ this.state.loading } />
-
 				</div>
 
 				{

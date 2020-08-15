@@ -1,5 +1,5 @@
 // variables for setting cookie expiratiom tym
-    export const cookie_expiration_mins = 15 * 24 * 60; // 15 days
+    export const cookie_expiration_mins = 1 * 24 * 60; // 1 days
 
     let cookie_expiration_tym = new Date();
     cookie_expiration_tym.setTime( cookie_expiration_tym.getTime() + ( cookie_expiration_mins*60*1000 ));

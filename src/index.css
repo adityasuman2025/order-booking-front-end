@@ -60,6 +60,24 @@ code {
   margin-bottom: 50px;
 }
 
+.center {
+  text-align: center;
+}
+
+.inputBox {
+  border: none;
+  border-bottom: 2px solid grey;
+  width: 400px;
+  margin-top: 20px;
+  padding: 5px;
+}
+
+.coloredTextBtn {
+  color: #EC3D64;
+  font-weight: 500;
+  font-size: 110%;
+}
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
@@ -123,5 +141,9 @@ code {
       width: 92%;
       margin-top: 20px;
       margin-bottom: 30px;
+    }
+
+    .inputBox {
+      width: 300px;
     }
   }
