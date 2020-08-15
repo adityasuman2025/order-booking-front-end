@@ -101,7 +101,11 @@ code {
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 10px;
-    /* font-size: 110%; */
+    font-size: 105%;
+
+    cursor: pointer;
+    word-wrap: break-word;
+    word-break: break-all;
 
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -110,9 +114,7 @@ code {
 
   .productText {
     font-weight: 600;
-    font-size: 127%;
-
-    /* background-color: red;; */
+    font-size: 125%;
   }
 
 /*media screens*/

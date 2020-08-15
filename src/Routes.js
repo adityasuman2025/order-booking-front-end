@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import LandingPage from './pages/LandingPage';
 
 import UserHome from './pages/UserHome';
+import UserOrder from './pages/UserOrder';
 
 import AdminHome from './pages/AdminHome';
 
@@ -13,7 +14,10 @@ const Routes = () => (
 <BrowserRouter >
     <Switch>
         <Route exact path="/" component={ LandingPage } />
+
         <Route exact path="/user" component={ UserHome } />
+        <Route exact path="/user/order/:product_id" component={ UserOrder } />
+        
         <Route exact path="/admin" component={ AdminHome } />
 
         <Route path="*" component={ NotFound } />

@@ -110,11 +110,15 @@ class UserHome extends Component {
 						Choose any product to book order
 					</h2>
 					<br />
-					
+
 					{
+					//listing products
 						this.state.products.map( ( item, idx ) => {
 							return(
-								<div key={idx} className="row productList">
+								<div 
+									key={idx} 
+									className="row productList" 
+									onClick={ () => { this.props.history.push( '/user/order/' + item.id ) } } >
 									<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 productText">
 										{ item.name }
 									</div>
