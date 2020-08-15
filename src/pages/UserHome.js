@@ -52,6 +52,8 @@ class UserHome extends Component {
 
 //function to handle when any pagination btn is pressed
 	onPaginationBtnClick = async ( index ) => {
+		this.toogleLoadingAnimation(); //displaying loading animation
+
 	//highlighting the selected page btn
 		await this.setState({
 			padinationActivePage: index,
@@ -72,6 +74,8 @@ class UserHome extends Component {
 		} else {
 			this.makeSnackBar( "something went wrong", "error" );
 		}
+
+		this.toogleLoadingAnimation(); //hiding loading animation
 	}
 
 //function to make a snack-bar
@@ -101,9 +105,30 @@ class UserHome extends Component {
 	render() {
 		return (
 			<div>
-				user home
+				<div className="pageContent">
+					<h2>
+						Choose any product to book order
+					</h2>
+					<br />
+					
+					{
+						this.state.products.map( ( item, idx ) => {
+							return(
+								<div key={idx} className="row productList">
+									<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 productText">
+										{ item.name }
+									</div>
+									<div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+										{ "Rs. " + item.price }
+									</div>
+								</div>
+							)
+						})
+					}
 
-				<LoadingAnimation loading={ this.state.loading } />
+					<LoadingAnimation loading={ this.state.loading } />
+
+				</div>
 
 				{
 				//pagination area

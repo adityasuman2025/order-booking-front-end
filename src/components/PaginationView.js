@@ -7,7 +7,7 @@ class PaginationView extends Component {
 
 //rendering
     render() {
-    //function to render buttons
+    //function to render pagination buttons
         const renderButtons = () => {
             const total_items = this.props.total_items;
             const pagination_size = this.props.pagination_size;
@@ -34,12 +34,11 @@ class PaginationView extends Component {
 
     //rendering
         return (
-            <center style={{ marginTop: 20 }}>
+            <center className="paginationContainer" >
                 { renderButtons() }
-                
             </center>
         )
     }
-  }
+}
   
 export default PaginationView;

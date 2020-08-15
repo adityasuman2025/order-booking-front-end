@@ -14,6 +14,6 @@ class LoadingAnimation extends Component {
             : null
         );
     }
-  }
+}
   
 export default LoadingAnimation;
