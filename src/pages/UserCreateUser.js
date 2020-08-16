@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
+import SuccesMsg from "../components/SuccesMsg";
 
 import { validateUsername, validateContactNo, createUser } from "../helperFunctions";
 
@@ -17,6 +18,8 @@ class UserCreateUser extends Component {
 			snackBarMsg: "",
             snackBarType: "success",
             
+            formVisible: true,
+
             enteredFirstName: "",
             enteredSecondName: "",
             enteredPhoneNo: "",
@@ -94,6 +97,11 @@ class UserCreateUser extends Component {
         //if everything is fine
             const response = await createUser( enteredFirstName, enteredSecondName, enteredPhoneNo );
             if( response == 1 ) {
+            //hiding form and displaying success msg
+                await this.setState({
+                    formVisible: false,
+                });
+
                 await this.makeSnackBar( "User created. You can book orders with your phone number now", "success" );
                 // this.props.history.goBack();
             } else {
@@ -117,51 +125,61 @@ class UserCreateUser extends Component {
                     </h2>
                     <br />
 
-                    <form onSubmit={ this.onCreatePressed }>
-                        <label className="labelBox">
-                            First Name
-                            <br />
-                            <input 
-                                type="text"
-                                required
-                                className="inputBox inputBox2" 
-                                // placeholder="first name" 
-                                name="enteredFirstName" 
-                                value={ this.state.enteredFirstName }
-                                onChange={ this.onChange } />
-                        </label>
-                        <br /><br />
+                    {
+                        this.state.formVisible ? 
+                            <form onSubmit={ this.onCreatePressed }>
+                                <label className="labelBox">
+                                    First Name
+                                    <br />
+                                    <input 
+                                        type="text"
+                                        required
+                                        className="inputBox inputBox2" 
+                                        // placeholder="first name" 
+                                        name="enteredFirstName" 
+                                        value={ this.state.enteredFirstName }
+                                        onChange={ this.onChange } />
+                                </label>
+                                <br /><br />
 
-                        <label className="labelBox">
-                            Last Name
-                            <br />
-                            <input 
-                                type="text" 
-                                required
-                                className="inputBox inputBox2" 
-                                // placeholder="second name" 
-                                name="enteredSecondName" 
-                                value={ this.state.enteredSecondName }
-                                onChange={ this.onChange } />
-                        </label>
-                        <br /><br />
-                        
-                        <label className="labelBox">
-                            Phone Number
-                            <br />
-                            <input 
-                                type="number" 
-                                required
-                                className="inputBox inputBox2" 
-                                // placeholder="phone nuber" 
-                                name="enteredPhoneNo" 
-                                value={ this.state.enteredPhoneNo }
-                                onChange={ this.onChange } />
-                        </label>
-                        <br /><br />
+                                <label className="labelBox">
+                                    Last Name
+                                    <br />
+                                    <input 
+                                        type="text" 
+                                        required
+                                        className="inputBox inputBox2" 
+                                        // placeholder="second name" 
+                                        name="enteredSecondName" 
+                                        value={ this.state.enteredSecondName }
+                                        onChange={ this.onChange } />
+                                </label>
+                                <br /><br />
+                                
+                                <label className="labelBox">
+                                    Phone Number
+                                    <br />
+                                    <input 
+                                        type="number" 
+                                        required
+                                        className="inputBox inputBox2" 
+                                        // placeholder="phone nuber" 
+                                        name="enteredPhoneNo" 
+                                        value={ this.state.enteredPhoneNo }
+                                        onChange={ this.onChange } />
+                                </label>
+                                <br /><br />
 
-                        <CircularButton text="Create" style={{ width: 180 }} onClick={ this.onCreatePressed }/>
-                    </form>
+                                <CircularButton text="Create" style={{ width: 180 }} onClick={ this.onCreatePressed }/>
+                            </form>
+                        : 
+                            <SuccesMsg 
+                                successMsg="User successfully created" 
+                                redirectToName="Home"
+                                redirectToUrl="/user"
+                            />
+                    }
+
                     <br />
                     <LoadingAnimation loading={ this.state.loading } />
                 </div>
