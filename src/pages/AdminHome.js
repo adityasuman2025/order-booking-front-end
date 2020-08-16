@@ -5,6 +5,7 @@ import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
+import { makeEncryptedCookie } from "../helperFunctions";
 import { admin_username, admin_password } from "../global";
 
 class AdminHome extends Component {
@@ -69,12 +70,16 @@ class AdminHome extends Component {
 
 		if( enteredUsername != "" && enteredPassword != "" ) {
 			if( enteredUsername == admin_username && enteredPassword == admin_password ) {
-			//making cookie/token of logged user
-				
-			//redirecting to admin dashboard page
-				this.setState({
-					redirectToAdminDashboard: true,
-				});
+			//making cookie/token of logged admin
+				const logged_admin_cookie = await makeEncryptedCookie( "order_booking_admin_logged", "1" );
+				if( logged_admin_cookie ) {
+				//redirecting to admin dashboard page
+					this.setState({
+						redirectToAdminDashboard: true,
+					});
+				} else {
+					await this.makeSnackBar( "Something went wrong", "error" );    
+				}
 			} else {
 				await this.makeSnackBar( "Username or password is not correct", "error" );
 			}
