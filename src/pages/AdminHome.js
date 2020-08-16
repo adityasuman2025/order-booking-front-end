@@ -92,7 +92,7 @@ class AdminHome extends Component {
 
 //rendering
 	render() {
-	//redirecting to registration success page
+	//redirecting to admin dashboard page
 		if( this.state.redirectToAdminDashboard ) {
 			return (<Redirect to={'/admin/dashboard'}/>)
 		}

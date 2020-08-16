@@ -93,6 +93,7 @@ code {
   color: #EC3D64;
 }
 
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
@@ -162,6 +163,52 @@ code {
     transition-timing-function: ease-in-out ;
   }
 
+  .dashPageContent {
+    width: 80%;
+    margin: auto;
+  }
+
+  .dashbordPartContainer {
+    padding-left: 50px;
+  }
+
+  .graphContainer {
+    background-color: #faf9f9;
+    padding: 15px;
+  }
+
+  h5 {
+    font-weight: 450;
+    font-size: 119%;
+    padding-left: 10px;
+  }
+
+  .graph {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+
+    text-align: center;
+    height: 230px;
+  }
+
+  .graphPillarBox {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .graphPillar {
+    width: 90px;
+    background-color: white;
+    word-wrap: break-word;
+    word-break: break-all;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
 /*media screens*/
   @media screen and (max-width: 800px) {
     .pageContent {
@@ -172,5 +219,19 @@ code {
 
     .inputBox {
       width: 300px;
+    }
+
+    .dashPageContent {
+      width: 95%;
+      margin: auto;
+    }
+
+    .dashbordPartContainer {
+      padding: 0px;
+      margin-bottom: 30px;
+    }
+
+    .graphPillar {
+      width: 70px;
     }
   }
