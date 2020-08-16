@@ -169,7 +169,8 @@ code {
   }
 
   .dashbordPartContainer {
-    padding-left: 50px;
+    padding-left: 30px;
+    padding-right: 30px;    
   }
 
   .graphContainer {
@@ -177,10 +178,15 @@ code {
     padding: 15px;
   }
 
-  h5 {
-    font-weight: 450;
-    font-size: 119%;
+  .graphContainer h5 {
+    font-weight: 500;
+    font-size: 120%;
     padding-left: 10px;
+  }
+
+  .graphContainer hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
   .graph {
@@ -203,10 +209,15 @@ code {
     background-color: white;
     word-wrap: break-word;
     word-break: break-all;
-    
+
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .graphPillarTitle {
+    font-weight: 450;
+    font-size: 105%;
   }
 
 /*media screens*/

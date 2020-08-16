@@ -20,7 +20,7 @@ class AdminDashboard extends Component {
 			
             redirectToAdminHome: false,
             
-            graphBoxHeight: 250,
+            graphBoxHeight: 230,
 
             todaysTop3:     [],
             todaysBottom3:  [],
@@ -129,6 +129,7 @@ class AdminDashboard extends Component {
         });
     }
 
+//function to style graph pillar as per its order count and position
     graphPillarStyle = ( max_count, count, idx ) => {
         const graphBoxHeight = this.state.graphBoxHeight - 30 ;
         const pillarHeight = Math.floor( ( graphBoxHeight * count ) / max_count );
@@ -180,32 +181,80 @@ class AdminDashboard extends Component {
                                                     style={ this.graphPillarStyle( this.state.todaysTopMaxOrderCount, item.order_count, idx ) }>
                                                     { item.order_count }
                                                 </div>
-                                                { item.city_name }
+                                                <span className="graphPillarTitle">{ item.city_name }</span>
                                             </div>
                                         )
                                     })
                                 }
                             </div>
+                            
                             <hr />
 
                             <h5>Bottom 3 Cities</h5>
                             <div className="graph" style={{ height: this.state.graphBoxHeight }}>
                                 <LoadingAnimation loading={ this.state.loading } />
+
+                                {
+                                    this.state.todaysBottom3.map( ( item, idx ) => {
+                                        return(
+                                            <div key={ idx } className="graphPillarBox">
+                                                <div 
+                                                    className="graphPillar" 
+                                                    style={ this.graphPillarStyle( this.state.todaysBottomMaxOrderCount, item.order_count, idx ) }>
+                                                    { item.order_count }
+                                                </div>
+                                                <span className="graphPillarTitle">{ item.city_name }</span>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </div>
+
                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 dashbordPartContainer">
                         <h2>Weekly</h2>
                         <div className="graphContainer">
                             <h5>Top 3 Cities</h5>
                             <div className="graph" style={{ height: this.state.graphBoxHeight }}>
                                 <LoadingAnimation loading={ this.state.loading } />
+
+                                {
+                                    this.state.weeklyTop3.map( ( item, idx ) => {
+                                        return(
+                                            <div key={ idx } className="graphPillarBox">
+                                                <div 
+                                                    className="graphPillar" 
+                                                    style={ this.graphPillarStyle( this.state.weeklyTopMaxOrderCount, item.order_count, idx ) }>
+                                                    { item.order_count }
+                                                </div>
+                                                <span className="graphPillarTitle">{ item.city_name }</span>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
+
                             <hr />
 
                             <h5>Bottom 3 Cities</h5>
                             <div className="graph" style={{ height: this.state.graphBoxHeight }}>
                                 <LoadingAnimation loading={ this.state.loading } />
+
+                                {
+                                    this.state.weeklyBottom3.map( ( item, idx ) => {
+                                        return(
+                                            <div key={ idx } className="graphPillarBox">
+                                                <div 
+                                                    className="graphPillar" 
+                                                    style={ this.graphPillarStyle( this.state.weeklyBottomMaxOrderCount, item.order_count, idx ) }>
+                                                    { item.order_count }
+                                                </div>
+                                                <span className="graphPillarTitle">{ item.city_name }</span>
+                                            </div>
+                                        )
+                                    })
+                                }
                             </div>
                         </div>
                     </div>

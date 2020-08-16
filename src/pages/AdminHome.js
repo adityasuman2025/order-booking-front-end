@@ -5,7 +5,7 @@ import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { makeEncryptedCookie } from "../helperFunctions";
+import { makeEncryptedCookie, getDecryptedCookieValue } from "../helperFunctions";
 import { admin_username, admin_password } from "../global";
 
 class AdminHome extends Component {
@@ -27,7 +27,17 @@ class AdminHome extends Component {
   	}
 
 	componentDidMount = async () => {
+	//checking if admin is already logged or not
+		const isAdminLogged = await getDecryptedCookieValue( "order_booking_admin_logged" );
+		if( isAdminLogged == 1 ) {
+		//if admin is already logged then redirecting to admin dashboard page
+			this.setState({
+				redirectToAdminDashboard: true,
+			});
+		}
+
 		await this.toogleLoadingAnimation(); //hiding loading animation
+		
     }
     
 //function to make a snack-bar
