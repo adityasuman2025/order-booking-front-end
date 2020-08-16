@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
+import SuccesMsg from "../components/SuccesMsg";
 
 import { getDecryptedCookieValue, fetchCities, BookUserOrder } from "../helperFunctions";
 
@@ -21,6 +22,8 @@ class UserBookOrder extends Component {
 			snackBarMsg: "",
             snackBarType: "success",
             
+            formVisible: true,
+
             enteredProductName: "",
             enteredPhoneNo: "",
             selectedCity: 0,
@@ -109,6 +112,11 @@ class UserBookOrder extends Component {
     //all good //sending rqst to api to book an order of the user
         const response = await BookUserOrder( user_phone_no, product_id, city_id  );
 		if( response ) {
+        //hiding form and displaying success msg
+            await this.setState({
+                formVisible: false,
+            });
+
 			await this.makeSnackBar( "Your order successfully booked", "success" );
 		} else {
 			await this.makeSnackBar( "Something went wrong", "error" );
@@ -127,51 +135,60 @@ class UserBookOrder extends Component {
                     </h2>
                     <br />
 
-                    <form onSubmit={ this.onBookPressed }>
-                        <label className="labelBox">
-                            Product
-                            <br />
-                            <div className="inputBox inputBox2" >
-                                { this.state.enteredProductName }
-                            </div>
-                        </label>
-                        <br /><br />
-                        
-                        <label className="labelBox">
-                            Phone Number
-                            <br />
-                            <div className="inputBox inputBox2" >
-                                { this.state.enteredPhoneNo }
-                            </div>
-                        </label>
-                        <br /><br />
+                    {
+                        this.state.formVisible ? 
+                            <form onSubmit={ this.onBookPressed }>
+                                <label className="labelBox">
+                                    Product
+                                    <br />
+                                    <div className="inputBox inputBox2" >
+                                        { this.state.enteredProductName }
+                                    </div>
+                                </label>
+                                <br /><br />
+                                
+                                <label className="labelBox">
+                                    Phone Number
+                                    <br />
+                                    <div className="inputBox inputBox2" >
+                                        { this.state.enteredPhoneNo }
+                                    </div>
+                                </label>
+                                <br /><br />
 
-                        <label className="labelBox">
-                            City
-                            <br />
-                            <select 
-                                type="number" 
-                                className="inputBox inputBox2" 
-                                name="selectedCity" 
-                                value={ this.state.selectedCity }
-                                onChange={ this.onChange } 
-                            >
-                                <option value="0" >select city</option>
-                                {
-                                    this.state.cities.map( (item, idx ) => {
-                                        return (
-                                            <option key={ idx } value={ item.id } >{ item.name }</option>
-                                        )
-                                    })
-                                }
-                            </select>
-                        </label>
-                        <br /><br />
+                                <label className="labelBox">
+                                    City
+                                    <br />
+                                    <select 
+                                        type="number" 
+                                        className="inputBox inputBox2" 
+                                        name="selectedCity" 
+                                        value={ this.state.selectedCity }
+                                        onChange={ this.onChange } 
+                                    >
+                                        <option value="0" >select city</option>
+                                        {
+                                            this.state.cities.map( (item, idx ) => {
+                                                return (
+                                                    <option key={ idx } value={ item.id } >{ item.name }</option>
+                                                )
+                                            })
+                                        }
+                                    </select>
+                                </label>
+                                <br /><br />
 
-                        <CircularButton text="Book" style={{ width: 180 }} onClick={ this.onBookPressed }/>
-                    </form>
+                                <CircularButton text="Book" style={{ width: 180 }} onClick={ this.onBookPressed }/>
+                            </form>
+                        :
+                            <SuccesMsg 
+                                successMsg="Your order successfully booked" 
+                                redirectToName="Home"
+                                redirectToUrl="/user"
+                            />
+                    }
+                    
                     <br />
-
                     <LoadingAnimation loading={ this.state.loading } />
                 </div>
 
