@@ -129,11 +129,14 @@ class UserHome extends Component {
 									key={idx} 
 									className="row productList" 
 									onClick={ () => this.handleProductClicked( item ) } >
-									<div className="col-lg-9 col-md-9 col-sm-9 col-xs-9 productText">
+									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productText">
 										{ item.name }
 									</div>
-									<div className="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-										{ "Rs. " + item.price }
+									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+										{ item.description }
+										<span style={{ float: "right" }}>
+											{ "Rs. " + item.price }
+										</span>
 									</div>
 								</div>
 							)
