@@ -217,3 +217,30 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 
 		return null;
 	}
+
+//function to create a product
+	export const createProduct = async ( name, description, price ) => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "products/";
+			const response = await axios.post( request_address, {
+				name: name,
+				description: description,
+				price: price
+			});
+
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return 1;
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}

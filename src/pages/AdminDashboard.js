@@ -27,7 +27,10 @@ class AdminDashboard extends Component {
             weeklyTop3:     [],
             weeklyBottom3:  [],
 
-            todaysTopMaxOrderCount: 0,
+            todaysTopMaxOrderCount:     1,
+            todaysBottomMaxOrderCount:  1,
+            weeklyTopMaxOrderCount:     1,
+            weeklyBottomMaxOrderCount:  1,
         };
   	}
 
@@ -90,7 +93,6 @@ class AdminDashboard extends Component {
             await this.setState({
                 todaysTopMaxOrderCount:     todaysTopMaxOrderCount,
                 todaysBottomMaxOrderCount:  todaysBottomMaxOrderCount,
-
                 weeklyTopMaxOrderCount:     weeklyTopMaxOrderCount,
                 weeklyBottomMaxOrderCount:  weeklyBottomMaxOrderCount,
 
@@ -164,6 +166,7 @@ class AdminDashboard extends Component {
             <div>
                 <AdminNavBar active="dashboard" />
                 <br/><br/><br/>
+                
                 <div className="row dashPageContent" >
                     <div className="col-lg-6 col-md-6 col-sm-12 col-xs-12 dashbordPartContainer">
                         <h2>Today</h2>

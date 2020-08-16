@@ -93,6 +93,14 @@ code {
   color: #EC3D64;
 }
 
+.successImg {
+  width: 150px;
+}
+
+.successText {
+  font-size: 120%;
+  
+}
 
 /*--------landing page--------*/
   .horiVertCenter {
