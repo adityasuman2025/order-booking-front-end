@@ -9,6 +9,7 @@ import UserBookOrder from './pages/UserBookOrder';
 import UserCreateUser from './pages/UserCreateUser';
 
 import AdminHome from './pages/AdminHome';
+import AdminDashboard from './pages/AdminDashboard';
 
 import NotFound from './pages/NotFound';
 
@@ -23,6 +24,7 @@ const Routes = () => (
         <Route exact path="/user/create-user" component={ UserCreateUser } />
 
         <Route exact path="/admin" component={ AdminHome } />
+        <Route exact path="/admin/dashboard" component={ AdminDashboard } />
 
         <Route path="*" component={ NotFound } />
     </Switch>
