@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 
+import AdminNavBar from "../components/AdminNabBar";
+
 class AdminDashboard extends Component {
     render() {
         return (
-            <div style={{ color: "red" }}>
-                admin dashboard
+            <div>
+                <AdminNavBar active="dashboard" />
             </div>
         );
     }
