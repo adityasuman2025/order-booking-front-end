@@ -93,6 +93,7 @@ code {
   color: #EC3D64;
 }
 
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
@@ -149,6 +150,75 @@ code {
     font-weight: 600;
     font-size: 125%;
   }
+/*--------user home page--------*/
+
+/*-----admin -------*/
+  .navLogoImg {
+    height: 30px;
+  }
+
+  #navbarCollapse {
+    /* transition: 1s ease-in-out; */
+    transition-duration: 1s;
+    transition-timing-function: ease-in-out ;
+  }
+
+  .dashPageContent {
+    width: 80%;
+    margin: auto;
+  }
+
+  .dashbordPartContainer {
+    padding-left: 30px;
+    padding-right: 30px;    
+  }
+
+  .graphContainer {
+    background-color: #faf9f9;
+    padding: 15px;
+  }
+
+  .graphContainer h5 {
+    font-weight: 500;
+    font-size: 120%;
+    padding-left: 10px;
+  }
+
+  .graphContainer hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .graph {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+
+    text-align: center;
+    height: 230px;
+  }
+
+  .graphPillarBox {
+    word-wrap: break-word;
+    word-break: break-all;
+  }
+
+  .graphPillar {
+    width: 90px;
+    background-color: white;
+    word-wrap: break-word;
+    word-break: break-all;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .graphPillarTitle {
+    font-weight: 450;
+    font-size: 105%;
+  }
 
 /*media screens*/
   @media screen and (max-width: 800px) {
@@ -160,5 +230,19 @@ code {
 
     .inputBox {
       width: 300px;
+    }
+
+    .dashPageContent {
+      width: 95%;
+      margin: auto;
+    }
+
+    .dashbordPartContainer {
+      padding: 0px;
+      margin-bottom: 30px;
+    }
+
+    .graphPillar {
+      width: 70px;
     }
   }

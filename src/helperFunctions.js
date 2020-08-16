@@ -171,3 +171,49 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 
 		return null;
 	}
+
+//function to fetch today's top bottom cities
+	export const fetchTodaysTopBottomCities = async () => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "todays-top-bottom-cities/";
+			const response = await axios.get( request_address );
+			
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return resp.resp;
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}
+
+//function to fetch weekly top bottom cities
+	export const fetchWeeklyTopBottomCities = async () => {
+	//sending rqst to api
+		try {
+			const request_address = api_url_address + "weekly-top-bottom-cities/";
+			const response = await axios.get( request_address );
+			
+		//getting resp from sent rqst
+			if( response ) {
+				const resp = await response.data;
+
+				const error = resp.error;
+				if( error == 0 ) {
+					return resp.resp;
+				}
+			}
+		} catch {
+			// makeSnackBar( "something went wrong", "error" );
+		}
+
+		return null;
+	}

@@ -12,3 +12,6 @@
 
     export const project_name = "Order Booking Flow";
     export const encryption_key = "topprs_order_booking_project";
+
+    export const admin_username = "toppr";
+    export const admin_password = "Toppr@123";
