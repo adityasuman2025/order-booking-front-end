@@ -189,7 +189,7 @@ class AdminFilter extends Component {
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 productText">
 										{ item.product.name }
 									</div>
-									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 productNormalText" style={{ textAlign: "right" }}>
+									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderUserName">
 										{ item.user.first_name + " " + item.user.last_name }
 									</div>
                                     

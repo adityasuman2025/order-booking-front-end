@@ -13,9 +13,13 @@ class SuccesMsg extends Component {
 //on clicking on any redirect button
     redirectToUrl = () => {
         if( this.props.redirectToName && this.props.redirectToUrl ) {
-            this.setState({
-                redirect: true,
-            });
+            if( this.props.redirectToUrl == "reload" ) {
+                window.location.reload();
+            } else {
+                this.setState({
+                    redirect: true,
+                });
+            }
         }
     }
 

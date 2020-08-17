@@ -171,8 +171,8 @@ class AdminCreateProduct extends Component {
                         : 
                             <SuccesMsg 
                                 successMsg="Product successfully created" 
-                                // redirectToName="Home"
-                                // redirectToUrl="/admin/dashboard"
+                                redirectToName="Create Another"
+                                redirectToUrl="reload"
                             />
                     }
                     

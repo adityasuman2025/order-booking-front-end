@@ -164,6 +164,12 @@ code {
 
   .productDateTimeText {
     color: dimgrey;
+    font-size: 90%;
+  }
+
+  .orderUserName {
+    text-align: right;
+    /* float: right; */
   }
 
 /*--------user home page--------*/
@@ -260,5 +266,9 @@ code {
 
     .graphPillar {
       width: 70px;
+    }
+
+    .orderUserName {
+      text-align: left;
     }
   }
