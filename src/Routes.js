@@ -10,6 +10,7 @@ import UserCreateUser from './pages/UserCreateUser';
 
 import AdminHome from './pages/AdminHome';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminFilter from './pages/AdminFilter';
 import AdminCreateProduct from './pages/AdminCreateProduct';
 
 import NotFound from './pages/NotFound';
@@ -26,6 +27,7 @@ const Routes = () => (
 
         <Route exact path="/admin" component={ AdminHome } />
         <Route exact path="/admin/dashboard" component={ AdminDashboard } />
+        <Route exact path="/admin/filter" component={ AdminFilter } />
         <Route exact path="/admin/create-product" component={ AdminCreateProduct } />
 
         <Route path="*" component={ NotFound } />

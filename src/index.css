@@ -152,12 +152,20 @@ code {
     background-color: #f1f1f1;
     border-radius: 5px;
     box-shadow: 0px 0px 1px grey;
+
+    /* vertical-align: middle; */
   }
 
   .productText {
     font-weight: 600;
     font-size: 125%;
+
   }
+
+  .productDateTimeText {
+    color: dimgrey;
+  }
+
 /*--------user home page--------*/
 
 /*-----admin -------*/
