@@ -52,11 +52,10 @@ class AdminDashboard extends Component {
             const weekly = response2;
 
         //getting todays top/bottom cities
-            const todaysLength = todays.length;
-
-            let todaysTop3 = todays.slice( todaysLength-3, todaysLength );
-            todaysTop3.reverse();
-
+            let todaysTop3 = [ ...todays ]; //copying todays array to todaysTop3 array
+            todaysTop3 = todaysTop3.reverse();
+            todaysTop3 = todaysTop3.slice( 0, 3 );
+            
             let todaysTopMaxOrderCount = 0;
             if( todaysTop3[0] ) {
                 todaysTopMaxOrderCount = todaysTop3[0].order_count;
@@ -71,10 +70,9 @@ class AdminDashboard extends Component {
             }
 
         //getting weekly top/bottom cities
-            const weeklyLength = weekly.length;
-
-            let weeklyTop3 = weekly.slice( weeklyLength-3, weeklyLength );
-            weeklyTop3.reverse();
+            let weeklyTop3 = [ ...weekly ]; //copying todays array to todaysTop3 array
+            weeklyTop3 = weeklyTop3.reverse();
+            weeklyTop3 = weeklyTop3.slice( 0, 3 );
 
             let weeklyTopMaxOrderCount = 0;
             if( weeklyTop3[0] ) {
