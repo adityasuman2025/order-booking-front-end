@@ -70,7 +70,7 @@ class AdminDashboard extends Component {
             }
 
         //getting weekly top/bottom cities
-            let weeklyTop3 = [ ...weekly ]; //copying todays array to todaysTop3 array
+            let weeklyTop3 = [ ...weekly ]; //copying weekly array to weeklyTop3 array
             weeklyTop3 = weeklyTop3.reverse();
             weeklyTop3 = weeklyTop3.slice( 0, 3 );
 
