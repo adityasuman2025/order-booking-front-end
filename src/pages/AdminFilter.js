@@ -17,7 +17,7 @@ class AdminFilter extends Component {
             loading: true,
 
             cities: [],
-            selectedCity: 0,
+            selectedCity: 0, //by default All is selected
 
             orders: [],
 
@@ -55,6 +55,10 @@ class AdminFilter extends Component {
 			await this.makeSnackBar( "Something went wrong", "error" );
         }
 
+    //by default "All" cities orders will be displayed
+        const selectedCity = await this.state.selectedCity;
+		await this.fetchAndDisplayOrders( selectedCity );
+        
         await this.toogleLoadingAnimation(); //hiding loading animation
     }
     
@@ -86,15 +90,17 @@ class AdminFilter extends Component {
         const selectedCity = e.target.value;
         this.setState({ [e.target.name]: selectedCity });
 
-        if( selectedCity == 0 ) {
-            await this.makeSnackBar( "Please select a city", "error" );
-            return;
-        }
-
         await this.toogleLoadingAnimation(); //displaying loading animation
 
     //fetching orders of that city from api
-        const baseAPIEndpoint = await this.state.baseAPIEndPoint + selectedCity;
+        await this.fetchAndDisplayOrders( selectedCity );
+        
+        await this.toogleLoadingAnimation(); //hiding loading animation
+    }
+
+//function to fetch and display order list
+    fetchAndDisplayOrders = async ( city_id ) => {
+        const baseAPIEndpoint = await this.state.baseAPIEndPoint + city_id;
         const response = await fetchOrdersByCity( baseAPIEndpoint );
 		if( response ) {
 			const total_items = response.count;
@@ -112,10 +118,7 @@ class AdminFilter extends Component {
 		} else {
 			await this.makeSnackBar( "Something went wrong", "error" );
         }
-        
-        await this.toogleLoadingAnimation(); //hiding loading animation
     }
-
 
 //function to handle when any pagination btn is pressed
     onPaginationBtnClick = async ( index ) => {
@@ -165,7 +168,7 @@ class AdminFilter extends Component {
                             name="selectedCity" 
                             value={ this.state.selectedCity }
                             onChange={ this.onSelectACity } >
-                            <option value="0" >select city</option>
+                            <option value="0" >All</option>
                             {
                                 this.state.cities.map( (item, idx ) => {
                                     return (
@@ -190,7 +193,7 @@ class AdminFilter extends Component {
 										{ item.product.name }
 									</div>
 									<div className="col-lg-6 col-md-6 col-sm-6 col-xs-6 orderUserName">
-										{ item.user.first_name + " " + item.user.last_name }
+										{ "Rs. " + item.product.price }
 									</div>
                                     
                                     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productDateTimeText">
@@ -201,7 +204,6 @@ class AdminFilter extends Component {
 						})
 					}
                     </div>
-                   
 
                     <LoadingAnimation loading={ this.state.loading } />
                 </div>
