@@ -5,7 +5,8 @@ import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { makeEncryptedCookie, getDecryptedCookieValue, verifyAdmin } from "../helperFunctions";
+import { verifyAdmin } from "../apis";
+import { makeEncryptedCookie, getDecryptedCookieValue } from "../utils";
 
 class AdminHome extends Component {
 	constructor(){

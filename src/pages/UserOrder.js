@@ -4,7 +4,8 @@ import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { getDecryptedCookieValue, makeEncryptedCookie, checkUserExistsWithGivenPhoneNumber } from "../helperFunctions";
+import { checkUserExistsWithGivenPhoneNumber } from "../apis";
+import { getDecryptedCookieValue, makeEncryptedCookie } from "../utils";
 
 class UserOrder extends Component {
     constructor(){

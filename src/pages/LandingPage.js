@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import CircularButton from "../components/CircularButton";
-import { project_name } from "../global";
+import { project_name } from "../constants";
 
 class LandingPage extends Component {
 	constructor(){

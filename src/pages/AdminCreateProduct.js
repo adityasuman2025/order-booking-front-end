@@ -7,7 +7,8 @@ import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 import SuccesMsg from "../components/SuccesMsg";
 
-import { getDecryptedCookieValue, createProduct } from "../helperFunctions";
+import { getDecryptedCookieValue } from "../utils";
+import { createProduct } from "../apis";
 
 class AdminCreateProduct extends Component {
     constructor(){

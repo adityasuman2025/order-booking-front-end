@@ -5,7 +5,8 @@ import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 import SuccesMsg from "../components/SuccesMsg";
 
-import { validateUsername, validateContactNo, createUser } from "../helperFunctions";
+import { createUser } from "../apis";
+import { validateUsername, validateContactNo } from "../utils";
 
 class UserCreateUser extends Component {
     constructor(){
