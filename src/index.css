@@ -17,6 +17,7 @@ code {
   margin: 0px;
   padding: 0px;
   
+
   margin: auto;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -28,6 +29,7 @@ code {
 
   background: #EC3D64;
   
+  width: 180px;
   
   color: white;
   font-size: 107%;
@@ -66,6 +68,10 @@ code {
   text-align: center;
 }
 
+.floatRight {
+  float: right;
+}
+
 .inputBox {
   border: none;
   border-bottom: 2px solid grey;
@@ -81,6 +87,10 @@ code {
 .labelBox {
   text-align: left;
   font-weight: 600;
+}
+
+.redColored {
+  color: red;
 }
 
 .coloredTextBtn {
@@ -101,6 +111,31 @@ code {
   font-size: 120%;
   
 }
+
+.noPadding {
+  padding: 0;
+}
+
+.wideBtn {
+  width: 180px;
+}
+
+/*------nav bar------*/  
+  .navBarBrand{
+    padding: 10px;
+    padding-left: 15px;
+    font-size: 125%;
+  }
+
+  #mobileNavBarToggler {
+    margin-Right: 5px;
+  }
+
+  .navWebMenu {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+/*------nav bar------*/
 
 /*--------landing page--------*/
   .horiVertCenter {
@@ -165,6 +200,11 @@ code {
   .productDateTimeText {
     color: dimgrey;
     font-size: 90%;
+  }
+
+  .productPrice {
+    font-size: 87%;
+    font-weight: 400;
   }
 
   .orderUserName {

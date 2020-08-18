@@ -21,14 +21,15 @@ class LandingPage extends Component {
 			<div className="horiVertCenter">
 				<div className="choiceBox">
 					<img className="logoImg" alt="logo image" src={ require("../img/logo.png") } />
-					<div className="projectTitleText" style={{ marginTop: 20 }}>
+					<br/><br/>
+					<div className="projectTitleText">
 						{ project_name }
 					</div>
-					<br/><br/>
+					<br/><br/><br/>
 
-					<CircularButton text="User" style={{ width: 180 }} onClick={ () => { this.props.history.push( '/user' ) } } />
+					<CircularButton text="User" onClick={ () => { this.props.history.push( '/user' ) } } />
 					<br/>
-					<CircularButton text="Admin" style={{ width: 180 }} onClick={ () => { this.props.history.push( '/admin' ) } } />
+					<CircularButton text="Admin" onClick={ () => { this.props.history.push( '/admin' ) } } />
 				</div>
 			</div>
 		);

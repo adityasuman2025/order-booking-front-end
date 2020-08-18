@@ -132,11 +132,11 @@ class UserHome extends Component {
 									onClick={ () => this.handleProductClicked( item ) } >
 									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productText">
 										{ item.name }
-										<span style={{ float: "right", fontWeight: 400, fontSize: '87%' }}>
+										<span className="productPrice floatRight">
 											{ "Rs. " + item.price }
 										</span>
 									</div>
-									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productDateTimeText">
 										{ item.description }
 									</div>
 								</div>
