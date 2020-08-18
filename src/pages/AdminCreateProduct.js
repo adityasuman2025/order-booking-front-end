@@ -38,6 +38,8 @@ class AdminCreateProduct extends Component {
             this.setState({
                 redirectToAdminHome: true,
             });
+
+            return;
         }
 
         await this.toogleLoadingAnimation(); //hiding loading animation

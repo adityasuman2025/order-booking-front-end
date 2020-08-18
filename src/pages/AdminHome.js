@@ -5,23 +5,21 @@ import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { makeEncryptedCookie, getDecryptedCookieValue } from "../helperFunctions";
-import { admin_username, admin_password } from "../global";
+import { makeEncryptedCookie, getDecryptedCookieValue, verifyAdmin } from "../helperFunctions";
 
 class AdminHome extends Component {
 	constructor(){
 	    super();
-	   
+
 	    this.state = {
             loading: true,
 
 			snackBarVisible: false,
 			snackBarMsg: "",
             snackBarType: "success",
-            
-            enteredUsername: "",
-			enteredPassword: "",
-			
+
+            enteredPhoneNo: "",
+
 			redirectToAdminDashboard: false,
         };
   	}
@@ -39,7 +37,7 @@ class AdminHome extends Component {
 		await this.toogleLoadingAnimation(); //hiding loading animation
 		
     }
-    
+
 //function to make a snack-bar
     makeSnackBar = ( msg, type ) => {
         this.setState({
@@ -74,27 +72,30 @@ class AdminHome extends Component {
 
 		this.toogleLoadingAnimation(); //displaying loading animation
 
-	//verifying if entered data
-		const enteredUsername  	= this.state.enteredUsername.trim();
-		const enteredPassword 	= this.state.enteredPassword.trim();
+	//verifying entered data
+		const enteredPhoneNo  	= this.state.enteredPhoneNo.trim();
+		if( enteredPhoneNo != "" ) {
+            const response = await verifyAdmin( enteredPhoneNo );
+            if( response ) {
+                const res = response[0];
+            	if( res.is_admin == 1 ) {
+                //redirecting to admin dashboard page
+                    const logged_admin_cookie = await makeEncryptedCookie( "order_booking_admin_logged", "1" );
+                    if( logged_admin_cookie ) {
+                        this.setState({
+                            redirectToAdminDashboard: true,
+                        });
 
-		if( enteredUsername != "" && enteredPassword != "" ) {
-			if( enteredUsername == admin_username && enteredPassword == admin_password ) {
-			//making cookie/token of logged admin
-				const logged_admin_cookie = await makeEncryptedCookie( "order_booking_admin_logged", "1" );
-				if( logged_admin_cookie ) {
-				//redirecting to admin dashboard page
-					this.setState({
-						redirectToAdminDashboard: true,
-					});
+                        return;
+                    }
 				} else {
-					await this.makeSnackBar( "Something went wrong", "error" );    
+					await this.makeSnackBar( "This phone no is not admin", "error" );    
 				}
-			} else {
-				await this.makeSnackBar( "Username or password is not correct", "error" );
-			}
+            } else {
+                await this.makeSnackBar( "This phone no is not registered", "error" );
+            }
 		} else {
-			await this.makeSnackBar( "Please fill all the fields", "error" );
+			await this.makeSnackBar( "Please enter phone no", "error" );
 		}
 
 		await this.toogleLoadingAnimation(); //hiding loading animation
@@ -119,29 +120,15 @@ class AdminHome extends Component {
 
                     <form onSubmit={ this.onLoginPressed }>
                         <label className="labelBox">
-                            Username
+                            Phone no
                             <br />
                             <input 
-                                type="text"
+                                type="number"
                                 required
                                 className="inputBox inputBox2" 
                                 // placeholder="first name" 
-                                name="enteredUsername" 
-                                value={ this.state.enteredUsername }
-                                onChange={ this.onChange } />
-                        </label>
-                        <br /><br />
-
-                        <label className="labelBox">
-                            Password
-                            <br />
-                            <input 
-                                type="password" 
-                                required
-                                className="inputBox inputBox2" 
-                                // placeholder="second name" 
-                                name="enteredPassword" 
-                                value={ this.state.enteredPassword }
+                                name="enteredPhoneNo" 
+                                value={ this.state.enteredPhoneNo }
                                 onChange={ this.onChange } />
                         </label>
                         <br /><br />
