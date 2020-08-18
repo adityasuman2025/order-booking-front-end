@@ -5,7 +5,8 @@ import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 import SuccesMsg from "../components/SuccesMsg";
 
-import { getDecryptedCookieValue, fetchCities, BookUserOrder } from "../helperFunctions";
+import { fetchCities, BookUserOrder } from "../apis";
+import { getDecryptedCookieValue } from "../utils";
 
 class UserBookOrder extends Component {
     constructor(){

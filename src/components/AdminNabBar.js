@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { project_name } from "../global";
+import { project_name } from "../constants";
 
 class AdminNabBar extends Component {
 	constructor(){

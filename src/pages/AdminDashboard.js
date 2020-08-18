@@ -5,7 +5,8 @@ import AdminNavBar from "../components/AdminNabBar";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { getDecryptedCookieValue, fetchTodaysTopBottomCities, fetchWeeklyTopBottomCities } from "../helperFunctions";
+import { getDecryptedCookieValue, } from "../utils";
+import { fetchTodaysTopBottomCities, fetchWeeklyTopBottomCities } from "../apis";
 
 class AdminDashboard extends Component {
     constructor(){

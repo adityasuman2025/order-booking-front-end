@@ -4,8 +4,9 @@ import PaginationView from "../components/PaginationView";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
-import { pagination_size } from "../global";
-import { makeEncryptedCookie, fetchProducts } from "../helperFunctions";
+import { pagination_size } from "../constants";
+import { fetchProducts } from "../apis";
+import { makeEncryptedCookie } from "../utils";
 
 class UserHome extends Component {
 	constructor(){
