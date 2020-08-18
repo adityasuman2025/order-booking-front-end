@@ -56,7 +56,7 @@ class AdminDashboard extends Component {
             todaysTop3 = todaysTop3.reverse();
             todaysTop3 = todaysTop3.slice( 0, 3 );
             
-            let todaysTopMaxOrderCount = 0;
+            let todaysTopMaxOrderCount = 1;
             if( todaysTop3[0] ) {
                 todaysTopMaxOrderCount = todaysTop3[0].order_count;
             }
@@ -64,7 +64,7 @@ class AdminDashboard extends Component {
             let todaysBottom3 = todays.slice( 0, 3 );
             todaysBottom3.reverse();
 
-            let todaysBottomMaxOrderCount = 0;
+            let todaysBottomMaxOrderCount = 1;
             if( todaysBottom3[0] ) {
                 todaysBottomMaxOrderCount = todaysBottom3[0].order_count;
             }
@@ -74,7 +74,7 @@ class AdminDashboard extends Component {
             weeklyTop3 = weeklyTop3.reverse();
             weeklyTop3 = weeklyTop3.slice( 0, 3 );
 
-            let weeklyTopMaxOrderCount = 0;
+            let weeklyTopMaxOrderCount = 1;
             if( weeklyTop3[0] ) {
                 weeklyTopMaxOrderCount = weeklyTop3[0].order_count;
             }
@@ -82,7 +82,7 @@ class AdminDashboard extends Component {
             const weeklyBottom3 = weekly.slice( 0, 3 );
             weeklyBottom3.reverse();
 
-            let weeklyBottomMaxOrderCount = 0;
+            let weeklyBottomMaxOrderCount = 1;
             if( weeklyBottom3[0] ) {
                 weeklyBottomMaxOrderCount = weeklyBottom3[0].order_count;
             }
@@ -132,7 +132,7 @@ class AdminDashboard extends Component {
 //function to style graph pillar as per its order count and position
     graphPillarStyle = ( max_count, count, idx ) => {
         const graphBoxHeight = this.state.graphBoxHeight - 30 ;
-        const pillarHeight = Math.floor( ( graphBoxHeight * count ) / max_count );
+        const pillarHeight = Math.floor( ( graphBoxHeight * count ) / max_count ) || 17; // min height of 17 will be there in case of max_count = 0
 
         if( idx == 0 ) {
             return {

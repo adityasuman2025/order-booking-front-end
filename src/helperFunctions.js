@@ -46,6 +46,110 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 		return re.test( number );
 	}
 
+//10 Jan '20, 5 PM //also converts UTC date-timeof db into local date-time
+export const formatDateTime = (dateStr) => {
+	if( dateStr == null || dateStr == undefined ) {
+		return "";
+	}
+	
+//getting date from recieved date in this function 
+	let time = formatLocalTimeFromDateTime(dateStr);
+	let formattedTime = formatTime(time);
+
+//returning result
+	let date = formatDate4(dateStr);
+
+	let result = date + ", " + formattedTime;
+	return result;
+}
+
+//10 Jan '20
+	export const formatDate4 = (dateStr) => {
+		if( dateStr == null || dateStr == undefined ) {
+			return "";
+		}
+
+		if (isValidTimestamp(dateStr * 1000)) {
+			dateStr = new Date(dateStr * 1000);
+		}
+		var d = new Date(dateStr);
+		var month = d.getUTCMonth().toString();
+		var day = d.getUTCDate().toString();
+		var year = d.getUTCFullYear().toString();
+
+		var yearLen = year.length;
+
+		if( day.length < 2 ) {
+			//to add a extra 0 for case of single digit date
+			day = "0" + day;
+		}
+
+		return (day + " " + monthList[ month ] + " '" + year.substring(yearLen-2, yearLen));
+	}
+
+	//09:45:23.123
+	export const formatLocalTimeFromDateTime = (dateStr) => {
+		if( dateStr == null || dateStr == undefined ) {
+			return "";
+		}
+
+		const date = new Date( dateStr );
+
+		var hour = '' + date.getHours();
+		var min = '' + date.getMinutes();
+		var sec = '' + date.getSeconds();
+		var millis = '' + date.getMilliseconds();
+
+		if( hour.length < 2 ) {
+			hour = '0' + hour;
+		}
+		if( min.length < 2 ) {
+			min = '0' + min;
+		}
+		if( sec.length < 2 ) {
+			sec = '0' + sec;
+		}
+		if( millis.length < 2) {
+			millis = '00' + millis;
+		} else if ( millis.length < 3 ) {
+			millis = '0' + millis;
+		}
+
+		const timeStr = [hour, min, sec].join(":") + "." + millis;
+		return timeStr;
+	}
+
+	// 17:20*** -> 5:20 PM && 17:00 -> 5 PM
+	export const formatTime = (time) => {
+		if( time == null || time == undefined ) {
+			return "";
+		}
+
+		var hours = time.substring(0, 2);
+		var minutes = time.substring(3, 5);
+		var ampm = hours >= 12 ? 'PM' : 'AM';
+		hours = hours > 12 ? hours - 12 : hours;
+		minutes = minutes.length < 2 ? '0' + minutes : minutes;
+		// minutes is now a string
+		if (minutes.length > 0 && minutes != '0' && minutes != '00') {
+			var strTime = hours + ':' + minutes + ' ' + ampm;
+			return strTime;
+		} else {
+			var strTime = hours + ' ' + ampm;
+			return strTime;
+		}
+	}
+
+	//helper function for time date calculation
+	function isValidTimestamp(_timestamp) {
+		const newTimestamp = new Date(_timestamp).getTime();
+		return isNumeric(newTimestamp);
+	}
+
+	function isNumeric(n) {
+		return !isNaN(parseFloat(n)) && isFinite(n);
+	}
+
 //function to fetch products according to pagination
     export const fetchProducts = async ( api_endpoint ) => {
 	//sending rqst to api
@@ -176,7 +280,7 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 	export const fetchTodaysTopBottomCities = async () => {
 	//sending rqst to api
 		try {
-			const request_address = api_url_address + "todays-top-bottom-cities/";
+			const request_address = api_url_address + "get-orders-of-cities-for-today";
 			const response = await axios.get( request_address );
 			
 		//getting resp from sent rqst
@@ -199,7 +303,7 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 	export const fetchWeeklyTopBottomCities = async () => {
 	//sending rqst to api
 		try {
-			const request_address = api_url_address + "weekly-top-bottom-cities/";
+			const request_address = api_url_address + "get-orders-of-cities-for-week/";
 			const response = await axios.get( request_address );
 			
 		//getting resp from sent rqst
@@ -266,108 +370,4 @@ const monthList = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'
 		}
 
 		return null;
-	}
-
-//10 Jan '20, 5 PM //also converts UTC date-timeof db into local date-time
-	export const formatDateTime = (dateStr) => {
-		if( dateStr == null || dateStr == undefined ) {
-			return "";
-		}
-		
-	//getting date from recieved date in this function 
-		let time = formatLocalTimeFromDateTime(dateStr);
-		let formattedTime = formatTime(time);
-
-	//returning result
-		let date = formatDate4(dateStr);
-
-		let result = date + ", " + formattedTime;
-		return result;
-	}
-
-//10 Jan '20
-	export const formatDate4 = (dateStr) => {
-		if( dateStr == null || dateStr == undefined ) {
-			return "";
-		}
-
-		if (isValidTimestamp(dateStr * 1000)) {
-			dateStr = new Date(dateStr * 1000);
-		}
-		var d = new Date(dateStr);
-		var month = d.getUTCMonth().toString();
-		var day = d.getUTCDate().toString();
-		var year = d.getUTCFullYear().toString();
-
-		var yearLen = year.length;
-
-		if( day.length < 2 ) {
-			//to add a extra 0 for case of single digit date
-			day = "0" + day;
-		}
-
-		return (day + " " + monthList[ month ] + " '" + year.substring(yearLen-2, yearLen));
-	}
-
-//09:45:23.123
-	export const formatLocalTimeFromDateTime = (dateStr) => {
-		if( dateStr == null || dateStr == undefined ) {
-			return "";
-		}
-
-		const date = new Date( dateStr );
-
-		var hour = '' + date.getHours();
-		var min = '' + date.getMinutes();
-		var sec = '' + date.getSeconds();
-		var millis = '' + date.getMilliseconds();
-
-		if( hour.length < 2 ) {
-			hour = '0' + hour;
-		}
-		if( min.length < 2 ) {
-			min = '0' + min;
-		}
-		if( sec.length < 2 ) {
-			sec = '0' + sec;
-		}
-		if( millis.length < 2) {
-			millis = '00' + millis;
-		} else if ( millis.length < 3 ) {
-			millis = '0' + millis;
-		}
-
-		const timeStr = [hour, min, sec].join(":") + "." + millis;
-		return timeStr;
-	}
-
-// 17:20*** -> 5:20 PM && 17:00 -> 5 PM
-	export const formatTime = (time) => {
-		if( time == null || time == undefined ) {
-			return "";
-		}
-
-		var hours = time.substring(0, 2);
-		var minutes = time.substring(3, 5);
-		var ampm = hours >= 12 ? 'PM' : 'AM';
-		hours = hours > 12 ? hours - 12 : hours;
-		minutes = minutes.length < 2 ? '0' + minutes : minutes;
-		// minutes is now a string
-		if (minutes.length > 0 && minutes != '0' && minutes != '00') {
-			var strTime = hours + ':' + minutes + ' ' + ampm;
-			return strTime;
-		} else {
-			var strTime = hours + ' ' + ampm;
-			return strTime;
-		}
-	}
-
-//helper function for time date calculation
-	function isValidTimestamp(_timestamp) {
-		const newTimestamp = new Date(_timestamp).getTime();
-		return isNumeric(newTimestamp);
-	}
-
-	function isNumeric(n) {
-		return !isNaN(parseFloat(n)) && isFinite(n);
 	}
