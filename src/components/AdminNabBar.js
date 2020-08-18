@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { project_name } from "../constants";
 
@@ -31,7 +32,11 @@ class AdminNabBar extends Component {
 			        <span className="navbar-toggler-icon"></span>
 		      	</button>
 
-		      	<div className={ this.state.mobileNavBarToggler === false ? "collapse navbar-collapse" : "navbar-collapse display" } id="navbarCollapse">
+				<div
+					id="navbarCollapse"
+				  	className={ classNames( 'navbar-collapse', { 'collapse': !this.state.mobileNavBarToggler }, { 'display': this.state.mobileNavBarToggler } ) }
+					// className={ this.state.mobileNavBarToggler === false ? "collapse " : "display" }
+				>
 		      		<ul className="navbar-nav mr-auto navWebMenu" >
 	      				<li className={ this.props.active === "dashboard" ? "nav-item active" : "nav-item" } ><Link className="nav-link" to="/admin/dashboard">Dashboard</Link></li>
 						<li className={ this.props.active === "filter" ? "nav-item active" : "nav-item" } ><Link className="nav-link"  to="/admin/filter">Filter</Link></li>

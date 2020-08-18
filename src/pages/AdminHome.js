@@ -134,7 +134,7 @@ class AdminHome extends Component {
                         </label>
                         <br /><br />
 
-                        <CircularButton text="Login" style={{ width: 180 }} onClick={ this.onLoginPressed }/>
+                        <CircularButton text="Login" onClick={ this.onLoginPressed }/>
                     </form>
                     <br />
                     <LoadingAnimation loading={ this.state.loading } />

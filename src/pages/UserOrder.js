@@ -119,7 +119,7 @@ class UserOrder extends Component {
                         </label>
                         <br /><br />
 
-                        <CircularButton text="Proceed" style={{ width: 180 }} onClick={ this.onProceedPress }/>
+                        <CircularButton text="Proceed" onClick={ this.onProceedPress }/>
                     </form>
                     <br />
                     <button 

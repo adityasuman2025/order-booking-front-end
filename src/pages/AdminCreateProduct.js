@@ -169,7 +169,7 @@ class AdminCreateProduct extends Component {
                             </label>
                             <br /><br />
 
-                            <CircularButton text="Create" style={{ width: 180 }} onClick={ this.onCreatePressed }/>
+                            <CircularButton text="Create" onClick={ this.onCreatePressed }/>
                         </form>
                         : 
                             <SuccesMsg 

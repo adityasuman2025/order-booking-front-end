@@ -179,7 +179,7 @@ class UserBookOrder extends Component {
                                 </label>
                                 <br /><br />
 
-                                <CircularButton text="Book" style={{ width: 180 }} onClick={ this.onBookPressed }/>
+                                <CircularButton text="Book" onClick={ this.onBookPressed }/>
                             </form>
                         :
                             <SuccesMsg 
