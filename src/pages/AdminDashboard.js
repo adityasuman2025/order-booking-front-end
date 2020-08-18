@@ -42,6 +42,8 @@ class AdminDashboard extends Component {
             this.setState({
                 redirectToAdminHome: true,
             });
+
+            return;
         }
 
     //getting today's top/bottom cities and weekly top/bottom cities from api

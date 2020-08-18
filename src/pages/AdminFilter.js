@@ -43,6 +43,8 @@ class AdminFilter extends Component {
             this.setState({
                 redirectToAdminHome: true,
             });
+
+            return;
         }
 
     //fetching all cities list from api
