@@ -102,6 +102,27 @@ code {
   
 }
 
+.noPadding {
+  padding: 0;
+}
+
+/*------nav bar------*/  
+  .navBarBrand{
+    padding: 10px;
+    padding-left: 15px;
+    font-size: 125%;
+  }
+
+  #mobileNavBarToggler {
+    margin-Right: 5px;
+  }
+
+  .navWebMenu {
+    margin-right: 10px;
+    margin-left: 10px;
+  }
+/*------nav bar------*/
+
 /*--------landing page--------*/
   .horiVertCenter {
     padding: 0;
