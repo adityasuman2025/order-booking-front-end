@@ -23,7 +23,7 @@ function SuccesMsg(props) {
         redirect ? <Redirect to={props.redirectToUrl} /> : null
       }
 
-      <img className="successImg" src={require("../img/tick.png")} />
+      <img className="successImg" src={require("../img/tick.png")} alt="Success" />
       <br />
       <br />
       <div className="successText">{props.successMsg}</div>

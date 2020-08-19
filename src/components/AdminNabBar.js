@@ -19,7 +19,7 @@ function AdminNabBar(props) {
         <Link to="/" style={{ color: "white", textDecoration: "none" }}>
           <img
             className="navLogoImg"
-            alt="logo image"
+            alt="logo"
             src={require("../img/logo.png")}
           />{" "}
           {project_name}

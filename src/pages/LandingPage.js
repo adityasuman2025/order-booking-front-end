@@ -10,7 +10,7 @@ function LandingPage(props) {
       <div className="choiceBox">
         <img
           className="logoImg"
-          alt="logo image"
+          alt="logo"
           src={require("../img/logo.png")}
         />
         <br />
