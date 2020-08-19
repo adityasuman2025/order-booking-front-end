@@ -14,8 +14,7 @@ function AdminDashboard(props) {
     const [ snackBarVisible, setSnackBarVisible ] = useState( false );
     const [ snackBarMsg, setSnackBarMsg ] = useState( "" );
     const [ snackBarType, setSnackBarType ] = useState( "success" );
-    
-    const [ enteredPhoneNo, setEnteredPhoneNo ] = useState( "" );
+
     const [ redirectToAdminHome, setRedirectToAdminHome ] = useState( false );
 
     const [ graphBoxHeight, setGraphBoxHeight ] = useState( 230 );
@@ -37,7 +36,7 @@ function AdminDashboard(props) {
             const isAdminLogged = await getDecryptedCookieValue( "order_booking_admin_logged" );
             if( isAdminLogged != 1 ) {
             //if admin is not logged then redirecting to admin home page
-                redirectToAdminHome( true );
+                setRedirectToAdminHome( true );
                 return;
             }
 
