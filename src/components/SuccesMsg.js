@@ -14,15 +14,17 @@ function SuccesMsg(props) {
             }
         }
     }
-
-//redirecting to admin home page
-    if( redirect ) {
-        return (<Redirect to={ props.redirectToUrl }/>)
-    }
-        
+   
 //rendering
     return (
         <div>
+            {
+            //redirecting to some url
+                redirect ?
+                    <Redirect to={ props.redirectToUrl }/>
+                : null
+            }
+
             <img className="successImg" src={ require("../img/tick.png") } />
             <br /><br />
             <div className="successText">{ props.successMsg }</div>
