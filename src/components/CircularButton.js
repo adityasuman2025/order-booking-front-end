@@ -1,14 +1,12 @@
-import React, {Component} from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
-class CircularButton extends Component {
-  render() {
-    return (
-      <button onClick={ this.props.onClick } className={ classNames( 'circularBtnContainer', this.props.className ) } >
-        { this.props.text }
-      </button>
-    );
-  }
+function CircularButton(props) {
+	return (
+		<button onClick={ props.onClick } className={ classNames( 'circularBtnContainer', props.className ) }  >
+			{ props.text }
+		</button>
+	)
 }
 
 export default CircularButton;

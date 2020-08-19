@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
@@ -8,105 +8,95 @@ import SuccesMsg from "../components/SuccesMsg";
 import { fetchCities, BookUserOrder } from "../apis";
 import { getDecryptedCookieValue } from "../utils";
 
-class UserBookOrder extends Component {
-    constructor(){
-	    super();
-	   
-	    this.state = {
-            loading: true,
+function UserOrder(props) {
+    const [ loading, setLoading ] = useState( true );
+    
+    const [ snackBarVisible, setSnackBarVisible ] = useState( false );
+    const [ snackBarMsg, setSnackBarMsg ] = useState( "" );
+    const [ snackBarType, setSnackBarType ] = useState( "success" );
+    
+    const [ productID, setProductID ] = useState( 0 );
 
-            productID: 0,
+    const [ cities, setCities ] = useState( [] );
+
+    const [ formVisible, setFormVisible ] = useState( true );
+	
+    const [ enteredProductName, setEnteredProductName ] = useState( "" );
+    const [ enteredPhoneNo, setEnteredPhoneNo ] = useState( "" );
+    const [ selectedCity, setSelectedCity ] = useState( 0 );
+
+//componentDidMount
+    useEffect( () => {
+        const componentDidMount = async () => {
+        //getting product name and phone number from cookie
+            const product_id = props.match.params.product_id;
+
+            setProductID( product_id );
+            setEnteredProductName( await getDecryptedCookieValue( "order_booking_selected_product_name" ) || "" );
+            setEnteredPhoneNo( await getDecryptedCookieValue( "order_booking_user_phone_no" ) || 0 );
+
+        //fetching all cities list from api
+            const response = await fetchCities();
+            if( response ) {
+                setCities( response );
+            } else {
+                await makeSnackBar( "Something went wrong", "error" );
+            }
             
-            cities: [],
-
-			snackBarVisible: false,
-			snackBarMsg: "",
-            snackBarType: "success",
-            
-            formVisible: true,
-
-            enteredProductName: "",
-            enteredPhoneNo: "",
-            selectedCity: 0,
-        };
-  	}
-
-  	componentDidMount = async () => {
-    //getting product name and phone number from cookie
-        const product_id = this.props.match.params.product_id;
-        await this.setState({
-            productID: product_id,
-            enteredProductName: await getDecryptedCookieValue( "order_booking_selected_product_name" ) || "",
-            enteredPhoneNo: await getDecryptedCookieValue( "order_booking_user_phone_no" ) || 0,
-        });
-
-    //fetching all cities list from api
-        const response = await fetchCities();
-		if( response ) {
-			await this.setState({
-                cities: response,
-            });
-		} else {
-			await this.makeSnackBar( "Something went wrong", "error" );
+            await hideLoadingAnimation(); //hiding loading animation
         }
-        
-        await this.toogleLoadingAnimation(); //hiding loading animation
-    }
+
+        componentDidMount();
+    }, []);
     
 //function to make a snack-bar
-    makeSnackBar = ( msg, type ) => {
-        this.setState({
-            snackBarVisible: true,
-            snackBarMsg: msg,
-            snackBarType: type,
-        });
+    const makeSnackBar = async ( msg, type ) => {
+        await setSnackBarMsg( msg );
+        await setSnackBarType( type );
+
+        await setSnackBarVisible( true );
     }
 
 //function to close snack-bar
-    handleSnackBarClose = () => {
-        this.setState({
-            snackBarVisible: false
-        });
+    const handleSnackBarClose = () => {
+        setSnackBarVisible( false );
     }
 
 //function to toogle loadiing animation
-    toogleLoadingAnimation = ( ) => {
-        this.setState({
-            loading: !this.state.loading,
-        });
+    const displayLoadingAnimation = async () => {
+        await setLoading( true );
     }
 
-//when an input box content is changed in add question dialog box
-    onChange = (e) => {
-        this.setState({[e.target.name]:e.target.value});
+    const hideLoadingAnimation = async () => {
+        await setLoading( false );
     }
 
 //function to hanlde when book btn is pressed
-    onBookPressed = async (e) => {
+    const onBookPressed = async (e) => {
         e.preventDefault();
 
-        await this.toogleLoadingAnimation(); //displaying loading animation
+        await displayLoadingAnimation(); //displaying loading animation
 
     //verifying if all input data is correct
-        const user_phone_no = this.state.enteredPhoneNo.trim();
-        const product_id = this.state.productID;
-        const city_id = this.state.selectedCity;
+        const user_phone_no = enteredPhoneNo.trim();
+        const product_id = productID;
+        const city_id = selectedCity;
 
         if( city_id == 0 ) {
-            await this.makeSnackBar( "Please select a city", "error" );
-            await this.toogleLoadingAnimation(); //hiding loading animation
+            await makeSnackBar( "Please select a city", "error" );
+            await hideLoadingAnimation(); //hiding loading animation
             return;
         }
 
         if( product_id == 0 ) {
-            await this.makeSnackBar( "Invalid product", "error" );
-            await this.toogleLoadingAnimation(); //hiding loading animation
+            await makeSnackBar( "Invalid product", "error" );
+            await hideLoadingAnimation(); //hiding loading animation
             return;
         }
 
         if( user_phone_no == "" ) {
-            await this.makeSnackBar( "Invalid Phone Number", "error" );
-            await this.toogleLoadingAnimation(); //hiding loading animation
+            await makeSnackBar( "Invalid Phone Number", "error" );
+            await hideLoadingAnimation(); //hiding loading animation
             return;
         }
         
@@ -114,93 +104,88 @@ class UserBookOrder extends Component {
         const response = await BookUserOrder( user_phone_no, product_id, city_id  );
 		if( response ) {
         //hiding form and displaying success msg
-            await this.setState({
-                formVisible: false,
-            });
-
-			await this.makeSnackBar( "Your order successfully booked", "success" );
+            setFormVisible( false );
+			await makeSnackBar( "Your order successfully booked", "success" );
 		} else {
-			await this.makeSnackBar( "Something went wrong", "error" );
+			await makeSnackBar( "Something went wrong", "error" );
         }
         
-        await this.toogleLoadingAnimation(); //hiding loading animation
+        await hideLoadingAnimation(); //hiding loading animation
     }
 //rendering
-    render() {
-        return (
-            <div>
-                <div className="pageContent center">
-                    <br /><br /><br /><br />
-                    <h2>
-                        Book Your Order
-                    </h2>
-                    <br />
+    return (
+        <div>
+            <div className="pageContent center">
+                <br /><br /><br /><br />
+                <h2>
+                    Book Your Order
+                </h2>
+                <br />
 
-                    {
-                        this.state.formVisible ? 
-                            <form onSubmit={ this.onBookPressed }>
-                                <label className="labelBox">
-                                    Product
-                                    <br />
-                                    <div className="inputBox inputBox2" >
-                                        { this.state.enteredProductName }
-                                    </div>
-                                </label>
-                                <br /><br />
-                                
-                                <label className="labelBox">
-                                    Phone Number
-                                    <br />
-                                    <div className="inputBox inputBox2" >
-                                        { this.state.enteredPhoneNo }
-                                    </div>
-                                </label>
-                                <br /><br />
+                {
+                    formVisible ? 
+                        <form onSubmit={ onBookPressed }>
+                            <label className="labelBox">
+                                Product
+                                <br />
+                                <div className="inputBox inputBox2" >
+                                    { enteredProductName }
+                                </div>
+                            </label>
+                            <br /><br />
+                            
+                            <label className="labelBox">
+                                Phone Number
+                                <br />
+                                <div className="inputBox inputBox2" >
+                                    { enteredPhoneNo }
+                                </div>
+                            </label>
+                            <br /><br />
 
-                                <label className="labelBox">
-                                    City
-                                    <br />
-                                    <select 
-                                        type="number" 
-                                        className="inputBox inputBox2" 
-                                        name="selectedCity" 
-                                        value={ this.state.selectedCity }
-                                        onChange={ this.onChange } 
-                                    >
-                                        <option value="0" >select city</option>
-                                        {
-                                            this.state.cities.map( (item, idx ) => {
-                                                return (
-                                                    <option key={ idx } value={ item.id } >{ item.name }</option>
-                                                )
-                                            })
-                                        }
-                                    </select>
-                                </label>
-                                <br /><br />
+                            <label className="labelBox">
+                                City
+                                <br />
+                                <select 
+                                    type="number" 
+                                    className="inputBox inputBox2" 
+                                    name="selectedCity" 
+                                    value={ selectedCity }
+                                    onChange={ ( e ) => setSelectedCity( e.target.value ) }
+                                >
+                                    <option value="0" >select city</option>
+                                    {
+                                        cities.map( (item, idx ) => {
+                                            return (
+                                                <option key={ idx } value={ item.id } >{ item.name }</option>
+                                            )
+                                        })
+                                    }
+                                </select>
+                            </label>
+                            <br /><br />
 
-                                <CircularButton text="Book" onClick={ this.onBookPressed }/>
-                            </form>
-                        :
-                            <SuccesMsg 
-                                successMsg="Your order successfully booked" 
-                                redirectToName="Home"
-                                redirectToUrl="/user"
-                            />
-                    }
-                    
-                    <br />
-                    <LoadingAnimation loading={ this.state.loading } />
-                </div>
+                            <CircularButton text="Book" onClick={ onBookPressed }/>
+                        </form>
+                    :
+                        <SuccesMsg 
+                            successMsg="Your order successfully booked" 
+                            redirectToName="Home"
+                            redirectToUrl="/user"
+                        />
+                }
 
-                <SnackBar 
-					open={ this.state.snackBarVisible } 
-					msg={ this.state.snackBarMsg } 
-					type={ this.state.snackBarType }
-					handleClose={ this.handleSnackBarClose } />
+                <br />
+                <LoadingAnimation loading={ loading } />
             </div>
-        );
-    }
+
+            <SnackBar 
+                open={ snackBarVisible } 
+                msg={ snackBarMsg } 
+                type={ snackBarType }
+                handleClose={ handleSnackBarClose } />
+        </div>
+    )
 }
 
-export default UserBookOrder;
+export default UserOrder;

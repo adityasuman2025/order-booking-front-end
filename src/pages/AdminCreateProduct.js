@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import AdminNavBar from "../components/AdminNabBar";
@@ -10,187 +10,172 @@ import SuccesMsg from "../components/SuccesMsg";
 import { getDecryptedCookieValue } from "../utils";
 import { createProduct } from "../apis";
 
-class AdminCreateProduct extends Component {
-    constructor(){
-	    super();
+function AdminCreateProduct(props) {
+    const [ loading, setLoading ] = useState( true );
+    
+    const [ snackBarVisible, setSnackBarVisible ] = useState( false );
+    const [ snackBarMsg, setSnackBarMsg ] = useState( "" );
+    const [ snackBarType, setSnackBarType ] = useState( "success" );
+    
+    const [ redirectToAdminHome, setRedirectToAdminHome ] = useState( false );
 
-	    this.state = {
-            loading: true,
+    const [ formVisible, setFormVisible ] = useState( true );
+    
+    const [ enteredProductName, setEnteredProductName ] = useState( "" );
+    const [ enteredProductDesc, setEnteredProductDesc ] = useState( "" );
+    const [ enteredProductPrice, setEnteredProductPrice ] = useState( "" );
 
-			snackBarVisible: false,
-			snackBarMsg: "",
-            snackBarType: "success",
+//componentDidMount
+    useEffect( () => {
+        const componentDidMount = async () => {
+        //checking if admin is logged or not
+            const isAdminLogged = await getDecryptedCookieValue( "order_booking_admin_logged" );
+            if( isAdminLogged != 1 ) {
+            //if admin is not logged then redirecting to admin home page
+                setRedirectToAdminHome( true );
+                return;
+            }
 
-            redirectToAdminHome: false,
-
-            formVisible: true,
-
-            enteredProductName: "",
-            enteredProductDesc: "",
-            enteredProductPrice: "",
-        }
-    }
-
-    componentDidMount = async () => {
-    //checking if admin is logged or not
-        const isAdminLogged = await getDecryptedCookieValue( "order_booking_admin_logged" );
-        if( isAdminLogged != 1 ) {
-        //if admin is not logged then redirecting to admin home page
-            this.setState({
-                redirectToAdminHome: true,
-            });
-
-            return;
+            await hideLoadingAnimation(); //hiding loading animation
         }
 
-        await this.toogleLoadingAnimation(); //hiding loading animation
-    }
+        componentDidMount();
+    }, []);
 
 //function to make a snack-bar
-    makeSnackBar = ( msg, type ) => {
-        this.setState({
-            snackBarVisible: true,
-            snackBarMsg: msg,
-            snackBarType: type,
-        });
+    const makeSnackBar = async ( msg, type ) => {
+        await setSnackBarMsg( msg );
+        await setSnackBarType( type );
+
+        await setSnackBarVisible( true );
     }
 
-    //function to close snack-bar
-    handleSnackBarClose = () => {
-        this.setState({
-            snackBarVisible: false
-        });
+//function to close snack-bar
+    const handleSnackBarClose = () => {
+        setSnackBarVisible( false );
     }
 
-    //function to toogle loadiing animation
-    toogleLoadingAnimation = ( ) => {
-        this.setState({
-            loading: !this.state.loading,
-        });
+//function to toogle loadiing animation
+    const displayLoadingAnimation = async () => {
+        await setLoading( true );
     }
 
-//when an input box content is changed in add question dialog box
-    onChange = (e) => {
-        this.setState({[e.target.name]:e.target.value});
+    const hideLoadingAnimation = async () => {
+        await setLoading( false );
     }
 
 //function to hanlde when create btn is clicked
-    onCreatePressed = async (e) => {
+    const onCreatePressed = async (e) => {
         e.preventDefault();
-
-        await this.toogleLoadingAnimation(); //showing loading animation
+        await displayLoadingAnimation(); //showing loading animation
         
     //verifying if entered data
-        const enteredProductName    = this.state.enteredProductName.trim();
-        const enteredProductDesc    = this.state.enteredProductDesc.trim();
-        const enteredProductPrice   = this.state.enteredProductPrice.trim();
+        const enteredProduct_Name    = enteredProductName.trim();
+        const enteredProduct_Desc    = enteredProductDesc.trim();
+        const enteredProduct_Price   = enteredProductPrice.trim();
 
-        if( enteredProductName != "" && enteredProductDesc != "" && enteredProductPrice != "" ) {
+        if( enteredProduct_Name != "" && enteredProduct_Desc != "" && enteredProduct_Price != "" ) {
         //if everything is fine
-            const response = await createProduct( enteredProductName, enteredProductDesc, enteredProductPrice );
+            const response = await createProduct( enteredProduct_Name, enteredProduct_Desc, enteredProduct_Price );
             if( response == 1 ) {
             //hiding form and displaying success msg
-                await this.setState({
-                    formVisible: false,
-                });
-
-                await this.makeSnackBar( "Product successfully created.", "success" );
+                setFormVisible( false );
+                await makeSnackBar( "Product successfully created.", "success" );
             } else {
-                await this.makeSnackBar( "Something went wrong", "error" );
+                await makeSnackBar( "Something went wrong", "error" );
             }
         } else {
-            await this.makeSnackBar( "Please fill all details", "error" );
+            await makeSnackBar( "Please fill all details", "error" );
         }
 
-        await this.toogleLoadingAnimation(); //hiding loading animation
+        await hideLoadingAnimation(); //hiding loading animation
     }
 
 //rendering
-    render() {
-    //redirecting to admin home page
-        if( this.state.redirectToAdminHome ) {
-            return (<Redirect to={'/admin'}/>)
-        }
+    return (
+        <div>
+            {
+            //redirecting to admin home page
+                redirectToAdminHome ?
+                    <Redirect to={'/admin'}/>
+                : null
+            }
 
-    //rendering
-        return (
-            <div>
-                <AdminNavBar active="create_product" />
-                <br/><br/><br/>
+            <AdminNavBar active="create_product" />
+            <br/><br/><br/>
 
-                <div className="pageContent center">
-                    <br /><br />
-                    <h2>
-                        Create Product
-                    </h2>
-                    <br />
+            <div className="pageContent center">
+                <br /><br />
+                <h2>
+                    Create Product
+                </h2>
+                <br />
 
-                    {
-                        this.state.formVisible ? 
-                            <form onSubmit={ this.onCreatePressed }>
-                            <label className="labelBox">
-                                Name
-                                <br />
-                                <input 
-                                    type="text"
-                                    required
-                                    className="inputBox inputBox2" 
-                                    // placeholder="first name" 
-                                    name="enteredProductName" 
-                                    value={ this.state.enteredProductName }
-                                    onChange={ this.onChange } />
-                            </label>
-                            <br /><br />
+                {
+                    formVisible ? 
+                        <form onSubmit={ onCreatePressed }>
+                        <label className="labelBox">
+                            Name
+                            <br />
+                            <input 
+                                type="text"
+                                required
+                                className="inputBox inputBox2" 
+                                // placeholder="first name" 
+                                name="enteredProductName" 
+                                value={ enteredProductName }
+                                onChange={ ( e ) => setEnteredProductName( e.target.value ) } />
+                        </label>
+                        <br /><br />
 
-                            <label className="labelBox">
-                                Description
-                                <br />
-                                <textarea
-                                    required
-                                    className="inputBox inputBox2" 
-                                    // placeholder="second name" 
-                                    name="enteredProductDesc" 
-                                    value={ this.state.enteredProductDesc }
-                                    onChange={ this.onChange } />
-                            </label>
-                            <br /><br />
-                            
-                            <label className="labelBox">
-                                Price (in Rupees)
-                                <br />
-                                <input 
-                                    type="number" 
-                                    required
-                                    className="inputBox inputBox2" 
-                                    // placeholder="phone nuber" 
-                                    name="enteredProductPrice" 
-                                    value={ this.state.enteredProductPrice }
-                                    onChange={ this.onChange } />
-                            </label>
-                            <br /><br />
+                        <label className="labelBox">
+                            Description
+                            <br />
+                            <textarea
+                                required
+                                className="inputBox inputBox2" 
+                                // placeholder="second name" 
+                                name="enteredProductDesc" 
+                                value={ enteredProductDesc }
+                                onChange={ ( e ) => setEnteredProductDesc( e.target.value ) } />
+                        </label>
+                        <br /><br />
+                        
+                        <label className="labelBox">
+                            Price (in Rupees)
+                            <br />
+                            <input 
+                                type="number" 
+                                required
+                                className="inputBox inputBox2" 
+                                // placeholder="phone nuber" 
+                                name="enteredProductPrice" 
+                                value={ enteredProductPrice }
+                                onChange={ ( e ) => setEnteredProductPrice( e.target.value ) } />
+                        </label>
+                        <br /><br />
 
-                            <CircularButton text="Create" onClick={ this.onCreatePressed }/>
-                        </form>
-                        : 
-                            <SuccesMsg 
-                                successMsg="Product successfully created" 
-                                redirectToName="Create Another"
-                                redirectToUrl="reload"
-                            />
-                    }
-                    
-                    <br />
-                    <LoadingAnimation loading={ this.state.loading } />
-                </div>
-
-                <SnackBar 
-					open={ this.state.snackBarVisible } 
-					msg={ this.state.snackBarMsg } 
-					type={ this.state.snackBarType }
-					handleClose={ this.handleSnackBarClose } />
+                        <CircularButton text="Create" onClick={ onCreatePressed }/>
+                    </form>
+                    : 
+                        <SuccesMsg 
+                            successMsg="Product successfully created" 
+                            redirectToName="Create Another"
+                            redirectToUrl="reload"
+                        />
+                }
+                
+                <br />
+                <LoadingAnimation loading={ loading } />
             </div>
-        );
-    }
+
+            <SnackBar 
+                open={ snackBarVisible } 
+                msg={ snackBarMsg } 
+                type={ snackBarType }
+                handleClose={ handleSnackBarClose } />
+        </div>
+    )
 }
 
 export default AdminCreateProduct;

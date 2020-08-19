@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import PaginationView from "../components/PaginationView";
 import SnackBar from "../components/SnackBar";
@@ -8,165 +8,152 @@ import { pagination_size } from "../constants";
 import { fetchProducts } from "../apis";
 import { makeEncryptedCookie } from "../utils";
 
-class UserHome extends Component {
-	constructor(){
-	    super();
-	   
-	    this.state = {
-			loading: true,
+function UserHome(props) {
+    const [ loading, setLoading ] = useState( true );
+    
+    const [ snackBarVisible, setSnackBarVisible ] = useState( false );
+    const [ snackBarMsg, setSnackBarMsg ] = useState( "" );
+    const [ snackBarType, setSnackBarType ] = useState( "success" );
+    
+    const [ products, setProducts ] = useState( [] );
+	
+	const [ baseAPIEndPoint, setBaseAPIEndPoint ] = useState( "get-products-list/?format=json" );
 
-			baseAPIEndpoint: "get-products-list/?format=json",
+    const [ paginationVisible, setPaginationVisible ] = useState( false );
+    const [ paginationTotalItems, setPaginationTotalItems ] = useState( 0 );
+    const [ paginationActivePage, setPaginationActivePage ] = useState( 0 );
 
-			products: [],
-
-			snackBarVisible: false,
-			snackBarMsg: "",
-			snackBarType: "success",
-
-			paginationVisible: false,
-			paginationTotalItems: 0,
-			padinationActivePage: 0,
-	    };
-  	}
-
-  	componentDidMount = async () => {
-	//by default first page of products will be listed
-		const response = await fetchProducts ( this.state.baseAPIEndpoint );
-		if( response ) {
-			const total_items = response.count;
-			const results = response.results;
-
-			await this.setState({
-				paginationTotalItems: total_items,
-				products: results
-			});
-			
-			await this.setState({
-				paginationVisible: true,
-			});
-		} else {
-			await this.makeSnackBar( "Something went wrong", "error" );
+//componentDidMount
+	useEffect( () => {
+		const componentDidMount = async () => {
+		//by default first page of products will be listed
+			await fetchAndDisplay( baseAPIEndPoint );
+			await hideLoadingAnimation(); //hiding loading animation
 		}
 
-		await this.toogleLoadingAnimation(); //hiding loading animation
+		componentDidMount();
+	}, []);
+
+//function to make a snack-bar
+    const makeSnackBar = async ( msg, type ) => {
+        await setSnackBarMsg( msg );
+        await setSnackBarType( type );
+
+        await setSnackBarVisible( true );
+    }
+
+//function to close snack-bar
+    const handleSnackBarClose = () => {
+        setSnackBarVisible( false );
+    }
+
+//function to toogle loadiing animation
+	const displayLoadingAnimation = async () => {
+        await setLoading( true );
 	}
+	
+	const hideLoadingAnimation = async () => {
+        await setLoading( false );
+    }
 
 //function to handle when any pagination btn is pressed
-	onPaginationBtnClick = async ( index ) => {
-		this.toogleLoadingAnimation(); //displaying loading animation
+	const onPaginationBtnClick = async ( index ) => {
+		await displayLoadingAnimation(); //displaying loading animation
 
 	//highlighting the selected page btn
-		await this.setState({
-			padinationActivePage: index,
-		});
+		await setPaginationActivePage( index );
 
 	//loading the selected page content
-		let api_end_point = this.state.baseAPIEndpoint;
+		let api_end_point = baseAPIEndPoint;
 		if( index > 0 ) {
 			const page = index + 1;
 			api_end_point += "&page=" + page;
 		}
-		const response = await fetchProducts ( api_end_point );
+
+		await fetchAndDisplay( api_end_point );
+
+		await hideLoadingAnimation(); //hiding loading animation
+	}
+
+//function to fetch and dispay products as per pagination
+	const fetchAndDisplay = async ( baseAPI_EndPoint ) => {
+		const response = await fetchProducts( baseAPI_EndPoint );
 		if( response ) {
+			const total_items = response.count;
 			const results = response.results;
-			this.setState({
-				products: results
-			});
+
+			await setProducts( results );
+
+			await setPaginationTotalItems( total_items );
+			await setPaginationVisible( true );
 		} else {
-			this.makeSnackBar( "Something went wrong", "error" );
+			await makeSnackBar( "Something went wrong", "error" );
 		}
-
-		this.toogleLoadingAnimation(); //hiding loading animation
-	}
-
-//function to make a snack-bar
-	makeSnackBar = ( msg, type ) => {
-		this.setState({
-			snackBarVisible: true,
-			snackBarMsg: msg,
-			snackBarType: type,
-		});
-	}
-
-//function to close snack-bar
-	handleSnackBarClose = () => {
-        this.setState({
-            snackBarVisible: false
-        });
-    }
-	
-//function to toogle loadiing animation
-	toogleLoadingAnimation = ( ) => {
-		this.setState({
-			loading: !this.state.loading,
-		});
 	}
 
 //when any product is clicked on
-	handleProductClicked = async ( item ) => {
+	const handleProductClicked = async ( item ) => {
 		const selected_product_name_cookie = await makeEncryptedCookie( "order_booking_selected_product_name", item.name );
 		if( selected_product_name_cookie ) {
-			this.props.history.push( '/user/order/' + item.id );
+			props.history.push( '/user/order/' + item.id );
 		} else {
-			await this.makeSnackBar( "Something went wrong", "error" );    
+			await makeSnackBar( "Something went wrong", "error" );    
 		}
 	}
 
 //rendering
-	render() {
-		return (
-			<div>
-				<div className="pageContent">
-					<h2>
-						Choose any product to book order
-					</h2>
-					<br />
-
-					{
-					//listing products
-						this.state.products.map( ( item, idx ) => {
-							return(
-								<div 
-									key={idx} 
-									className="row productList" 
-									onClick={ () => this.handleProductClicked( item ) } >
-									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productText">
-										{ item.name }
-										<span className="productPrice floatRight">
-											{ "Rs. " + item.price }
-										</span>
-									</div>
-									<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productDateTimeText">
-										{ item.description }
-									</div>
-								</div>
-							)
-						})
-					}
-
-					<LoadingAnimation loading={ this.state.loading } />
-				</div>
+	return (
+		<div>
+			<div className="pageContent">
+				<h2>
+					Choose any product to book order
+				</h2>
+				<br />
 
 				{
-				//pagination area
-					this.state.paginationVisible ?
-						<PaginationView 
-							total_items={ this.state.paginationTotalItems } 
-							pagination_size={ pagination_size }
-							active_page_no={ this.state.padinationActivePage }
-							onPaginationBtnClick={ this.onPaginationBtnClick }
-						/>
-					: null
+				//listing products
+					products.map( ( item, idx ) => {
+						return(
+							<div 
+								key={idx} 
+								className="row productList" 
+								onClick={ () => handleProductClicked( item ) } >
+								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productText">
+									{ item.name }
+									<span className="productPrice floatRight">
+										{ "Rs. " + item.price }
+									</span>
+								</div>
+								<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 productDateTimeText">
+									{ item.description }
+								</div>
+							</div>
+						)
+					})
 				}
 
-				<SnackBar 
-					open={ this.state.snackBarVisible } 
-					msg={ this.state.snackBarMsg } 
-					type={ this.state.snackBarType }
-					handleClose={ this.handleSnackBarClose } />
+				<LoadingAnimation loading={ loading } />
 			</div>
-		);
-	}
+
+			{
+			//pagination area
+				paginationVisible ?
+					<PaginationView 
+						total_items={ paginationTotalItems }
+						pagination_size={ pagination_size }
+						active_page_no={ paginationActivePage }
+						onPaginationBtnClick={ onPaginationBtnClick }
+					/>
+				: null
+			}
+
+			<SnackBar 
+				open={ snackBarVisible } 
+				msg={ snackBarMsg } 
+				type={ snackBarType }
+				handleClose={ handleSnackBarClose } />
+		</div>
+	)
 }
 
 export default UserHome;
