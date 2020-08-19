@@ -8,6 +8,8 @@ function PaginationView(props) {
     const pagination_size = props.pagination_size;
     const no_of_btns = Math.ceil(total_items / pagination_size); //least integer function
 
+    if (no_of_btns < 2) return null;
+
     let html = [];
 
     let i = 0;
