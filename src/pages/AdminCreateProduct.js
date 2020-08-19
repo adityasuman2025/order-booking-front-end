@@ -32,7 +32,7 @@ function AdminCreateProduct(props) {
       const isAdminLogged = await getDecryptedCookieValue(
         "order_booking_admin_logged"
       );
-      if (isAdminLogged != 1) {
+      if (isAdminLogged !== "1") {
         //if admin is not logged then redirecting to admin home page
         setRedirectToAdminHome(true);
         return;
@@ -77,9 +77,9 @@ function AdminCreateProduct(props) {
     const enteredProduct_Price = enteredProductPrice.trim();
 
     if (
-      enteredProduct_Name != "" &&
-      enteredProduct_Desc != "" &&
-      enteredProduct_Price != ""
+      enteredProduct_Name !== "" &&
+      enteredProduct_Desc !== "" &&
+      enteredProduct_Price !== ""
     ) {
       //if everything is fine
       const response = await createProduct(
@@ -87,7 +87,7 @@ function AdminCreateProduct(props) {
         enteredProduct_Desc,
         enteredProduct_Price
       );
-      if (response == 1) {
+      if (response === 1) {
         //hiding form and displaying success msg
         setFormVisible(false);
         await makeSnackBar("Product successfully created.", "success");

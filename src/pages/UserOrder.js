@@ -65,13 +65,13 @@ function UserOrder(props) {
 
     //checking if some phone no is entered
     const entered_PhoneNo = await enteredPhoneNo.trim();
-    if (entered_PhoneNo == "") {
+    if (entered_PhoneNo === "") {
       await makeSnackBar("Please enter a phone number", "error");
     } else {
       const response = await checkUserExistsWithGivenPhoneNumber(
         entered_PhoneNo
       );
-      if (response == 1) {
+      if (response === 1) {
         //making of the phone no entered by user and redirecting to book-order page
         const enteredPhoneNo_cookie = await makeEncryptedCookie(
           "order_booking_user_phone_no",
@@ -85,7 +85,7 @@ function UserOrder(props) {
         } else {
           await makeSnackBar("Something went wrong", "error");
         }
-      } else if (response == 0) {
+      } else if (response === 0) {
         await makeSnackBar(
           "This phone number is not registered. Please Create a User to continue",
           "error"

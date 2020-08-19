@@ -7,7 +7,7 @@ function SuccesMsg(props) {
   //on clicking on any redirect button
   const redirectToUrl = () => {
     if (props.redirectToName && props.redirectToUrl) {
-      if (props.redirectToUrl == "reload") {
+      if (props.redirectToUrl === "reload") {
         window.location.reload();
       } else {
         setRedirect(true);

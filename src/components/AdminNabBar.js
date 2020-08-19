@@ -44,7 +44,7 @@ function AdminNabBar(props) {
         <ul className="navbar-nav mr-auto navWebMenu">
           <li
             className={classNames("nav-item", {
-              active: props.active == "dashboard",
+              active: props.active === "dashboard",
             })}
           >
             <Link className="nav-link" to="/admin/dashboard">
@@ -53,7 +53,7 @@ function AdminNabBar(props) {
           </li>
           <li
             className={classNames("nav-item", {
-              active: props.active == "filter",
+              active: props.active === "filter",
             })}
           >
             <Link className="nav-link" to="/admin/filter">
@@ -62,7 +62,7 @@ function AdminNabBar(props) {
           </li>
           <li
             className={classNames("nav-item", {
-              active: props.active == "create_product",
+              active: props.active === "create_product",
             })}
           >
             <Link className="nav-link" to="/admin/create-product">

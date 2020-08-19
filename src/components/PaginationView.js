@@ -22,10 +22,10 @@ function PaginationView(props) {
           type="button"
           className={classNames(
             "btn",
-            { coloredBtn: props.active_page_no == i },
-            { defaultBtn: props.active_page_no != i }
+            { coloredBtn: props.active_page_no === i },
+            { defaultBtn: props.active_page_no !== i }
           )}
-          // className={ props.active_page_no == i ? "btn coloredBtn" : "btn defaultBtn" }
+          // className={ props.active_page_no === i ? "btn coloredBtn" : "btn defaultBtn" }
           onClick={() => props.onPaginationBtnClick(index)}
         >
           {i + 1}

@@ -71,9 +71,9 @@ class UserCreateUser extends Component {
     const enteredPhoneNo = this.state.enteredPhoneNo.trim();
 
     if (
-      enteredFirstName != "" &&
-      enteredSecondName != "" &&
-      enteredPhoneNo != ""
+      enteredFirstName !== "" &&
+      enteredSecondName !== "" &&
+      enteredPhoneNo !== ""
     ) {
       if (!validateUsername(enteredFirstName)) {
         await this.makeSnackBar(
@@ -102,7 +102,7 @@ class UserCreateUser extends Component {
         return;
       }
 
-      if (enteredPhoneNo.length != 10) {
+      if (enteredPhoneNo.length !== 10) {
         await this.makeSnackBar("Phone number must be 10 digits long", "error");
         await this.toogleLoadingAnimation(); //hiding loading animation
         return;
@@ -114,7 +114,7 @@ class UserCreateUser extends Component {
         enteredSecondName,
         enteredPhoneNo
       );
-      if (response == 1) {
+      if (response === 1) {
         //hiding form and displaying success msg
         await this.setState({
           formVisible: false,

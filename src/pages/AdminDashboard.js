@@ -39,7 +39,7 @@ function AdminDashboard(props) {
       const isAdminLogged = await getDecryptedCookieValue(
         "order_booking_admin_logged"
       );
-      if (isAdminLogged != 1) {
+      if (isAdminLogged !== "1") {
         //if admin is not logged then redirecting to admin home page
         setRedirectToAdminHome(true);
         return;
@@ -136,12 +136,12 @@ function AdminDashboard(props) {
     const pillarHeight =
       Math.floor((graphBox_Height * count) / max_count) || 17; // min height of 17 will be there in case of max_count = 0
 
-    if (idx == 0) {
+    if (idx === 0) {
       return {
         backgroundColor: "#9bf594",
         height: pillarHeight,
       };
-    } else if (idx == 1) {
+    } else if (idx === 1) {
       return {
         backgroundColor: "#f1b56e",
         height: pillarHeight,

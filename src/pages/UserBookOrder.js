@@ -88,19 +88,19 @@ function UserOrder(props) {
     const product_id = productID;
     const city_id = selectedCity;
 
-    if (city_id == 0) {
+    if (city_id === 0) {
       await makeSnackBar("Please select a city", "error");
       await hideLoadingAnimation(); //hiding loading animation
       return;
     }
 
-    if (product_id == 0) {
+    if (product_id === 0) {
       await makeSnackBar("Invalid product", "error");
       await hideLoadingAnimation(); //hiding loading animation
       return;
     }
 
-    if (user_phone_no == "") {
+    if (user_phone_no === "") {
       await makeSnackBar("Invalid Phone Number", "error");
       await hideLoadingAnimation(); //hiding loading animation
       return;
