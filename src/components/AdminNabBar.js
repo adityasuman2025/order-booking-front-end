@@ -16,12 +16,14 @@ function AdminNabBar(props) {
   return (
     <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark noPadding">
       <div id="navbar-brand" className="navbar-brand navBarBrand">
-        <img
-          className="navLogoImg"
-          alt="logo image"
-          src={require("../img/logo.png")}
-        />{" "}
-        {project_name}
+        <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+          <img
+            className="navLogoImg"
+            alt="logo image"
+            src={require("../img/logo.png")}
+          />{" "}
+          {project_name}
+        </Link>
       </div>
 
       <button
