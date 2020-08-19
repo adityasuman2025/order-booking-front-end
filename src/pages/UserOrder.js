@@ -76,7 +76,9 @@ class UserOrder extends Component {
             //making of the phone no entered by user and redirecting to book-order page
                 const enteredPhoneNo_cookie = await makeEncryptedCookie( "order_booking_user_phone_no", enteredPhoneNo );
                 if( enteredPhoneNo_cookie ) {
-                    this.props.history.push( '/user/book-order/' + product_id )
+                    this.props.history.push( '/user/book-order/' + product_id );
+
+                    return;
                 } else {
                     await this.makeSnackBar( "Something went wrong", "error" );    
                 }

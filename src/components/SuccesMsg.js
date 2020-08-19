@@ -1,56 +1,45 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 
-class SuccesMsg extends Component {
-    constructor(){
-        super();
-
-        this.state = {
-            redirect: false,
-        }
-    }
+function SuccesMsg(props) {
+    const [ redirect, setRedirect ] = useState( false );
 
 //on clicking on any redirect button
-    redirectToUrl = () => {
-        if( this.props.redirectToName && this.props.redirectToUrl ) {
-            if( this.props.redirectToUrl == "reload" ) {
+    const redirectToUrl = () => {
+        if( props.redirectToName && props.redirectToUrl ) {
+            if( props.redirectToUrl == "reload" ) {
                 window.location.reload();
             } else {
-                this.setState({
-                    redirect: true,
-                });
+                setRedirect( true );
             }
         }
     }
 
-//rendering
-    render() {
-    //redirecting to admin home page
-        if( this.state.redirect ) {
-            return (<Redirect to={ this.props.redirectToUrl }/>)
-        }
-        
-    //rendering
-        return (
-            <div>
-                <img className="successImg" src={ require("../img/tick.png") } />
-                <br /><br />
-                <div className="successText">{ this.props.successMsg }</div>
-                <br />
-
-                {
-                    this.props.redirectToName ? 
-                        <button 
-                            className="btn coloredTextBtn"
-                            onClick={ this.redirectToUrl }
-                        >
-                            { this.props.redirectToName }
-                        </button>
-                    : null
-                }
-            </div>
-        );
+//redirecting to admin home page
+    if( redirect ) {
+        return (<Redirect to={ props.redirectToUrl }/>)
     }
+        
+//rendering
+    return (
+        <div>
+            <img className="successImg" src={ require("../img/tick.png") } />
+            <br /><br />
+            <div className="successText">{ props.successMsg }</div>
+            <br />
+
+            {
+                props.redirectToName ? 
+                    <button 
+                        className="btn coloredTextBtn"
+                        onClick={ redirectToUrl }
+                    >
+                        { props.redirectToName }
+                    </button>
+                : null
+            }
+        </div>
+    )
 }
   
 export default SuccesMsg;

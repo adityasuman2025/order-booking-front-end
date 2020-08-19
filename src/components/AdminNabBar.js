@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { project_name } from "../constants";
 
 function AdminNabBar(props) {
-	const [ mobileNavBarToggler, setMobileNavBarToggler ] = useState( false );	
+	const [ mobileNavBarToggler, setMobileNavBarToggler ] = useState( false );
 
 //function to toggle mobile menu 
 	const handleMobileNavBarToggler = () => {

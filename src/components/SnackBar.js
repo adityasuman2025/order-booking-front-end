@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
@@ -7,21 +7,15 @@ function Alert(props) {
 	return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-class SnackBar extends Component {
-    constructor(){
-        super();
-    }
-
+function SnackBar(props) {
 //rendering
-    render() {
-        return (
-            <Snackbar open={ this.props.open } autoHideDuration={ 6000 } onClose={ this.props.handleClose }>
-                <Alert onClose={ this.props.handleClose } severity={ this.props.type }>
-                    { this.props.msg }
-                </Alert>
-            </Snackbar>
-        );
-    }
+    return (
+        <Snackbar open={ props.open } autoHideDuration={ 6000 } onClose={ props.handleClose }>
+            <Alert onClose={ props.handleClose } severity={ props.type }>
+                { props.msg }
+            </Alert>
+        </Snackbar>
+    )
 }
   
 export default SnackBar;
