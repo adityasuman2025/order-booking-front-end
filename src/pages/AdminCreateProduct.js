@@ -36,7 +36,7 @@ function AdminCreateProduct(props) {
                 return;
             }
 
-            await toogleLoadingAnimation(); //hiding loading animation
+            await hideLoadingAnimation(); //hiding loading animation
         }
 
         componentDidMount();
@@ -56,14 +56,18 @@ function AdminCreateProduct(props) {
     }
 
 //function to toogle loadiing animation
-    const toogleLoadingAnimation = async () => {
-        await setLoading( !loading );
+    const displayLoadingAnimation = async () => {
+        await setLoading( true );
+    }
+
+    const hideLoadingAnimation = async () => {
+        await setLoading( false );
     }
 
 //function to hanlde when create btn is clicked
     const onCreatePressed = async (e) => {
         e.preventDefault();
-        // await toogleLoadingAnimation(); //showing loading animation
+        await displayLoadingAnimation(); //showing loading animation
         
     //verifying if entered data
         const enteredProduct_Name    = enteredProductName.trim();
@@ -84,7 +88,7 @@ function AdminCreateProduct(props) {
             await makeSnackBar( "Please fill all details", "error" );
         }
 
-        // await toogleLoadingAnimation(); //hiding loading animation
+        await hideLoadingAnimation(); //hiding loading animation
     }
 
 //rendering

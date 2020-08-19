@@ -53,7 +53,7 @@ function AdminFilter(props) {
         //by default "All" cities orders will be displayed
             await fetchAndDisplayOrders( selectedCity );
 
-            await toogleLoadingAnimation(); //hiding loading animation
+            await hideLoadingAnimation(); //hiding loading animation
         }
 
         componentDidMount();
@@ -73,21 +73,25 @@ function AdminFilter(props) {
     }
 
 //function to toogle loadiing animation
-    const toogleLoadingAnimation = async () => {
-        await setLoading( !loading );
+    const displayLoadingAnimation = async () => {
+        await setLoading( true );
+    }
+
+    const hideLoadingAnimation = async () => {
+        await setLoading( false );
     }
 
 // when a city is selected from drop down menu
     const onSelectACity = async (e) => {
         const selected_City = await e.target.value;
+
+        await displayLoadingAnimation(); //displaying loading animation
         await setSelectedCity( selected_City );
-
-        // await toogleLoadingAnimation(); //displaying loading animation
-
-    //fetching orders of that city from api
+    
+        //fetching orders of that city from api        
         await fetchAndDisplayOrders( selected_City );
 
-        // await toogleLoadingAnimation(); //hiding loading animation
+        await hideLoadingAnimation(); //hiding loading animation
     }
 
 //function to fetch and display order list
@@ -111,7 +115,7 @@ function AdminFilter(props) {
 
 //function to handle when any pagination btn is pressed
     const onPaginationBtnClick = async ( index ) => {
-        // await toogleLoadingAnimation(); //displaying loading animation
+        await displayLoadingAnimation(); //displaying loading animation
 
     //highlighting the selected page btn
         await setPaginationActivePage( index );
@@ -130,7 +134,7 @@ function AdminFilter(props) {
             makeSnackBar( "Something went wrong", "error" );
         }
 
-        // await toogleLoadingAnimation(); //hiding loading animation
+        await hideLoadingAnimation(); //hiding loading animation
     }
 
 //rendering

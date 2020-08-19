@@ -97,7 +97,7 @@ function AdminDashboard(props) {
                 await makeSnackBar( "Something went wrong", "error" );
             }
 
-            await toogleLoadingAnimation(); //hiding loading animation
+            await hideLoadingAnimation(); //hiding loading animation
         }
 
         componentDidMount();
@@ -117,8 +117,12 @@ function AdminDashboard(props) {
     }
 
 //function to toogle loadiing animation
-    const toogleLoadingAnimation = async () => {
-        await setLoading( !loading );
+    const displayLoadingAnimation = async () => {
+        await setLoading( true );
+	}
+	
+	const hideLoadingAnimation = async () => {
+        await setLoading( false );
     }
 
 //function to style graph pillar as per its order count and position

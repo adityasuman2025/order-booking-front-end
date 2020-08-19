@@ -29,7 +29,7 @@ function AdminHome(props) {
                 return;
             }
 
-            await toogleLoadingAnimation(); //hiding loading animation
+            await hideLoadingAnimation(); //hiding loading animation
         }
 
         componentDidMount();
@@ -49,15 +49,19 @@ function AdminHome(props) {
     }
 
 //function to toogle loadiing animation
-    const toogleLoadingAnimation = async () => {
-        await setLoading( !loading );
+    const displayLoadingAnimation = async () => {
+        await setLoading( true );
+    }
+
+    const hideLoadingAnimation = async () => {
+        await setLoading( false );
     }
 
 //when login btn is pressed 
 	const onLoginPressed = async (e) => {
 		e.preventDefault();
-        // await toogleLoadingAnimation(); //displaying loading animation
-        
+        await displayLoadingAnimation(); //displaying loading animation
+
 	//verifying entered data
 		const entered_PhoneNo = enteredPhoneNo.trim();
 		if( entered_PhoneNo != "" ) {
@@ -81,7 +85,7 @@ function AdminHome(props) {
 			await makeSnackBar( "Please enter phone no", "error" );
 		}
 
-        // await toogleLoadingAnimation(); //hiding loading animation
+        await hideLoadingAnimation(); //hiding loading animation
     }
 
 //rendering
