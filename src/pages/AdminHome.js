@@ -83,13 +83,13 @@ function AdminHome(props) {
             return;
           }
         } else {
-          await makeSnackBar("This phone no is not admin", "error");
+          await makeSnackBar("Invalid admin phone number", "error");
         }
       } else {
-        await makeSnackBar("This phone no is not registered", "error");
+        await makeSnackBar("This phone number is not registered", "error");
       }
     } else {
-      await makeSnackBar("Please enter phone no", "error");
+      await makeSnackBar("Please enter your phone number", "error");
     }
 
     await hideLoadingAnimation(); //hiding loading animation
@@ -113,7 +113,7 @@ function AdminHome(props) {
 
         <form onSubmit={onLoginPressed}>
           <label className="labelBox">
-            Phone no
+            Phone Number
             <br />
             <input
               type="number"

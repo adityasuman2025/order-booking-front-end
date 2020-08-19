@@ -110,12 +110,12 @@ function UserOrder(props) {
 
         <form onSubmit={onProceedPress}>
           <label>
-            enter your phone number
+            Enter your phone number
             <br />
             <input
               type="number"
               className="inputBox"
-              placeholder="phone number"
+              placeholder="Phone Number"
               name="enteredPhoneNo"
               value={enteredPhoneNo}
               onChange={(e) => setEnteredPhoneNo(e.target.value)}

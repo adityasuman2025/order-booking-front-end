@@ -157,7 +157,7 @@ function UserOrder(props) {
                 value={selectedCity}
                 onChange={(e) => setSelectedCity(e.target.value)}
               >
-                <option value="0">select city</option>
+                <option value="0">Select City</option>
                 {cities.map((item, idx) => {
                   return (
                     <option key={idx} value={item.id}>
@@ -174,8 +174,8 @@ function UserOrder(props) {
           </form>
         ) : (
           <SuccesMsg
-            successMsg="Your order successfully booked"
-            redirectToName="Home"
+            successMsg="Thank you for booking your order with us!"
+            redirectToName="HOME"
             redirectToUrl="/user"
           />
         )}
