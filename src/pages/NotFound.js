@@ -1,13 +1,11 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-class NotFound extends Component {
-  render() {
+function NotFound(props) {
     return (
       <div className="redColored">
        	Page not found
       </div>
-    );
-  }
+    )
 }
 
 export default NotFound;
