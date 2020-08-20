@@ -1,5 +1,3 @@
-import axios from 'axios';
-
 import { fetchProducts, fetchCities } from "../apis";
 
 export const fetchProductsAction = ( baseAPI_EndPoint ) => async (dispatch) => {

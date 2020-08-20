@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
 
 import PaginationView from "../components/PaginationView";
 import AdminNavBar from "../components/AdminNabBar";
@@ -9,6 +10,7 @@ import LoadingAnimation from "../components/LoadingAnimation";
 import { pagination_size } from "../constants";
 import { fetchCities, fetchOrdersByCity } from "../apis";
 import { getDecryptedCookieValue, formatDateTime } from "../utils";
+import { fetchCitiesAction } from '../actions/index';
 
 function AdminFilter(props) {
   const [loading, setLoading] = useState(true);
@@ -50,12 +52,7 @@ function AdminFilter(props) {
 
       //fetching all cities list from api
       try {
-        const response = await fetchCities();
-        if (response) {
-          setCities(response);
-        } else {
-          await makeSnackBar("Something went wrong", "error");
-        }
+        await props.fetchCitiesAction();
       } catch {
         await makeSnackBar("Something went wrong", "error");
       }
@@ -68,6 +65,13 @@ function AdminFilter(props) {
 
     componentDidMount();
   }, []);
+
+  // to keep trace if any error is coming in fetching cities from api
+  useEffect(() => {
+    if( props.cities.error === 1 ) {
+      makeSnackBar("Something went wrong", "error");
+    }
+  }, [ props.cities ]);
 
   //function to make a snack-bar
   const makeSnackBar = async (msg, type) => {
@@ -177,7 +181,7 @@ function AdminFilter(props) {
             onChange={onSelectACity}
           >
             <option value="0">All</option>
-            {cities.map((item, idx) => {
+            {props.cities.data.map((item, idx) => {
               return (
                 <option key={idx} value={item.id}>
                   {item.name}
@@ -239,4 +243,16 @@ function AdminFilter(props) {
   );
 }
 
-export default AdminFilter;
+const mapStateToProps = (state) => {
+  return {
+    cities: state.cities,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    fetchCitiesAction: () => { dispatch(fetchCitiesAction()) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)( AdminFilter );

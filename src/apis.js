@@ -196,6 +196,29 @@ export const fetchWeeklyTopBottomCities = async () => {
   return null;
 };
 
+//function to fetch orders by city according to pagination
+export const fetchOrdersByCity = async (api_endpoint) => {
+  //sending rqst to api
+  try {
+    const request_address = api_url_address + api_endpoint;
+    const response = await axios.get(request_address);
+
+    //getting resp from sent rqst
+    if (response) {
+      const resp = await response.data;
+
+      const results = resp.results;
+      if (results) {
+        return resp;
+      }
+    }
+  } catch {
+    // makeSnackBar( "something went wrong", "error" );
+  }
+
+  return null;
+};
+
 //function to create a product
 export const createProduct = async (name, description, price) => {
   //sending rqst to api
@@ -214,29 +237,6 @@ export const createProduct = async (name, description, price) => {
       const error = resp.error;
       if (error === 0) {
         return 1;
-      }
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
-
-  return null;
-};
-
-//function to fetch orders by city according to pagination
-export const fetchOrdersByCity = async (api_endpoint) => {
-  //sending rqst to api
-  try {
-    const request_address = api_url_address + api_endpoint;
-    const response = await axios.get(request_address);
-
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
-
-      const results = resp.results;
-      if (results) {
-        return resp;
       }
     }
   } catch {
