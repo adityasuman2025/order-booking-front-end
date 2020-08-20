@@ -29,7 +29,7 @@ function UserHome(props) {
   useEffect(() => {
     const componentDidMount = async () => {
       //by default first page of products will be listed
-      await fetchAndDisplay(baseAPIEndPoint);
+      await fetchAndDisplayProducts(baseAPIEndPoint);
       await hideLoadingAnimation(); //hiding loading animation
     };
 
@@ -62,9 +62,6 @@ function UserHome(props) {
   const onPaginationBtnClick = async (index) => {
     await displayLoadingAnimation(); //displaying loading animation
 
-    //highlighting the selected page btn
-    await setPaginationActivePage(index);
-
     //loading the selected page content
     let api_end_point = baseAPIEndPoint;
     if (index > 0) {
@@ -72,23 +69,30 @@ function UserHome(props) {
       api_end_point += "&page=" + page;
     }
 
-    await fetchAndDisplay(api_end_point);
-
+    await fetchAndDisplayProducts(api_end_point);
+    
+    //highlighting the selected page btn
+    await setPaginationActivePage(index);
+    
     await hideLoadingAnimation(); //hiding loading animation
   };
 
   //function to fetch and dispay products as per pagination
-  const fetchAndDisplay = async (baseAPI_EndPoint) => {
-    const response = await fetchProducts(baseAPI_EndPoint);
-    if (response) {
-      const total_items = response.count;
-      const results = response.results;
+  const fetchAndDisplayProducts = async (baseAPI_EndPoint) => {
+    try {
+      const response = await fetchProducts(baseAPI_EndPoint);
+      if (response) {
+        const total_items = response.count;
+        const results = response.results;
 
-      await setProducts(results);
+        await setProducts(results);
 
-      await setPaginationTotalItems(total_items);
-      await setPaginationVisible(true);
-    } else {
+        await setPaginationTotalItems(total_items);
+        await setPaginationVisible(true);
+      } else {
+        await makeSnackBar("Something went wrong", "error");
+      }
+    } catch {
       await makeSnackBar("Something went wrong", "error");
     }
   };

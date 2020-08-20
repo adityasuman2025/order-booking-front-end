@@ -38,14 +38,18 @@ function UserOrder(props) {
         )) || ""
       );
       setEnteredPhoneNo(
-        (await getDecryptedCookieValue("order_booking_user_phone_no")) || 0
+        (await getDecryptedCookieValue("order_booking_user_phone_no")) || ""
       );
 
       //fetching all cities list from api
-      const response = await fetchCities();
-      if (response) {
-        setCities(response);
-      } else {
+      try {
+        const response = await fetchCities();
+        if (response) {
+          setCities(response);
+        } else {
+          await makeSnackBar("Something went wrong", "error");
+        }
+      } catch {
         await makeSnackBar("Something went wrong", "error");
       }
 
@@ -107,12 +111,16 @@ function UserOrder(props) {
     }
 
     //all good //sending rqst to api to book an order of the user
-    const response = await BookUserOrder(user_phone_no, product_id, city_id);
-    if (response) {
-      //hiding form and displaying success msg
-      setFormVisible(false);
-      await makeSnackBar("Your order successfully booked", "success");
-    } else {
+    try {
+      const response = await BookUserOrder(user_phone_no, product_id, city_id);
+      if (response) {
+        //hiding form and displaying success msg
+        setFormVisible(false);
+        await makeSnackBar("Your order successfully booked", "success");
+      } else {
+        await makeSnackBar("Something went wrong", "error");
+      }
+    } catch {
       await makeSnackBar("Something went wrong", "error");
     }
 

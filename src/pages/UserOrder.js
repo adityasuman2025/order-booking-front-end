@@ -68,29 +68,33 @@ function UserOrder(props) {
     if (entered_PhoneNo === "") {
       await makeSnackBar("Please enter a phone number", "error");
     } else {
-      const response = await checkUserExistsWithGivenPhoneNumber(
-        entered_PhoneNo
-      );
-      if (response === 1) {
-        //making of the phone no entered by user and redirecting to book-order page
-        const enteredPhoneNo_cookie = await makeEncryptedCookie(
-          "order_booking_user_phone_no",
+      try {
+        const response = await checkUserExistsWithGivenPhoneNumber(
           entered_PhoneNo
         );
-        if (enteredPhoneNo_cookie) {
-          const product_id = await productID;
-          props.history.push("/user/book-order/" + product_id);
+        if (response === 1) {
+          //making of the phone no entered by user and redirecting to book-order page
+          const enteredPhoneNo_cookie = await makeEncryptedCookie(
+            "order_booking_user_phone_no",
+            entered_PhoneNo
+          );
+          if (enteredPhoneNo_cookie) {
+            const product_id = await productID;
+            props.history.push("/user/book-order/" + product_id);
 
-          return;
+            return;
+          } else {
+            await makeSnackBar("Something went wrong", "error");
+          }
+        } else if (response === 0) {
+          await makeSnackBar(
+            "This phone number is not registered. Please Create a User to continue",
+            "error"
+          );
         } else {
           await makeSnackBar("Something went wrong", "error");
         }
-      } else if (response === 0) {
-        await makeSnackBar(
-          "This phone number is not registered. Please Create a User to continue",
-          "error"
-        );
-      } else {
+      } catch {
         await makeSnackBar("Something went wrong", "error");
       }
     }
