@@ -36,7 +36,7 @@ function UserHome(props) {
 
   // to keep trace if any error is coming in fetching products from api
   useEffect(() => {
-    if( props.products.error == 1 ) {
+    if( props.products.error === 1 ) {
       makeSnackBar("Something went wrong", "error");
     }
   }, [ props.products ]);
@@ -173,6 +173,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-
-// export default UserHome;
 export default connect(mapStateToProps, mapDispatchToProps)( UserHome );

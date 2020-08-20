@@ -6,7 +6,6 @@ const rootReducer = ( state = initState, action ) => {
     const { type, payload } = action
     switch(type) {
         case 'GET_PRODUCTS': return { ...state, products: payload }
-        case 'UPDATE_THEME': return { ...state, isDark: payload }
         default: return state
     }
 

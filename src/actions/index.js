@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { fetchProducts } from "../apis";
+import { fetchProducts, } from "../apis";
 
 export const fetchProductsAction = ( baseAPI_EndPoint ) => async (dispatch) => {
     let toSend = {};
@@ -21,9 +21,4 @@ export const fetchProductsAction = ( baseAPI_EndPoint ) => async (dispatch) => {
     } catch {
         dispatch({ type: 'GET_PRODUCTS', payload: toSend });
     }
-}
-
-export const updateCachedPosts = () => async (dispatch) => {
-    // let posts = await db.posts.toArray()
-    dispatch({ type: 'UPDATE_POSTS', payload: []})
 }
