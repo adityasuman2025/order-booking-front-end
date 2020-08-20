@@ -69,24 +69,28 @@ function AdminHome(props) {
     //verifying entered data
     const entered_PhoneNo = enteredPhoneNo.trim();
     if (entered_PhoneNo !== "") {
-      const response = await verifyAdmin(entered_PhoneNo);
-      if (response) {
-        const res = response[0];
-        if (res.is_admin === 1) {
-          //redirecting to admin dashboard page
-          const logged_admin_cookie = await makeEncryptedCookie(
-            "order_booking_admin_logged",
-            "1"
-          );
-          if (logged_admin_cookie) {
-            setRedirectToAdminDashboard(true);
-            return;
+      try {
+        const response = await verifyAdmin(entered_PhoneNo);
+        if (response) {
+          const res = response[0];
+          if (res.is_admin === 1) {
+            //redirecting to admin dashboard page
+            const logged_admin_cookie = await makeEncryptedCookie(
+              "order_booking_admin_logged",
+              "1"
+            );
+            if (logged_admin_cookie) {
+              setRedirectToAdminDashboard(true);
+              return;
+            }
+          } else {
+            await makeSnackBar("Invalid admin phone number", "error");
           }
         } else {
-          await makeSnackBar("Invalid admin phone number", "error");
-        }
-      } else {
-        await makeSnackBar("This phone number is not registered", "error");
+          await makeSnackBar("This phone number is not registered", "error");
+        } 
+      } catch {
+        await makeSnackBar("Something went wrong", "error");
       }
     } else {
       await makeSnackBar("Please enter your phone number", "error");

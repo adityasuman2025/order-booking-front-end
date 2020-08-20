@@ -46,59 +46,63 @@ function AdminDashboard(props) {
       }
 
       //getting today's top/bottom cities and weekly top/bottom cities from api
-      const response1 = await fetchTodaysTopBottomCities();
-      const response2 = await fetchWeeklyTopBottomCities();
-      if (response1 && response2) {
-        const todays = response1;
-        const weekly = response2;
+      try {
+        const response1 = await fetchTodaysTopBottomCities();
+        const response2 = await fetchWeeklyTopBottomCities();
+        if (response1 && response2) {
+          const todays = response1;
+          const weekly = response2;
 
-        //getting todays top/bottom cities
-        let todaysTop3 = [...todays]; //copying todays array to todaysTop3 array
-        todaysTop3 = todaysTop3.reverse();
-        todaysTop3 = todaysTop3.slice(0, 3);
+          //getting todays top/bottom cities
+          let todaysTop3 = [...todays]; //copying todays array to todaysTop3 array
+          todaysTop3 = todaysTop3.reverse();
+          todaysTop3 = todaysTop3.slice(0, 3);
 
-        let todaysTopMaxOrderCount = 1;
-        if (todaysTop3[0]) {
-          todaysTopMaxOrderCount = todaysTop3[0].order_count;
+          let todaysTopMaxOrderCount = 1;
+          if (todaysTop3[0]) {
+            todaysTopMaxOrderCount = todaysTop3[0].order_count;
+          }
+
+          let todaysBottom3 = todays.slice(0, 3);
+          todaysBottom3.reverse();
+
+          let todaysBottomMaxOrderCount = 1;
+          if (todaysBottom3[0]) {
+            todaysBottomMaxOrderCount = todaysBottom3[0].order_count;
+          }
+
+          //getting weekly top/bottom cities
+          let weeklyTop3 = [...weekly]; //copying weekly array to weeklyTop3 array
+          weeklyTop3 = weeklyTop3.reverse();
+          weeklyTop3 = weeklyTop3.slice(0, 3);
+
+          let weeklyTopMaxOrderCount = 1;
+          if (weeklyTop3[0]) {
+            weeklyTopMaxOrderCount = weeklyTop3[0].order_count;
+          }
+
+          const weeklyBottom3 = weekly.slice(0, 3);
+          weeklyBottom3.reverse();
+
+          let weeklyBottomMaxOrderCount = 1;
+          if (weeklyBottom3[0]) {
+            weeklyBottomMaxOrderCount = weeklyBottom3[0].order_count;
+          }
+
+          //updating state
+          setTodaysTopMaxOrderCount(todaysTopMaxOrderCount);
+          setTodaysBottomMaxOrderCount(todaysBottomMaxOrderCount);
+          setWeeklyTopMaxOrderCount(weeklyTopMaxOrderCount);
+          setWeeklyBottomMaxOrderCount(weeklyBottomMaxOrderCount);
+
+          setTodaysTop3(todaysTop3);
+          setTodaysBottom3(todaysBottom3);
+          setWeeklyTop3(weeklyTop3);
+          setWeeklyBottom3(weeklyBottom3);
+        } else {
+          await makeSnackBar("Something went wrong", "error");
         }
-
-        let todaysBottom3 = todays.slice(0, 3);
-        todaysBottom3.reverse();
-
-        let todaysBottomMaxOrderCount = 1;
-        if (todaysBottom3[0]) {
-          todaysBottomMaxOrderCount = todaysBottom3[0].order_count;
-        }
-
-        //getting weekly top/bottom cities
-        let weeklyTop3 = [...weekly]; //copying weekly array to weeklyTop3 array
-        weeklyTop3 = weeklyTop3.reverse();
-        weeklyTop3 = weeklyTop3.slice(0, 3);
-
-        let weeklyTopMaxOrderCount = 1;
-        if (weeklyTop3[0]) {
-          weeklyTopMaxOrderCount = weeklyTop3[0].order_count;
-        }
-
-        const weeklyBottom3 = weekly.slice(0, 3);
-        weeklyBottom3.reverse();
-
-        let weeklyBottomMaxOrderCount = 1;
-        if (weeklyBottom3[0]) {
-          weeklyBottomMaxOrderCount = weeklyBottom3[0].order_count;
-        }
-
-        //updating state
-        setTodaysTopMaxOrderCount(todaysTopMaxOrderCount);
-        setTodaysBottomMaxOrderCount(todaysBottomMaxOrderCount);
-        setWeeklyTopMaxOrderCount(weeklyTopMaxOrderCount);
-        setWeeklyBottomMaxOrderCount(weeklyBottomMaxOrderCount);
-
-        setTodaysTop3(todaysTop3);
-        setTodaysBottom3(todaysBottom3);
-        setWeeklyTop3(weeklyTop3);
-        setWeeklyBottom3(weeklyBottom3);
-      } else {
+      } catch {
         await makeSnackBar("Something went wrong", "error");
       }
 
