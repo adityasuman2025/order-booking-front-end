@@ -79,30 +79,6 @@ export const createUser = async (first_name, last_name, phone) => {
   return null;
 };
 
-//function to verify phone no is admin or not
-export const verifyAdmin = async (phone_no) => {
-  //sending rqst to api
-  try {
-    const request_address =
-      api_url_address + "verify-admin/?phone_no=" + phone_no;
-    const response = await axios.get(request_address);
-
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
-
-      const error = resp.error;
-      if (error === 0) {
-        return resp.resp;
-      }
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
-
-  return null;
-};
-
 //function to fetch all cities
 export const fetchCities = async () => {
   //sending rqst to api
@@ -144,6 +120,30 @@ export const BookUserOrder = async (user_phone_no, product_id, city_id) => {
       const error = resp.error;
       if (error === 0) {
         return 1;
+      }
+    }
+  } catch {
+    // makeSnackBar( "something went wrong", "error" );
+  }
+
+  return null;
+};
+
+//function to verify phone no is admin or not
+export const verifyAdmin = async (phone_no) => {
+  //sending rqst to api
+  try {
+    const request_address =
+      api_url_address + "verify-admin/?phone_no=" + phone_no;
+    const response = await axios.get(request_address);
+
+    //getting resp from sent rqst
+    if (response) {
+      const resp = await response.data;
+
+      const error = resp.error;
+      if (error === 0) {
+        return resp.resp;
       }
     }
   } catch {
