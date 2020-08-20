@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { fetchProducts, } from "../apis";
+import { fetchProducts, fetchCities } from "../apis";
 
 export const fetchProductsAction = ( baseAPI_EndPoint ) => async (dispatch) => {
     let toSend = {};
@@ -20,5 +20,24 @@ export const fetchProductsAction = ( baseAPI_EndPoint ) => async (dispatch) => {
         }
     } catch {
         dispatch({ type: 'GET_PRODUCTS', payload: toSend });
+    }
+}
+
+export const fetchCitiesAction = ( baseAPI_EndPoint ) => async (dispatch) => {
+    let toSend = {};
+    toSend["error"] = 1;
+    toSend["data"] = [];
+    try {
+        const response = await fetchCities(baseAPI_EndPoint);
+        if( response ) {
+            toSend["error"]         = response.error;
+            toSend["data"]          = response.resp;
+
+            dispatch({ type: 'GET_CITIES', payload: toSend });
+        } else {
+            dispatch({ type: 'GET_CITIES', payload: toSend });
+        }
+    } catch {
+        dispatch({ type: 'GET_CITIES', payload: toSend });
     }
 }

@@ -168,8 +168,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return  {
-    fetchProductsAction: (baseAPI_EndPoint) => { dispatch(fetchProductsAction(baseAPI_EndPoint)) },
-      // updateCachedPosts: () => { dispatch(updateCachedPosts())}
+    fetchProductsAction: (baseAPI_EndPoint) => { dispatch(fetchProductsAction(baseAPI_EndPoint))
   }
 }
 

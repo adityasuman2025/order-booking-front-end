@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux';
 
 import CircularButton from "../components/CircularButton";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 import SuccesMsg from "../components/SuccesMsg";
 
-import { fetchCities, BookUserOrder } from "../apis";
+import { BookUserOrder } from "../apis";
 import { getDecryptedCookieValue } from "../utils";
+import { fetchCitiesAction } from '../actions/index';
 
 function UserOrder(props) {
   const [loading, setLoading] = useState(true);
@@ -16,8 +18,6 @@ function UserOrder(props) {
   const [snackBarType, setSnackBarType] = useState("success");
 
   const [productID, setProductID] = useState(0);
-
-  const [cities, setCities] = useState([]);
 
   const [formVisible, setFormVisible] = useState(true);
 
@@ -43,12 +43,7 @@ function UserOrder(props) {
 
       //fetching all cities list from api
       try {
-        const response = await fetchCities();
-        if (response) {
-          setCities(response);
-        } else {
-          await makeSnackBar("Something went wrong", "error");
-        }
+        await props.fetchCitiesAction();
       } catch {
         await makeSnackBar("Something went wrong", "error");
       }
@@ -58,6 +53,13 @@ function UserOrder(props) {
 
     componentDidMount();
   }, []);
+
+  // to keep trace if any error is coming in fetching cities from api
+  useEffect(() => {
+    if( props.cities.error === 1 ) {
+      makeSnackBar("Something went wrong", "error");
+    }
+  }, [ props.cities ]);
 
   //function to make a snack-bar
   const makeSnackBar = async (msg, type) => {
@@ -126,6 +128,7 @@ function UserOrder(props) {
 
     await hideLoadingAnimation(); //hiding loading animation
   };
+
   //rendering
   return (
     <div>
@@ -166,7 +169,7 @@ function UserOrder(props) {
                 onChange={(e) => setSelectedCity(e.target.value)}
               >
                 <option value="0">Select City</option>
-                {cities.map((item, idx) => {
+                {props.cities.data.map((item, idx) => {
                   return (
                     <option key={idx} value={item.id}>
                       {item.name}
@@ -202,4 +205,16 @@ function UserOrder(props) {
   );
 }
 
-export default UserOrder;
+const mapStateToProps = (state) => {
+  return {
+    cities: state.cities,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    fetchCitiesAction: () => { dispatch(fetchCitiesAction()) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)( UserOrder );
