@@ -71,7 +71,7 @@ function AdminCreateProduct(props) {
     e.preventDefault();
     await displayLoadingAnimation(); //showing loading animation
 
-    //verifying if entered data
+    //verifying the entered data
     const enteredProduct_Name = enteredProductName.trim();
     const enteredProduct_Desc = enteredProductDesc.trim();
     const enteredProduct_Price = enteredProductPrice.trim();

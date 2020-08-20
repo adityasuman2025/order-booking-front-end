@@ -120,6 +120,16 @@ code {
   width: 180px;
 }
 
+.whiteLink { 
+  color: white;
+  text-decoration: none
+}
+
+.whiteLink:hover { 
+  color: white;
+  text-decoration: none
+}
+
 /*------nav bar------*/  
   .navBarBrand{
     padding: 10px;

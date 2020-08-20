@@ -42,7 +42,7 @@ function AdminFilter(props) {
       const isAdminLogged = await getDecryptedCookieValue(
         "order_booking_admin_logged"
       );
-      if (isAdminLogged !== 1) {
+      if (isAdminLogged !== "1") {
         //if admin is not logged then redirecting to admin home page
         setRedirectToAdminHome(true);
         return;

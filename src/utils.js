@@ -1,4 +1,3 @@
-import React from "react";
 import Cookies from "universal-cookie";
 import CryptoJS from "crypto-js";
 
@@ -41,6 +40,7 @@ export const makeEncryptedCookie = async (key, value) => {
     return false;
   }
 };
+
 //function to validate name, contact no and email
 export const validateUsername = (name) => {
   var re = /^[a-zA-Z]*$/;
@@ -140,10 +140,10 @@ export const formatTime = (time) => {
   minutes = minutes.length < 2 ? "0" + minutes : minutes;
   // minutes is now a string
   if (minutes.length > 0 && minutes !== "0" && minutes !== "00") {
-    var strTime = hours + ":" + minutes + " " + ampm;
+    let strTime = hours + ":" + minutes + " " + ampm;
     return strTime;
   } else {
-    var strTime = hours + " " + ampm;
+    let strTime = hours + " " + ampm;
     return strTime;
   }
 };

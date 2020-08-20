@@ -27,7 +27,7 @@ function AdminHome(props) {
       const isAdminLogged = await getDecryptedCookieValue(
         "order_booking_admin_logged"
       );
-      if (isAdminLogged === 1) {
+      if (isAdminLogged === "1") {
         //if admin is already logged then redirecting to admin dashboard page
         await setRedirectToAdminDashboard(true);
         return;

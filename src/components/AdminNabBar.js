@@ -16,7 +16,7 @@ function AdminNabBar(props) {
   return (
     <nav className="navbar navbar-expand-md navbar-dark fixed-top bg-dark noPadding">
       <div id="navbar-brand" className="navbar-brand navBarBrand">
-        <Link to="/" style={{ color: "white", textDecoration: "none" }}>
+        <Link to="/" className="whiteLink">
           <img
             className="navLogoImg"
             alt="logo"
