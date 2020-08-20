@@ -81,17 +81,21 @@ function AdminCreateProduct(props) {
       enteredProduct_Desc !== "" &&
       enteredProduct_Price !== ""
     ) {
-      //if everything is fine
-      const response = await createProduct(
-        enteredProduct_Name,
-        enteredProduct_Desc,
-        enteredProduct_Price
-      );
-      if (response === 1) {
-        //hiding form and displaying success msg
-        setFormVisible(false);
-        await makeSnackBar("Product successfully created.", "success");
-      } else {
+      try {
+        //if everything is fine
+        const response = await createProduct(
+          enteredProduct_Name,
+          enteredProduct_Desc,
+          enteredProduct_Price
+        );
+        if (response === 1) {
+          //hiding form and displaying success msg
+          setFormVisible(false);
+          await makeSnackBar("Product successfully created.", "success");
+        } else {
+          await makeSnackBar("Something went wrong", "error");
+        }
+      } catch {
         await makeSnackBar("Something went wrong", "error");
       }
     } else {

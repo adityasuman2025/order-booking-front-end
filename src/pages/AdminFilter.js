@@ -49,10 +49,14 @@ function AdminFilter(props) {
       }
 
       //fetching all cities list from api
-      const response = await fetchCities();
-      if (response) {
-        setCities(response);
-      } else {
+      try {
+        const response = await fetchCities();
+        if (response) {
+          setCities(response);
+        } else {
+          await makeSnackBar("Something went wrong", "error");
+        }
+      } catch {
         await makeSnackBar("Something went wrong", "error");
       }
 
@@ -102,19 +106,23 @@ function AdminFilter(props) {
 
   //function to fetch and display order list
   const fetchAndDisplayOrders = async (city_id) => {
-    const baseAPI_Endpoint = (await baseAPIEndPoint) + city_id;
-    const response = await fetchOrdersByCity(baseAPI_Endpoint);
-    if (response) {
-      const total_items = response.count;
-      const results = response.results;
+    try {
+      const baseAPI_Endpoint = (await baseAPIEndPoint) + city_id;
+      const response = await fetchOrdersByCity(baseAPI_Endpoint);
+      if (response) {
+        const total_items = response.count;
+        const results = response.results;
 
-      await setOrders(results);
+        await setOrders(results);
 
-      await setPaginationAPIEndPoint(baseAPI_Endpoint);
-      await setPaginationTotalItems(total_items);
-      await setPaginationActivePage(0);
-      await setPaginationVisible(true);
-    } else {
+        await setPaginationAPIEndPoint(baseAPI_Endpoint);
+        await setPaginationTotalItems(total_items);
+        await setPaginationActivePage(0);
+        await setPaginationVisible(true);
+      } else {
+        await makeSnackBar("Something went wrong", "error");
+      }
+    } catch {
       await makeSnackBar("Something went wrong", "error");
     }
   };
@@ -123,20 +131,25 @@ function AdminFilter(props) {
   const onPaginationBtnClick = async (index) => {
     await displayLoadingAnimation(); //displaying loading animation
 
-    //highlighting the selected page btn
-    await setPaginationActivePage(index);
-
     //loading the selected page content
     let api_end_point = paginationAPIEndPoint;
     if (index > 0) {
       const page = index + 1;
       api_end_point += "&page=" + page;
     }
-    const response = await fetchOrdersByCity(api_end_point);
-    if (response) {
-      const results = response.results;
-      await setOrders(results);
-    } else {
+
+    try {
+      const response = await fetchOrdersByCity(api_end_point);
+      if (response) {
+        const results = response.results;
+        await setOrders(results);
+
+        //highlighting the selected page btn
+        await setPaginationActivePage(index);
+      } else {
+        makeSnackBar("Something went wrong", "error");
+      } 
+    } catch {
       makeSnackBar("Something went wrong", "error");
     }
 
