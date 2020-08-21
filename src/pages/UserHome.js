@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
+import { connect } from 'react-redux';
 
 import PaginationView from "../components/PaginationView";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
 import { pagination_size } from "../constants";
-import { fetchProducts } from "../apis";
 import { makeEncryptedCookie } from "../utils";
+import { fetchProductsAction } from '../actions/index';
 
 function UserHome(props) {
   const [loading, setLoading] = useState(true);
@@ -15,14 +16,11 @@ function UserHome(props) {
   const [snackBarMsg, setSnackBarMsg] = useState("");
   const [snackBarType, setSnackBarType] = useState("success");
 
-  const [products, setProducts] = useState([]);
-
   const [baseAPIEndPoint, setBaseAPIEndPoint] = useState(
     "get-products-list/?format=json"
   );
 
   const [paginationVisible, setPaginationVisible] = useState(false);
-  const [paginationTotalItems, setPaginationTotalItems] = useState(0);
   const [paginationActivePage, setPaginationActivePage] = useState(0);
 
   //componentDidMount
@@ -35,6 +33,13 @@ function UserHome(props) {
 
     componentDidMount();
   }, []);
+
+  // to keep trace if any error is coming in fetching products from api
+  useEffect(() => {
+    if( props.products.error === 1 ) {
+      makeSnackBar("Something went wrong", "error");
+    }
+  }, [ props.products ]);
 
   //function to make a snack-bar
   const makeSnackBar = async (msg, type) => {
@@ -80,18 +85,8 @@ function UserHome(props) {
   //function to fetch and dispay products as per pagination
   const fetchAndDisplayProducts = async (baseAPI_EndPoint) => {
     try {
-      const response = await fetchProducts(baseAPI_EndPoint);
-      if (response) {
-        const total_items = response.count;
-        const results = response.results;
-
-        await setProducts(results);
-
-        await setPaginationTotalItems(total_items);
-        await setPaginationVisible(true);
-      } else {
-        await makeSnackBar("Something went wrong", "error");
-      }
+      await props.fetchProductsAction(baseAPI_EndPoint);
+      await setPaginationVisible(true); 
     } catch {
       await makeSnackBar("Something went wrong", "error");
     }
@@ -119,7 +114,7 @@ function UserHome(props) {
 
         {
           //listing products
-          products.map((item, idx) => {
+          props.products.data.map((item, idx) => {
             return (
               <div
                 key={idx}
@@ -147,7 +142,7 @@ function UserHome(props) {
         //pagination area
         paginationVisible ? (
           <PaginationView
-            total_items={paginationTotalItems}
+            total_items={props.products.total_items}
             pagination_size={pagination_size}
             active_page_no={paginationActivePage}
             onPaginationBtnClick={onPaginationBtnClick}
@@ -165,4 +160,16 @@ function UserHome(props) {
   );
 }
 
-export default UserHome;
+const mapStateToProps = (state) => {
+  return {
+    products: state.products,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    fetchProductsAction: (baseAPI_EndPoint) => { dispatch(fetchProductsAction(baseAPI_EndPoint)) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)( UserHome );

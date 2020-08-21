@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Redirect } from "react-router-dom";
+import { connect } from 'react-redux';
 
 import AdminNavBar from "../components/AdminNabBar";
 import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
 import { getDecryptedCookieValue } from "../utils";
-import {
-  fetchTodaysTopBottomCities,
-  fetchWeeklyTopBottomCities,
-} from "../apis";
+import { fetchTodaysTopBottomCitiesAction, fetchWeeklyTopBottomCitiesAction } from '../actions/index';
 
 function AdminDashboard(props) {
   const [loading, setLoading] = useState(true);
@@ -39,71 +37,18 @@ function AdminDashboard(props) {
       const isAdminLogged = await getDecryptedCookieValue(
         "order_booking_admin_logged"
       );
+
       if (isAdminLogged !== "1") {
         //if admin is not logged then redirecting to admin home page
         setRedirectToAdminHome(true);
         return;
       }
 
-      //getting today's top/bottom cities and weekly top/bottom cities from api
       try {
-        const response1 = await fetchTodaysTopBottomCities();
-        const response2 = await fetchWeeklyTopBottomCities();
-        if (response1 && response2) {
-          const todays = response1;
-          const weekly = response2;
-
-          //getting todays top/bottom cities
-          let todaysTop3 = [...todays]; //copying todays array to todaysTop3 array
-          todaysTop3 = todaysTop3.reverse();
-          todaysTop3 = todaysTop3.slice(0, 3);
-
-          let todaysTopMaxOrderCount = 1;
-          if (todaysTop3[0]) {
-            todaysTopMaxOrderCount = todaysTop3[0].order_count;
-          }
-
-          let todaysBottom3 = todays.slice(0, 3);
-          todaysBottom3.reverse();
-
-          let todaysBottomMaxOrderCount = 1;
-          if (todaysBottom3[0]) {
-            todaysBottomMaxOrderCount = todaysBottom3[0].order_count;
-          }
-
-          //getting weekly top/bottom cities
-          let weeklyTop3 = [...weekly]; //copying weekly array to weeklyTop3 array
-          weeklyTop3 = weeklyTop3.reverse();
-          weeklyTop3 = weeklyTop3.slice(0, 3);
-
-          let weeklyTopMaxOrderCount = 1;
-          if (weeklyTop3[0]) {
-            weeklyTopMaxOrderCount = weeklyTop3[0].order_count;
-          }
-
-          const weeklyBottom3 = weekly.slice(0, 3);
-          weeklyBottom3.reverse();
-
-          let weeklyBottomMaxOrderCount = 1;
-          if (weeklyBottom3[0]) {
-            weeklyBottomMaxOrderCount = weeklyBottom3[0].order_count;
-          }
-
-          //updating state
-          setTodaysTopMaxOrderCount(todaysTopMaxOrderCount);
-          setTodaysBottomMaxOrderCount(todaysBottomMaxOrderCount);
-          setWeeklyTopMaxOrderCount(weeklyTopMaxOrderCount);
-          setWeeklyBottomMaxOrderCount(weeklyBottomMaxOrderCount);
-
-          setTodaysTop3(todaysTop3);
-          setTodaysBottom3(todaysBottom3);
-          setWeeklyTop3(weeklyTop3);
-          setWeeklyBottom3(weeklyBottom3);
-        } else {
-          await makeSnackBar("Something went wrong", "error");
-        }
+        props.fetchTodaysTopBottomCitiesAction();
+        props.fetchWeeklyTopBottomCitiesAction();
       } catch {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
 
       await hideLoadingAnimation(); //hiding loading animation
@@ -111,6 +56,82 @@ function AdminDashboard(props) {
 
     componentDidMount();
   }, []);
+
+  //to keep trace if any error is coming in fetching today's cities orders from api
+  useEffect(() => {
+   if ( props.todaysCitiesOrders.error === 0 ) {
+      //getting todays top/bottom cities
+      try {
+        const todays = props.todaysCitiesOrders.data;
+
+        let todaysTop3 = [...todays]; //copying todays array to todaysTop3 array
+        todaysTop3 = todaysTop3.reverse();
+        todaysTop3 = todaysTop3.slice(0, 3);
+
+        let todaysTopMaxOrderCount = 1;
+        if (todaysTop3[0]) {
+          todaysTopMaxOrderCount = todaysTop3[0].order_count;
+        }
+
+        let todaysBottom3 = todays.slice(0, 3);
+        todaysBottom3.reverse();
+
+        let todaysBottomMaxOrderCount = 1;
+        if (todaysBottom3[0]) {
+          todaysBottomMaxOrderCount = todaysBottom3[0].order_count;
+        }
+
+      //updating state
+        setTodaysTopMaxOrderCount(todaysTopMaxOrderCount);
+        setTodaysBottomMaxOrderCount(todaysBottomMaxOrderCount);
+        
+        setTodaysTop3(todaysTop3);
+        setTodaysBottom3(todaysBottom3);
+      } catch {
+        makeSnackBar("Something went wrong", "error");
+      }
+    } else {
+      makeSnackBar("Something went wrong", "error");
+    }
+  }, [ props.todaysCitiesOrders ]);
+
+  //to keep trace if any error is coming in fetching week's cities orders from api
+  useEffect(() => {
+    if( props.weeklyCitiesOrders.error === 0 ) {
+      //getting weekly top/bottom cities
+      try {
+        const weekly = props.weeklyCitiesOrders.data;
+
+        let weeklyTop3 = [...weekly]; //copying weekly array to weeklyTop3 array
+        weeklyTop3 = weeklyTop3.reverse();
+        weeklyTop3 = weeklyTop3.slice(0, 3);
+
+        let weeklyTopMaxOrderCount = 1;
+        if (weeklyTop3[0]) {
+          weeklyTopMaxOrderCount = weeklyTop3[0].order_count;
+        }
+
+        const weeklyBottom3 = weekly.slice(0, 3);
+        weeklyBottom3.reverse();
+
+        let weeklyBottomMaxOrderCount = 1;
+        if (weeklyBottom3[0]) {
+          weeklyBottomMaxOrderCount = weeklyBottom3[0].order_count;
+        }
+
+        //updating state
+        setWeeklyTopMaxOrderCount(weeklyTopMaxOrderCount);
+        setWeeklyBottomMaxOrderCount(weeklyBottomMaxOrderCount);
+
+        setWeeklyTop3(weeklyTop3);
+        setWeeklyBottom3(weeklyBottom3);
+      } catch {
+        makeSnackBar("Something went wrong", "error");
+      }
+    } else {
+      makeSnackBar("Something went wrong", "error");
+    }
+  }, [ props.weeklyCitiesOrders ]);
 
   //function to make a snack-bar
   const makeSnackBar = async (msg, type) => {
@@ -289,4 +310,19 @@ function AdminDashboard(props) {
   );
 }
 
-export default AdminDashboard;
+const mapStateToProps = (state) => {
+  return {
+    todaysCitiesOrders: state.todaysCitiesOrders,
+    weeklyCitiesOrders: state.weeklyCitiesOrders,
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return  {
+    fetchTodaysTopBottomCitiesAction: () => { dispatch(fetchTodaysTopBottomCitiesAction()) },
+    fetchWeeklyTopBottomCitiesAction: () => { dispatch(fetchWeeklyTopBottomCitiesAction()) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)( AdminDashboard );
+

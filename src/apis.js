@@ -79,30 +79,6 @@ export const createUser = async (first_name, last_name, phone) => {
   return null;
 };
 
-//function to verify phone no is admin or not
-export const verifyAdmin = async (phone_no) => {
-  //sending rqst to api
-  try {
-    const request_address =
-      api_url_address + "verify-admin/?phone_no=" + phone_no;
-    const response = await axios.get(request_address);
-
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
-
-      const error = resp.error;
-      if (error === 0) {
-        return resp.resp;
-      }
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
-
-  return null;
-};
-
 //function to fetch all cities
 export const fetchCities = async () => {
   //sending rqst to api
@@ -114,10 +90,7 @@ export const fetchCities = async () => {
     if (response) {
       const resp = await response.data;
 
-      const error = resp.error;
-      if (error === 0) {
-        return resp.resp;
-      }
+      return resp;
     }
   } catch {
     // makeSnackBar( "something went wrong", "error" );
@@ -153,6 +126,30 @@ export const BookUserOrder = async (user_phone_no, product_id, city_id) => {
   return null;
 };
 
+//function to verify phone no is admin or not
+export const verifyAdmin = async (phone_no) => {
+  //sending rqst to api
+  try {
+    const request_address =
+      api_url_address + "verify-admin/?phone_no=" + phone_no;
+    const response = await axios.get(request_address);
+
+    //getting resp from sent rqst
+    if (response) {
+      const resp = await response.data;
+
+      const error = resp.error;
+      if (error === 0) {
+        return resp.resp;
+      }
+    }
+  } catch {
+    // makeSnackBar( "something went wrong", "error" );
+  }
+
+  return null;
+};
+
 //function to fetch today's top bottom cities
 export const fetchTodaysTopBottomCities = async () => {
   //sending rqst to api
@@ -164,10 +161,7 @@ export const fetchTodaysTopBottomCities = async () => {
     if (response) {
       const resp = await response.data;
 
-      const error = resp.error;
-      if (error === 0) {
-        return resp.resp;
-      }
+      return resp;
     }
   } catch {
     // makeSnackBar( "something went wrong", "error" );
@@ -187,10 +181,27 @@ export const fetchWeeklyTopBottomCities = async () => {
     if (response) {
       const resp = await response.data;
 
-      const error = resp.error;
-      if (error === 0) {
-        return resp.resp;
-      }
+      return resp;
+    }
+  } catch {
+    // makeSnackBar( "something went wrong", "error" );
+  }
+
+  return null;
+};
+
+//function to fetch orders by city according to pagination
+export const fetchOrdersByCity = async (api_endpoint) => {
+  //sending rqst to api
+  try {
+    const request_address = api_url_address + api_endpoint;
+    const response = await axios.get(request_address);
+
+    //getting resp from sent rqst
+    if (response) {
+      const resp = await response.data;
+
+      return resp;
     }
   } catch {
     // makeSnackBar( "something went wrong", "error" );
@@ -217,29 +228,6 @@ export const createProduct = async (name, description, price) => {
       const error = resp.error;
       if (error === 0) {
         return 1;
-      }
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
-
-  return null;
-};
-
-//function to fetch orders by city according to pagination
-export const fetchOrdersByCity = async (api_endpoint) => {
-  //sending rqst to api
-  try {
-    const request_address = api_url_address + api_endpoint;
-    const response = await axios.get(request_address);
-
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
-
-      const results = resp.results;
-      if (results) {
-        return resp;
       }
     }
   } catch {
