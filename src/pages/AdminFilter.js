@@ -69,7 +69,7 @@ function AdminFilter(props) {
     }
   }, [ props.cities ]);
 
-  // to keep trace if any error is coming in fetching products from api
+  // to keep trace if any error is coming in fetching orders of the selected city from api
   useEffect(() => {
     if( props.ordersByCity.error === 1 ) {
       makeSnackBar("Something went wrong", "error");

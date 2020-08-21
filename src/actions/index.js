@@ -60,3 +60,41 @@ export const fetchOrdersByCityAction = ( api_endpoint ) => async (dispatch) => {
         dispatch({ type: 'GET_ORDERS_BY_CITY', payload: toSend });
     }
 }
+
+export const fetchTodaysTopBottomCitiesAction = () => async (dispatch) => {
+    let toSend = {};
+    toSend["error"] = 1;
+    toSend["data"] = [];
+    try {
+        const response = await fetchTodaysTopBottomCities();
+        if( response ) {
+            toSend["error"]         = response.error;
+            toSend["data"]          = response.resp;
+
+            dispatch({ type: 'GET_TODAYS_CITIES_ORDERS', payload: toSend });
+        } else {
+            dispatch({ type: 'GET_TODAYS_CITIES_ORDERS', payload: toSend });
+        }
+    } catch {
+        dispatch({ type: 'GET_TODAYS_CITIES_ORDERS', payload: toSend });
+    }
+}
+
+export const fetchWeeklyTopBottomCitiesAction = () => async (dispatch) => {
+    let toSend = {};
+    toSend["error"] = 1;
+    toSend["data"] = [];
+    try {
+        const response = await fetchWeeklyTopBottomCities();
+        if( response ) {
+            toSend["error"]         = response.error;
+            toSend["data"]          = response.resp;
+
+            dispatch({ type: 'GET_WEEKLY_CITIES_ORDERS', payload: toSend });
+        } else {
+            dispatch({ type: 'GET_WEEKLY_CITIES_ORDERS', payload: toSend });
+        }
+    } catch {
+        dispatch({ type: ' GET_WEEKLY_CITIES_ORDERS', payload: toSend });
+    }
+}
