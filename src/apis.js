@@ -207,10 +207,7 @@ export const fetchOrdersByCity = async (api_endpoint) => {
     if (response) {
       const resp = await response.data;
 
-      const results = resp.results;
-      if (results) {
-        return resp;
-      }
+      return resp;
     }
   } catch {
     // makeSnackBar( "something went wrong", "error" );

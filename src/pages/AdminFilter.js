@@ -8,9 +8,8 @@ import SnackBar from "../components/SnackBar";
 import LoadingAnimation from "../components/LoadingAnimation";
 
 import { pagination_size } from "../constants";
-import { fetchCities, fetchOrdersByCity } from "../apis";
 import { getDecryptedCookieValue, formatDateTime } from "../utils";
-import { fetchCitiesAction } from '../actions/index';
+import { fetchCitiesAction, fetchOrdersByCityAction } from '../actions/index';
 
 function AdminFilter(props) {
   const [loading, setLoading] = useState(true);
@@ -21,20 +20,16 @@ function AdminFilter(props) {
 
   const [redirectToAdminHome, setRedirectToAdminHome] = useState(false);
 
-  const [cities, setCities] = useState([]);
   const [selectedCity, setSelectedCity] = useState(0);
-
-  const [orders, setOrders] = useState([]);
 
   const [baseAPIEndPoint, setBaseAPIEndPoint] = useState(
     "get-orders-by-city-list/?format=json&city="
   );
 
   const [paginationVisible, setPaginationVisible] = useState(false);
-  const [paginationTotalItems, setPaginationTotalItems] = useState(0);
   const [paginationActivePage, setPaginationActivePage] = useState(0);
   const [paginationAPIEndPoint, setPaginationAPIEndPoint] = useState(
-    "get-orders-by-city-list/?format=json&city="
+    "get-orders-by-city-list/?format=json&city=0"
   );
 
   //componentDidMount
@@ -50,16 +45,17 @@ function AdminFilter(props) {
         return;
       }
 
-      //fetching all cities list from api
       try {
+        //fetching all cities list from api
         await props.fetchCitiesAction();
+
+        //by default "All" city's orders will be displayed
+        const baseAPI_EndPoint = (await baseAPIEndPoint) + (await selectedCity);
+        await fetchAndDisplayOrders(baseAPI_EndPoint);
       } catch {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
-
-      //by default "All" cities orders will be displayed
-      await fetchAndDisplayOrders(selectedCity);
-
+      
       await hideLoadingAnimation(); //hiding loading animation
     };
 
@@ -73,6 +69,13 @@ function AdminFilter(props) {
     }
   }, [ props.cities ]);
 
+  // to keep trace if any error is coming in fetching products from api
+  useEffect(() => {
+    if( props.ordersByCity.error === 1 ) {
+      makeSnackBar("Something went wrong", "error");
+    }
+  }, [ props.ordersByCity ]);
+  
   //function to make a snack-bar
   const makeSnackBar = async (msg, type) => {
     await setSnackBarMsg(msg);
@@ -97,44 +100,37 @@ function AdminFilter(props) {
 
   // when a city is selected from drop down menu
   const onSelectACity = async (e) => {
-    const selected_City = await e.target.value;
-
-    await displayLoadingAnimation(); //displaying loading animation
-    await setSelectedCity(selected_City);
-
     //fetching orders of that city from api
-    await fetchAndDisplayOrders(selected_City);
+    const selected_City = await e.target.value;
+    const baseAPI_EndPoint = (await baseAPIEndPoint) + (await selected_City);
+    await fetchAndDisplayOrders(baseAPI_EndPoint);
+
+    //updating state for selected city and pagination end-point
+    await setSelectedCity(selected_City);
+    await setPaginationAPIEndPoint(baseAPI_EndPoint);
+  };
+
+  //function to fetch and display order list
+  const fetchAndDisplayOrders = async (baseAPI_EndPoint) => {
+    await displayLoadingAnimation(); //displaying loading animation
+
+    try {
+      console.warn(baseAPI_EndPoint);
+
+      await props.fetchOrdersByCityAction(baseAPI_EndPoint);
+
+      await setPaginationActivePage(0);
+      await setPaginationVisible(true);
+      
+    } catch {
+      await makeSnackBar("Something went wrong", "error");
+    }
 
     await hideLoadingAnimation(); //hiding loading animation
   };
 
-  //function to fetch and display order list
-  const fetchAndDisplayOrders = async (city_id) => {
-    try {
-      const baseAPI_Endpoint = (await baseAPIEndPoint) + city_id;
-      const response = await fetchOrdersByCity(baseAPI_Endpoint);
-      if (response) {
-        const total_items = response.count;
-        const results = response.results;
-
-        await setOrders(results);
-
-        await setPaginationAPIEndPoint(baseAPI_Endpoint);
-        await setPaginationTotalItems(total_items);
-        await setPaginationActivePage(0);
-        await setPaginationVisible(true);
-      } else {
-        await makeSnackBar("Something went wrong", "error");
-      }
-    } catch {
-      await makeSnackBar("Something went wrong", "error");
-    }
-  };
-
   //function to handle when any pagination btn is pressed
   const onPaginationBtnClick = async (index) => {
-    await displayLoadingAnimation(); //displaying loading animation
-
     //loading the selected page content
     let api_end_point = paginationAPIEndPoint;
     if (index > 0) {
@@ -142,22 +138,10 @@ function AdminFilter(props) {
       api_end_point += "&page=" + page;
     }
 
-    try {
-      const response = await fetchOrdersByCity(api_end_point);
-      if (response) {
-        const results = response.results;
-        await setOrders(results);
-
-        //highlighting the selected page btn
-        await setPaginationActivePage(index);
-      } else {
-        makeSnackBar("Something went wrong", "error");
-      } 
-    } catch {
-      makeSnackBar("Something went wrong", "error");
-    }
-
-    await hideLoadingAnimation(); //hiding loading animation
+    await fetchAndDisplayOrders(api_end_point);
+    
+    //highlighting the selected page btn
+    await setPaginationActivePage(index);
   };
 
   //rendering
@@ -195,7 +179,7 @@ function AdminFilter(props) {
         <div className="container">
           {
             //listing orders of the selected city
-            orders.map((item, idx) => {
+            props.ordersByCity.data.map((item, idx) => {
               return (
                 <div
                   key={idx}
@@ -225,7 +209,7 @@ function AdminFilter(props) {
         //pagination area
         paginationVisible ? (
           <PaginationView
-            total_items={paginationTotalItems}
+            total_items={props.ordersByCity.total_items}
             pagination_size={pagination_size}
             active_page_no={paginationActivePage}
             onPaginationBtnClick={onPaginationBtnClick}
@@ -246,12 +230,14 @@ function AdminFilter(props) {
 const mapStateToProps = (state) => {
   return {
     cities: state.cities,
+    ordersByCity: state.ordersByCity,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return  {
-    fetchCitiesAction: () => { dispatch(fetchCitiesAction()) }
+    fetchCitiesAction: () => { dispatch(fetchCitiesAction()) },
+    fetchOrdersByCityAction: ( baseAPI_EndPoint ) => { dispatch(fetchOrdersByCityAction( baseAPI_EndPoint )) }
   }
 }
 

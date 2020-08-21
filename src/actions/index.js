@@ -1,4 +1,4 @@
-import { fetchProducts, fetchCities } from "../apis";
+import { fetchProducts, fetchCities, fetchOrdersByCity } from "../apis";
 
 export const fetchProductsAction = ( baseAPI_EndPoint ) => async (dispatch) => {
     let toSend = {};
@@ -21,12 +21,12 @@ export const fetchProductsAction = ( baseAPI_EndPoint ) => async (dispatch) => {
     }
 }
 
-export const fetchCitiesAction = ( baseAPI_EndPoint ) => async (dispatch) => {
+export const fetchCitiesAction = () => async (dispatch) => {
     let toSend = {};
     toSend["error"] = 1;
     toSend["data"] = [];
     try {
-        const response = await fetchCities(baseAPI_EndPoint);
+        const response = await fetchCities();
         if( response ) {
             toSend["error"]         = response.error;
             toSend["data"]          = response.resp;
@@ -37,5 +37,26 @@ export const fetchCitiesAction = ( baseAPI_EndPoint ) => async (dispatch) => {
         }
     } catch {
         dispatch({ type: 'GET_CITIES', payload: toSend });
+    }
+}
+
+export const fetchOrdersByCityAction = ( api_endpoint ) => async (dispatch) => {
+    let toSend = {};
+    toSend["error"] = 1;
+    toSend["data"] = [];
+    try {
+        const response = await fetchOrdersByCity( api_endpoint );
+        if( response ) {
+            const total_items = response.count;
+            toSend["error"]         = 0;
+            toSend["data"]          = response.results;
+            toSend["total_items"]   = total_items;
+
+            dispatch({ type: 'GET_ORDERS_BY_CITY', payload: toSend });
+        } else {
+            dispatch({ type: 'GET_ORDERS_BY_CITY', payload: toSend });
+        }
+    } catch {
+        dispatch({ type: 'GET_ORDERS_BY_CITY', payload: toSend });
     }
 }
