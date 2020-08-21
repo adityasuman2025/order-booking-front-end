@@ -161,10 +161,7 @@ export const fetchTodaysTopBottomCities = async () => {
     if (response) {
       const resp = await response.data;
 
-      const error = resp.error;
-      if (error === 0) {
-        return resp.resp;
-      }
+      return resp;
     }
   } catch {
     // makeSnackBar( "something went wrong", "error" );
@@ -184,10 +181,7 @@ export const fetchWeeklyTopBottomCities = async () => {
     if (response) {
       const resp = await response.data;
 
-      const error = resp.error;
-      if (error === 0) {
-        return resp.resp;
-      }
+      return resp;
     }
   } catch {
     // makeSnackBar( "something went wrong", "error" );

@@ -115,8 +115,6 @@ function AdminFilter(props) {
     await displayLoadingAnimation(); //displaying loading animation
 
     try {
-      console.warn(baseAPI_EndPoint);
-
       await props.fetchOrdersByCityAction(baseAPI_EndPoint);
 
       await setPaginationActivePage(0);
