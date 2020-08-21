@@ -83,7 +83,7 @@ function UserHome(props) {
   };
 
   //function to fetch and dispay products as per pagination
-  const fetchAndDisplayProducts = async (baseAPI_EndPoint) => {
+  const fetchAndDisplayProducts = (baseAPI_EndPoint) => {
     try {
       props.fetchProductsAction(baseAPI_EndPoint);
       setPaginationVisible(true); 

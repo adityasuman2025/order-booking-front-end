@@ -51,7 +51,7 @@ function AdminDashboard(props) {
         makeSnackBar("Something went wrong", "error");
       }
 
-      await hideLoadingAnimation(); //hiding loading animation
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
@@ -134,11 +134,11 @@ function AdminDashboard(props) {
   }, [ props.weeklyCitiesOrders ]);
 
   //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -147,12 +147,12 @@ function AdminDashboard(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   //function to style graph pillar as per its order count and position

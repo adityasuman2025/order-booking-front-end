@@ -150,65 +150,65 @@ export const verifyAdmin = async (phone_no) => {
   return null;
 };
 
-//function to fetch today's top bottom cities
-export const fetchTodaysTopBottomCities = async () => {
-  //sending rqst to api
-  try {
-    const request_address = api_url_address + "get-orders-of-cities-for-today";
-    const response = await axios.get(request_address);
+// //function to fetch today's top bottom cities
+// export const fetchTodaysTopBottomCities = async () => {
+//   //sending rqst to api
+//   try {
+//     const request_address = api_url_address + "get-orders-of-cities-for-today";
+//     const response = await axios.get(request_address);
 
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
+//     //getting resp from sent rqst
+//     if (response) {
+//       const resp = await response.data;
 
-      return resp;
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
+//       return resp;
+//     }
+//   } catch {
+//     // makeSnackBar( "something went wrong", "error" );
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
-//function to fetch weekly top bottom cities
-export const fetchWeeklyTopBottomCities = async () => {
-  //sending rqst to api
-  try {
-    const request_address = api_url_address + "get-orders-of-cities-for-week/";
-    const response = await axios.get(request_address);
+// //function to fetch weekly top bottom cities
+// export const fetchWeeklyTopBottomCities = async () => {
+//   //sending rqst to api
+//   try {
+//     const request_address = api_url_address + "get-orders-of-cities-for-week/";
+//     const response = await axios.get(request_address);
 
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
+//     //getting resp from sent rqst
+//     if (response) {
+//       const resp = await response.data;
 
-      return resp;
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
+//       return resp;
+//     }
+//   } catch {
+//     // makeSnackBar( "something went wrong", "error" );
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
-//function to fetch orders by city according to pagination
-export const fetchOrdersByCity = async (api_endpoint) => {
-  //sending rqst to api
-  try {
-    const request_address = api_url_address + api_endpoint;
-    const response = await axios.get(request_address);
+// //function to fetch orders by city according to pagination
+// export const fetchOrdersByCity = async (api_endpoint) => {
+//   //sending rqst to api
+//   try {
+//     const request_address = api_url_address + api_endpoint;
+//     const response = await axios.get(request_address);
 
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
+//     //getting resp from sent rqst
+//     if (response) {
+//       const resp = await response.data;
 
-      return resp;
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
+//       return resp;
+//     }
+//   } catch {
+//     // makeSnackBar( "something went wrong", "error" );
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 //function to create a product
 export const createProduct = async (name, description, price) => {

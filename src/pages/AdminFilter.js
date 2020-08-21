@@ -47,16 +47,16 @@ function AdminFilter(props) {
 
       try {
         //fetching all cities list from api
-        await props.fetchCitiesAction();
+        props.fetchCitiesAction();
 
         //by default "All" city's orders will be displayed
         const baseAPI_EndPoint = (await baseAPIEndPoint) + (await selectedCity);
-        await fetchAndDisplayOrders(baseAPI_EndPoint);
+        fetchAndDisplayOrders(baseAPI_EndPoint);
       } catch {
         makeSnackBar("Something went wrong", "error");
       }
       
-      await hideLoadingAnimation(); //hiding loading animation
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
@@ -75,13 +75,13 @@ function AdminFilter(props) {
       makeSnackBar("Something went wrong", "error");
     }
   }, [ props.ordersByCity ]);
-  
-  //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+  //function to make a snack-bar
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
+
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -90,12 +90,12 @@ function AdminFilter(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   // when a city is selected from drop down menu
@@ -103,43 +103,42 @@ function AdminFilter(props) {
     //fetching orders of that city from api
     const selected_City = await e.target.value;
     const baseAPI_EndPoint = (await baseAPIEndPoint) + (await selected_City);
-    await fetchAndDisplayOrders(baseAPI_EndPoint);
+    fetchAndDisplayOrders(baseAPI_EndPoint);
 
     //updating state for selected city and pagination end-point
-    await setSelectedCity(selected_City);
-    await setPaginationAPIEndPoint(baseAPI_EndPoint);
+    setSelectedCity(selected_City);
+    setPaginationAPIEndPoint(baseAPI_EndPoint);
   };
 
   //function to fetch and display order list
-  const fetchAndDisplayOrders = async (baseAPI_EndPoint) => {
-    await displayLoadingAnimation(); //displaying loading animation
+  const fetchAndDisplayOrders = (baseAPI_EndPoint) => {
+    displayLoadingAnimation(); //displaying loading animation
 
     try {
-      await props.fetchOrdersByCityAction(baseAPI_EndPoint);
+      props.fetchOrdersByCityAction(baseAPI_EndPoint);
 
-      await setPaginationActivePage(0);
-      await setPaginationVisible(true);
-      
+      setPaginationActivePage(0);
+      setPaginationVisible(true);
     } catch {
-      await makeSnackBar("Something went wrong", "error");
+      makeSnackBar("Something went wrong", "error");
     }
 
-    await hideLoadingAnimation(); //hiding loading animation
+    hideLoadingAnimation(); //hiding loading animation
   };
 
   //function to handle when any pagination btn is pressed
   const onPaginationBtnClick = async (index) => {
     //loading the selected page content
-    let api_end_point = paginationAPIEndPoint;
+    let api_end_point = await paginationAPIEndPoint;
     if (index > 0) {
       const page = index + 1;
       api_end_point += "&page=" + page;
     }
 
-    await fetchAndDisplayOrders(api_end_point);
+    fetchAndDisplayOrders(api_end_point);
     
     //highlighting the selected page btn
-    await setPaginationActivePage(index);
+    setPaginationActivePage(index);
   };
 
   //rendering

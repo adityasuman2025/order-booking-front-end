@@ -29,22 +29,22 @@ function AdminHome(props) {
       );
       if (isAdminLogged === "1") {
         //if admin is already logged then redirecting to admin dashboard page
-        await setRedirectToAdminDashboard(true);
+        setRedirectToAdminDashboard(true);
         return;
       }
 
-      await hideLoadingAnimation(); //hiding loading animation
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
   }, []);
 
-  //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
+ //function to make a snack-bar
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -53,18 +53,18 @@ function AdminHome(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   //when login btn is pressed
   const onLoginPressed = async (e) => {
     e.preventDefault();
-    await displayLoadingAnimation(); //displaying loading animation
+    displayLoadingAnimation(); //displaying loading animation
 
     //verifying entered data
     const entered_PhoneNo = enteredPhoneNo.trim();
@@ -84,19 +84,19 @@ function AdminHome(props) {
               return;
             }
           } else {
-            await makeSnackBar("Invalid admin phone number", "error");
+            makeSnackBar("Invalid admin phone number", "error");
           }
         } else {
-          await makeSnackBar("This phone number is not registered", "error");
+          makeSnackBar("This phone number is not registered", "error");
         } 
       } catch {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
     } else {
-      await makeSnackBar("Please enter your phone number", "error");
+      makeSnackBar("Please enter your phone number", "error");
     }
 
-    await hideLoadingAnimation(); //hiding loading animation
+    hideLoadingAnimation(); //hiding loading animation
   };
 
   //rendering

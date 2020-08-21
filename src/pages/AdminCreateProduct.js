@@ -38,18 +38,18 @@ function AdminCreateProduct(props) {
         return;
       }
 
-      await hideLoadingAnimation(); //hiding loading animation
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
   }, []);
 
   //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -58,18 +58,18 @@ function AdminCreateProduct(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   //function to hanlde when create btn is clicked
   const onCreatePressed = async (e) => {
     e.preventDefault();
-    await displayLoadingAnimation(); //showing loading animation
+    displayLoadingAnimation(); //showing loading animation
 
     //verifying the entered data
     const enteredProduct_Name = enteredProductName.trim();
@@ -91,18 +91,18 @@ function AdminCreateProduct(props) {
         if (response === 1) {
           //hiding form and displaying success msg
           setFormVisible(false);
-          await makeSnackBar("Product successfully created.", "success");
+          makeSnackBar("Product successfully created.", "success");
         } else {
-          await makeSnackBar("Something went wrong", "error");
+          makeSnackBar("Something went wrong", "error");
         }
       } catch {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
     } else {
-      await makeSnackBar("Please fill all details", "error");
+      makeSnackBar("Please fill all details", "error");
     }
 
-    await hideLoadingAnimation(); //hiding loading animation
+    hideLoadingAnimation(); //hiding loading animation
   };
 
   //rendering
