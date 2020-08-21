@@ -43,12 +43,12 @@ function UserOrder(props) {
 
       //fetching all cities list from api
       try {
-        await props.fetchCitiesAction();
+        props.fetchCitiesAction();
       } catch {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
 
-      await hideLoadingAnimation(); //hiding loading animation
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
@@ -62,11 +62,11 @@ function UserOrder(props) {
   }, [ props.cities ]);
 
   //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -75,19 +75,19 @@ function UserOrder(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   //function to hanlde when book btn is pressed
   const onBookPressed = async (e) => {
     e.preventDefault();
 
-    await displayLoadingAnimation(); //displaying loading animation
+    displayLoadingAnimation(); //displaying loading animation
 
     //verifying if all input data is correct
     const user_phone_no = enteredPhoneNo.trim();
@@ -95,20 +95,20 @@ function UserOrder(props) {
     const city_id = selectedCity;
 
     if (city_id === 0) {
-      await makeSnackBar("Please select a city", "error");
-      await hideLoadingAnimation(); //hiding loading animation
+      makeSnackBar("Please select a city", "error");
+      hideLoadingAnimation(); //hiding loading animation
       return;
     }
 
     if (product_id === 0) {
-      await makeSnackBar("Invalid product", "error");
-      await hideLoadingAnimation(); //hiding loading animation
+      makeSnackBar("Invalid product", "error");
+      hideLoadingAnimation(); //hiding loading animation
       return;
     }
 
     if (user_phone_no === "") {
-      await makeSnackBar("Invalid Phone Number", "error");
-      await hideLoadingAnimation(); //hiding loading animation
+      makeSnackBar("Invalid Phone Number", "error");
+      hideLoadingAnimation(); //hiding loading animation
       return;
     }
 
@@ -118,15 +118,15 @@ function UserOrder(props) {
       if (response) {
         //hiding form and displaying success msg
         setFormVisible(false);
-        await makeSnackBar("Your order successfully booked", "success");
+        makeSnackBar("Your order successfully booked", "success");
       } else {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
     } catch {
-      await makeSnackBar("Something went wrong", "error");
+      makeSnackBar("Something went wrong", "error");
     }
 
-    await hideLoadingAnimation(); //hiding loading animation
+    hideLoadingAnimation(); //hiding loading animation
   };
 
   //rendering

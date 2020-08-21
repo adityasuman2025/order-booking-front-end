@@ -24,18 +24,18 @@ function UserCreateUser(props) {
   //componentDidMount
   useEffect(() => {
     const componentDidMount = async () => {
-      await hideLoadingAnimation(); //hiding loading animation
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
   }, []);
 
   //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -44,19 +44,19 @@ function UserCreateUser(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   //function to hanlde when create btn is clicked
   const onCreatePressed = async (e) => {
     e.preventDefault();
 
-    await displayLoadingAnimation(); //showing loading animation
+    displayLoadingAnimation(); //showing loading animation
 
     //verifying if entered data
     const entered_FirstName = enteredFirstName.trim();
@@ -69,35 +69,35 @@ function UserCreateUser(props) {
       entered_PhoneNo !== ""
     ) {
       if (!validateUsername(entered_FirstName)) {
-        await makeSnackBar(
+        makeSnackBar(
           "First Name cannot contain numbers, symbols and spaces",
           "error"
         );
-        await hideLoadingAnimation(); //hiding loading animation
+        hideLoadingAnimation(); //hiding loading animation
         return;
       }
 
       if (!validateUsername(entered_SecondName)) {
-        await makeSnackBar(
+        makeSnackBar(
           "Second Name cannot contain numbers, symbols and spaces",
           "error"
         );
-        await hideLoadingAnimation(); //hiding loading animation
+        hideLoadingAnimation(); //hiding loading animation
         return;
       }
 
       if (!validateContactNo(entered_PhoneNo)) {
-        await makeSnackBar(
+        makeSnackBar(
           "Contact number can only contain integer",
           "error"
         );
-        await hideLoadingAnimation(); //hiding loading animation
+        hideLoadingAnimation(); //hiding loading animation
         return;
       }
 
       if (entered_PhoneNo.length !== 10) {
-        await makeSnackBar("Phone number must be 10 digits long", "error");
-        await hideLoadingAnimation(); //hiding loading animation
+        makeSnackBar("Phone number must be 10 digits long", "error");
+        hideLoadingAnimation(); //hiding loading animation
         return;
       }
 
@@ -110,24 +110,24 @@ function UserCreateUser(props) {
         );
         if (response === 1) {
           //hiding form and displaying success msg
-          await setFormVisible(false);
+          setFormVisible(false);
   
-          await makeSnackBar(
+          makeSnackBar(
             "User created. You can book orders with your phone number now",
             "success"
           );
           // this.props.history.goBack();
         } else {
-          await makeSnackBar("This phone number is already taken", "error");
+          makeSnackBar("This phone number is already taken", "error");
         }
       } catch {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
     } else {
-      await makeSnackBar("Please fill all details", "error");
+      makeSnackBar("Please fill all details", "error");
     }
 
-    await hideLoadingAnimation(); //hiding loading animation
+    hideLoadingAnimation(); //hiding loading animation
   };
 
   //rendering

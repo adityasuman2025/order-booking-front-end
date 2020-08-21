@@ -2,28 +2,28 @@ import axios from "axios";
 
 import { api_url_address } from "./constants";
 
-//function to fetch products according to pagination
-export const fetchProducts = async (api_endpoint) => {
-  //sending rqst to api
-  try {
-    const request_address = api_url_address + api_endpoint;
-    const response = await axios.get(request_address);
+// //function to fetch products according to pagination
+// export const fetchProducts = async (api_endpoint) => {
+//   //sending rqst to api
+//   try {
+//     const request_address = api_url_address + api_endpoint;
+//     const response = await axios.get(request_address);
 
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
+//     //getting resp from sent rqst
+//     if (response) {
+//       const resp = await response.data;
 
-      const results = resp.results;
-      if (results) {
-        return resp;
-      }
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
+//       const results = resp.results;
+//       if (results) {
+//         return resp;
+//       }
+//     }
+//   } catch {
+//     // makeSnackBar( "something went wrong", "error" );
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 //function to check if a user exist with a phone number
 export const checkUserExistsWithGivenPhoneNumber = async (phone_no) => {
@@ -79,25 +79,25 @@ export const createUser = async (first_name, last_name, phone) => {
   return null;
 };
 
-//function to fetch all cities
-export const fetchCities = async () => {
-  //sending rqst to api
-  try {
-    const request_address = api_url_address + "cities/";
-    const response = await axios.get(request_address);
+// //function to fetch all cities
+// export const fetchCities = async () => {
+//   //sending rqst to api
+//   try {
+//     const request_address = api_url_address + "cities/";
+//     const response = await axios.get(request_address);
 
-    //getting resp from sent rqst
-    if (response) {
-      const resp = await response.data;
+//     //getting resp from sent rqst
+//     if (response) {
+//       const resp = await response.data;
 
-      return resp;
-    }
-  } catch {
-    // makeSnackBar( "something went wrong", "error" );
-  }
+//       return resp;
+//     }
+//   } catch {
+//     // makeSnackBar( "something went wrong", "error" );
+//   }
 
-  return null;
-};
+//   return null;
+// };
 
 //function to book an order of the user
 export const BookUserOrder = async (user_phone_no, product_id, city_id) => {

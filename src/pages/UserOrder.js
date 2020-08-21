@@ -29,18 +29,18 @@ function UserOrder(props) {
       setProductID(product_id);
       setEnteredPhoneNo(entered_PhoneNo);
 
-      await hideLoadingAnimation(); //hiding loading animation
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
   }, []);
 
   //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -49,24 +49,24 @@ function UserOrder(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   //when proceed btn is pressed
   const onProceedPress = async (e) => {
     e.preventDefault();
 
-    await displayLoadingAnimation(); //showing loading animation
+    displayLoadingAnimation(); //showing loading animation
 
     //checking if some phone no is entered
     const entered_PhoneNo = await enteredPhoneNo.trim();
     if (entered_PhoneNo === "") {
-      await makeSnackBar("Please enter a phone number", "error");
+      makeSnackBar("Please enter a phone number", "error");
     } else {
       try {
         const response = await checkUserExistsWithGivenPhoneNumber(
@@ -84,21 +84,21 @@ function UserOrder(props) {
 
             return;
           } else {
-            await makeSnackBar("Something went wrong", "error");
+            makeSnackBar("Something went wrong", "error");
           }
         } else if (response === 0) {
-          await makeSnackBar(
+          makeSnackBar(
             "This phone number is not registered. Please Create a User to continue",
             "error"
           );
         } else {
-          await makeSnackBar("Something went wrong", "error");
+          makeSnackBar("Something went wrong", "error");
         }
       } catch {
-        await makeSnackBar("Something went wrong", "error");
+        makeSnackBar("Something went wrong", "error");
       }
     }
-    await hideLoadingAnimation(); //hiding loading animation
+    hideLoadingAnimation(); //hiding loading animation
   };
 
   //rendering

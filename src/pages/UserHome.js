@@ -27,8 +27,8 @@ function UserHome(props) {
   useEffect(() => {
     const componentDidMount = async () => {
       //by default first page of products will be listed
-      await fetchAndDisplayProducts(baseAPIEndPoint);
-      await hideLoadingAnimation(); //hiding loading animation
+      fetchAndDisplayProducts(baseAPIEndPoint);
+      hideLoadingAnimation(); //hiding loading animation
     };
 
     componentDidMount();
@@ -42,11 +42,11 @@ function UserHome(props) {
   }, [ props.products ]);
 
   //function to make a snack-bar
-  const makeSnackBar = async (msg, type) => {
-    await setSnackBarMsg(msg);
-    await setSnackBarType(type);
+  const makeSnackBar = (msg, type) => {
+    setSnackBarMsg(msg);
+    setSnackBarType(type);
 
-    await setSnackBarVisible(true);
+    setSnackBarVisible(true);
   };
 
   //function to close snack-bar
@@ -55,40 +55,40 @@ function UserHome(props) {
   };
 
   //function to toogle loadiing animation
-  const displayLoadingAnimation = async () => {
-    await setLoading(true);
+  const displayLoadingAnimation = () => {
+    setLoading(true);
   };
 
-  const hideLoadingAnimation = async () => {
-    await setLoading(false);
+  const hideLoadingAnimation = () => {
+    setLoading(false);
   };
 
   //function to handle when any pagination btn is pressed
   const onPaginationBtnClick = async (index) => {
-    await displayLoadingAnimation(); //displaying loading animation
+    displayLoadingAnimation(); //displaying loading animation
 
     //loading the selected page content
-    let api_end_point = baseAPIEndPoint;
+    let api_end_point = await baseAPIEndPoint;
     if (index > 0) {
       const page = index + 1;
       api_end_point += "&page=" + page;
     }
 
-    await fetchAndDisplayProducts(api_end_point);
+    fetchAndDisplayProducts(api_end_point);
     
     //highlighting the selected page btn
-    await setPaginationActivePage(index);
+    setPaginationActivePage(index);
     
-    await hideLoadingAnimation(); //hiding loading animation
+    hideLoadingAnimation(); //hiding loading animation
   };
 
   //function to fetch and dispay products as per pagination
   const fetchAndDisplayProducts = async (baseAPI_EndPoint) => {
     try {
-      await props.fetchProductsAction(baseAPI_EndPoint);
-      await setPaginationVisible(true); 
+      props.fetchProductsAction(baseAPI_EndPoint);
+      setPaginationVisible(true); 
     } catch {
-      await makeSnackBar("Something went wrong", "error");
+      makeSnackBar("Something went wrong", "error");
     }
   };
 
@@ -101,7 +101,7 @@ function UserHome(props) {
     if (selected_product_name_cookie) {
       props.history.push("/user/order/" + item.id);
     } else {
-      await makeSnackBar("Something went wrong", "error");
+      makeSnackBar("Something went wrong", "error");
     }
   };
 
