@@ -179,7 +179,8 @@ function UserCreateUser(props) {
               Phone Number
               <br />
               <input
-                type="number"
+                // type="number"
+                type="tel"
                 required
                 className="inputBox inputBox2"
                 // placeholder="phone nuber"

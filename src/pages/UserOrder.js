@@ -117,7 +117,8 @@ function UserOrder(props) {
             Enter your phone number
             <br />
             <input
-              type="number"
+              // type="number"
+              type="tel"
               className="inputBox"
               placeholder="Phone Number"
               name="enteredPhoneNo"
