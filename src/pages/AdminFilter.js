@@ -23,13 +23,13 @@ function AdminFilter(props) {
   const [selectedCity, setSelectedCity] = useState(0);
 
   const [baseAPIEndPoint, setBaseAPIEndPoint] = useState(
-    "get-orders-by-city-list/?format=json&city="
+    "orders-by-city-list/?format=json&city="
   );
 
   const [paginationVisible, setPaginationVisible] = useState(false);
   const [paginationActivePage, setPaginationActivePage] = useState(0);
   const [paginationAPIEndPoint, setPaginationAPIEndPoint] = useState(
-    "get-orders-by-city-list/?format=json&city=0"
+    "orders-by-city-list/?format=json&city=0"
   );
 
   //componentDidMount
