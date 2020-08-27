@@ -1,37 +1,41 @@
-import React, { Component } from 'react';
+import React from "react";
 
 import CircularButton from "../components/CircularButton";
-import { project_name } from "../global";
+import { project_name } from "../constants";
 
-class LandingPage extends Component {
-	constructor(){
-	    super();
-	   
-	    this.state = {
-	    };
-  	}
+function LandingPage(props) {
+  //rendering
+  return (
+    <div className="horiVertCenter">
+      <div className="choiceBox">
+        <img
+          className="logoImg"
+          alt="logo"
+          src={require("../img/logo.png")}
+        />
+        <br />
+        <br />
+        <div className="projectTitleText">{project_name}</div>
+        <br />
+        <br />
+        <br />
 
-  	componentDidMount() {
-	}
-
-//rendering
-	render() {
-	//rendering
-		return (
-			<div className="horiVertCenter">
-				<div className="choiceBox">
-					<img className="logoImg" alt="logo image" src={ require("../img/logo.png") } />
-					<div className="projectTitleText" style={{ marginTop: 20 }}>
-						{ project_name }
-					</div>
-					<br/><br/>
-
-					<CircularButton text="User" style={{ width: 180 }} />
-					<CircularButton text="Admin" style={{ width: 180 }} />
-				</div>
-			</div>
-		);
-	}
+        <CircularButton
+          text="User"
+          onClick={() => {
+            props.history.push("/user");
+          }}
+        />
+        <br />
+        <CircularButton
+          text="Admin"
+          onClick={() => {
+            props.history.push("/admin");
+          }}
+        />
+      </div>
+    </div>
+  );
 }
 
 export default LandingPage;

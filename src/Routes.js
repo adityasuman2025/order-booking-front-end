@@ -2,16 +2,37 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import LandingPage from './pages/LandingPage';
+
+import UserHome from './pages/UserHome';
+import UserOrder from './pages/UserOrder';
+import UserBookOrder from './pages/UserBookOrder';
+import UserCreateUser from './pages/UserCreateUser';
+
+import AdminHome from './pages/AdminHome';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminFilter from './pages/AdminFilter';
+import AdminCreateProduct from './pages/AdminCreateProduct';
+
 import NotFound from './pages/NotFound';
 
 const Routes = () => (
-  <BrowserRouter >
+<BrowserRouter >
     <Switch>
-      <Route exact path="/" component={ LandingPage } />
+        <Route exact path="/" component={ LandingPage } />
 
-      <Route path="*" component={ NotFound } />
+        <Route exact path="/user" component={ UserHome } />
+        <Route exact path="/user/order/:product_id" component={ UserOrder } />
+        <Route exact path="/user/book-order/:product_id" component={ UserBookOrder } />
+        <Route exact path="/user/create-user" component={ UserCreateUser } />
+
+        <Route exact path="/admin" component={ AdminHome } />
+        <Route exact path="/admin/dashboard" component={ AdminDashboard } />
+        <Route exact path="/admin/filter" component={ AdminFilter } />
+        <Route exact path="/admin/create-product" component={ AdminCreateProduct } />
+
+        <Route path="*" component={ NotFound } />
     </Switch>
-  </BrowserRouter>
+</BrowserRouter>
 );
 
 export default Routes;
