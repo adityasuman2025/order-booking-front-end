@@ -96,6 +96,33 @@ export const fetchOrdersByCityAction = ( api_endpoint ) => async (dispatch) => {
     }
 }
 
+export const fetchOrdersByCityListAction = ( city_id ) => async (dispatch) => {
+    let toSend = {};
+    toSend["error"] = 1;
+    toSend["data"] = [];
+
+    //sending rqst to api
+    try {
+        const api_endpoint = "get-orders-by-city/?city=" + city_id;
+        const request_address = api_url_address + api_endpoint;
+        const response = await axios.get(request_address);
+
+        //getting resp from sent rqst
+        if (response) {
+            const resp              = await response.data;
+
+            toSend["error"]         = resp.error;
+            toSend["data"]          = resp.resp;
+
+            dispatch({ type: 'GET_ORDERS_BY_CITY_lIST', payload: toSend });
+        } else {
+            dispatch({ type: 'GET_ORDERS_BY_CITY_lIST', payload: toSend });
+        }
+    } catch {
+        dispatch({ type: 'GET_ORDERS_BY_CITY_lIST', payload: toSend });
+    }
+}
+
 export const fetchTodaysTopBottomCitiesAction = () => async (dispatch) => {
     let toSend = {};
     toSend["error"] = 1;

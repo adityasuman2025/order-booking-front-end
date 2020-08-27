@@ -9,7 +9,7 @@ import LoadingAnimation from "../components/LoadingAnimation";
 
 import { pagination_size } from "../constants";
 import { getDecryptedCookieValue, formatDateTime } from "../utils";
-import { fetchCitiesAction, fetchOrdersByCityAction } from '../actions/index';
+import { fetchCitiesAction, fetchOrdersByCityAction, fetchOrdersByCityListAction } from '../actions/index';
 
 function AdminFilter(props) {
   const [loading, setLoading] = useState(true);
@@ -32,6 +32,8 @@ function AdminFilter(props) {
     "get-orders-by-city-list/?format=json&city=0"
   );
 
+  const [totalRevenueFromCity, setTotalRevenueFromCity] = useState(0);
+
   //componentDidMount
   useEffect(() => {
     const componentDidMount = async () => {
@@ -52,6 +54,7 @@ function AdminFilter(props) {
         //by default "All" city's orders will be displayed
         const baseAPI_EndPoint = (await baseAPIEndPoint) + (await selectedCity);
         fetchAndDisplayOrders(baseAPI_EndPoint);
+        fetchOrdersByCityListAction(selectedCity); //getting all orders of that city to calculate total revenue
       } catch {
         makeSnackBar("Something went wrong", "error");
       }
@@ -75,6 +78,29 @@ function AdminFilter(props) {
       makeSnackBar("Something went wrong", "error");
     }
   }, [ props.ordersByCity ]);
+
+  // to keep trace if any error is coming in fetching all orders of the selected city from api //for calculation of total revenue
+  useEffect(() => {
+    if( props.ordersByCityList.error === 1 ) {
+      makeSnackBar("Something went wrong", "error");
+    } else {
+    //calculating total revenue from that city
+      try {
+        let totalRevenue = 0;
+        if(props.ordersByCityList.data) {
+          const array = props.ordersByCityList.data;
+          array.forEach(element => {
+            const price = element.product.price;
+            totalRevenue += parseInt(price);
+          });
+        }
+
+        setTotalRevenueFromCity(totalRevenue);
+      } catch {
+        makeSnackBar("Something went wrong in getting total revenue", "error");
+      }
+    }
+  }, [ props.ordersByCityList ]);
 
   //function to make a snack-bar
   const makeSnackBar = (msg, type) => {
@@ -105,6 +131,9 @@ function AdminFilter(props) {
     const baseAPI_EndPoint = (await baseAPIEndPoint) + (await selected_City);
     fetchAndDisplayOrders(baseAPI_EndPoint);
 
+    //getting all orders of that city to calculate total revenue
+    fetchOrdersByCityListAction(selected_City);
+
     //updating state for selected city and pagination end-point
     setSelectedCity(selected_City);
     setPaginationAPIEndPoint(baseAPI_EndPoint);
@@ -125,6 +154,19 @@ function AdminFilter(props) {
 
     hideLoadingAnimation(); //hiding loading animation
   };
+
+  //functinn to get all orders of the city to calculate total revenye
+  const fetchOrdersByCityListAction = (city_id) => {
+    displayLoadingAnimation(); //displaying loading animation
+
+    try {
+      props.fetchOrdersByCityListAction(city_id);
+    } catch {
+      makeSnackBar("Something went wrong", "error");
+    }
+
+    hideLoadingAnimation(); //hiding loading animation
+  }
 
   //function to handle when any pagination btn is pressed
   const onPaginationBtnClick = async (index) => {
@@ -174,6 +216,13 @@ function AdminFilter(props) {
         <br />
 
         <div className="container">
+          <div className="coloredBackground">
+            <center className="productText center">
+              Total Revenue:  Rs. { totalRevenueFromCity }
+            </center>
+          </div>
+          <br />
+
           {
             //listing orders of the selected city
             props.ordersByCity.data.map((item, idx) => {
@@ -196,6 +245,13 @@ function AdminFilter(props) {
                 </div>
               );
             })
+          }
+
+          {
+            //showing this message if no orders are booked from that city
+            props.ordersByCity.data.length === 0 ?
+              <center className="redColored">No orders from this city</center>
+            : null
           }
         </div>
 
@@ -228,13 +284,15 @@ const mapStateToProps = (state) => {
   return {
     cities: state.cities,
     ordersByCity: state.ordersByCity,
+    ordersByCityList: state.ordersByCityList,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return  {
     fetchCitiesAction: () => { dispatch(fetchCitiesAction()) },
-    fetchOrdersByCityAction: ( baseAPI_EndPoint ) => { dispatch(fetchOrdersByCityAction( baseAPI_EndPoint )) }
+    fetchOrdersByCityAction: ( baseAPI_EndPoint ) => { dispatch(fetchOrdersByCityAction( baseAPI_EndPoint )) },
+    fetchOrdersByCityListAction: ( city_id ) => { dispatch(fetchOrdersByCityListAction( city_id )) }
   }
 }
 
