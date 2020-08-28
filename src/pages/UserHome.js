@@ -17,7 +17,7 @@ function UserHome(props) {
   const [snackBarType, setSnackBarType] = useState("success");
 
   const [baseAPIEndPoint, setBaseAPIEndPoint] = useState(
-    "get-products-list/?format=json"
+    "products-list/?format=json"
   );
 
   const [paginationVisible, setPaginationVisible] = useState(false);
