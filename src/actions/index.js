@@ -130,7 +130,7 @@ export const fetchTodaysTopBottomCitiesAction = () => async (dispatch) => {
 
     //sending rqst to api
     try {
-        const request_address = api_url_address + "get-orders-of-cities-for-today";
+        const request_address = api_url_address + "orders-of-cities-for-today";
         const response = await axios.get(request_address);
 
         //getting resp from sent rqst
@@ -156,7 +156,7 @@ export const fetchWeeklyTopBottomCitiesAction = () => async (dispatch) => {
 
     //sending rqst to api
     try {
-        const request_address = api_url_address + "get-orders-of-cities-for-week/";
+        const request_address = api_url_address + "orders-of-cities-for-week/";
         const response = await axios.get(request_address);
 
         //getting resp from sent rqst
